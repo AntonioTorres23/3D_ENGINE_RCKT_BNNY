@@ -149,6 +149,16 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="process_shader.cpp" />
+    <ClCompile Include="process_texture.cpp" />
+    <ClCompile Include="resource_manager.cpp" />
+    <ClCompile Include="stb_image_init.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="process_shader.h" />
+    <ClInclude Include="process_texture.h" />
+    <ClInclude Include="resource_manager.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
