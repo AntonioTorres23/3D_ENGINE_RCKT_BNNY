@@ -151,12 +151,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="process_shader.cpp" />
     <ClCompile Include="process_texture.cpp" />
+    <ClCompile Include="render_object.cpp" />
     <ClCompile Include="resource_manager.cpp" />
     <ClCompile Include="stb_image_init.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="process_shader.h" />
     <ClInclude Include="process_texture.h" />
+    <ClInclude Include="render_object.h" />
     <ClInclude Include="resource_manager.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>

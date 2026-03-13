@@ -23,6 +23,9 @@ public: // all of our public data members/functions
 	static std::map<std::string, SHADER_OBJ> stored_shaders;
 	// map our texture object to a string to store for future use
 	static std::map<std::string, TEXTURE_2D_OBJ> stored_textures;
+	// map our model paths to a string to store for future use
+	static std::map<std::string, const char*> stored_model_paths;
+	
 	// static function that loads and generates a shader program from a file loading vertex, fragment, and or geometry shader's source code. If geometry shader is not a nullptr, load it as well
 	static SHADER_OBJ Shader_Load(const char *vertexShaderFilePath, const char *fragmentShaderFilePath, const char *geometryShaderFilePath, std::string shader_name);
 	// get a shader that is already stored

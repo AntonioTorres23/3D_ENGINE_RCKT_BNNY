@@ -11,6 +11,7 @@
 // instantiate (aka create/define the stored mapped members within this c++ file) the static map member variables
 std::map<std::string, TEXTURE_2D_OBJ> RESOURCE_MANAGER::stored_textures;
 std::map<std::string, SHADER_OBJ>	  RESOURCE_MANAGER::stored_shaders;
+std::map<std::string, const char*> RESOURCE_MANAGER::stored_model_paths;
 
 /*
 NOTICE HOW WE'RE DEFINING THE FUNCTIONS THAT ARE STORED WITHIN THE RESOURCE_MANAGER CLASS, SO IN THE C++ FILE HERE WE'RE DEFINING THE ACTUAL SOURCE CODE
@@ -70,6 +71,8 @@ void RESOURCE_MANAGER::Clear_All_Resources()
 		// which is why we call the second method within the texture iterable (texture)
 		glDeleteTextures(1, &texture.second.texture_ID);
 	}
+
+	stored_model_paths.clear();
 }
 
 // define our static Shader_Load_From_Ext_File private function here
