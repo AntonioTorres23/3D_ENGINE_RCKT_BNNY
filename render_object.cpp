@@ -35,6 +35,8 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_obj
 
 	transformation_matrix = glm::scale(transformation_matrix, scale_size_argument);
 
+	transformation_matrix = glm::rotate(transformation_matrix, glm::radians(rotation_degree_argument), glm::vec3(0.0f, 1.0f, 0.0f));
+
 	//glm::mat4 view_matrix = glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	//glm::mat4 perspective_matrix = glm::perspective(glm::radians(90.0f), (float)800 / (float)1000, 0.1f, 100.0f);
 
@@ -107,7 +109,7 @@ void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object)
 		glBufferData(GL_ARRAY_BUFFER, size_of_cube_vertex_data, &cube_vertex_data, GL_STATIC_DRAW);
 		glBindVertexArray(this->object_vertex_array_obj);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	

@@ -7,6 +7,7 @@
 #include <iostream>
 
 RENDER_OBJECT_OBJ *render_obj; 
+RENDER_OBJECT_OBJ *render_obj_plane;
 
 GAME_OBJ::GAME_OBJ(unsigned int width_of_window, unsigned int height_of_window)
 	: Width_Of_Screen(width_of_window), Height_Of_Screen(height_of_window)
@@ -17,6 +18,7 @@ GAME_OBJ::GAME_OBJ(unsigned int width_of_window, unsigned int height_of_window)
 GAME_OBJ::~GAME_OBJ()
 {
 	delete render_obj;
+	delete render_obj_plane;
 }
 
 void GAME_OBJ::Initalize_Game()
@@ -32,15 +34,17 @@ void GAME_OBJ::Initalize_Game()
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("view_matrix", view_matrix);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 
-	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
+	// WORKS
+	//render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
 
-
-
+	// IN TESTING
+	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), CUBE);
+	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
 }
 
 
 void GAME_OBJ::Render_Game()
 {
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(10.0f));
-	
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f));
 }

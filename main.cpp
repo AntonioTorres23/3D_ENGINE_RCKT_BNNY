@@ -96,6 +96,8 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	// we set them to be the same size as the window itself
 	glViewport(0, 0, WIDTH_OF_SCREEN, HEIGHT_OF_SCREEN);
 
+	glEnable(GL_DEPTH_TEST);
+
 	game.Initalize_Game();
 
 	// delta time variable
@@ -125,7 +127,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		// glClearColor is an OpenGL function that changes our background/default color buffer to the set color within this function
 		glClearColor(1.0f, 0.5f, 0.5f, 1.0f);
 		// glClear is an OpenGL function that clears the specifed buffer with a buffer bit
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
 
 		game.Render_Game();

@@ -1,6 +1,7 @@
 #ifndef LOGIC_FOR_GAME_HEADER
 #define LOGIC_FOR_GAME_HEADER
 
+
 // Game class that stores all game related states/functionality
 class GAME_OBJ
 {

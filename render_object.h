@@ -5,6 +5,8 @@
 #include <glm/glm.hpp> // include glm, a library that allows for us to create OpenGL vectors, matrices, etc. 
 #include <glm/gtc/matrix_transform.hpp> // another glm feature that allows us to transform matrices such as rotation, scaling, translation
 
+#include <GLFW/glfw3.h> // TEST FOR ROTATION
+
 // include our process_texture header file to use the TEXTURE_2D_OBJ type within this function
 #include "process_texture.h"
 // include our process_shader header file to use the SHADER_OBJ type within this function
