@@ -123,7 +123,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 
 		// render stuff
 		// glClearColor is an OpenGL function that changes our background/default color buffer to the set color within this function
-		glClearColor(0.5, 0.5, 0.5, 1.0);
+		glClearColor(1.0f, 0.5f, 0.5f, 1.0f);
 		// glClear is an OpenGL function that clears the specifed buffer with a buffer bit
 		glClear(GL_COLOR_BUFFER_BIT);
 
