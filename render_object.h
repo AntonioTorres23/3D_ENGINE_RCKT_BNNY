@@ -10,6 +10,12 @@
 // include our process_shader header file to use the SHADER_OBJ type within this function
 #include "process_shader.h"
 
+#include "plane_data.h"
+
+#include "cube_data.h"
+
+#include <iostream>
+
 enum Object_Type
 {
 	MODEL, CUBE, PLANE
@@ -34,8 +40,8 @@ class RENDER_OBJECT_OBJ
 		by default is set to 0.0, and a 3-value vector that represents a color to set the object as which by default is 1.0 on r, g, and b (white)
 		*/
 
-		// CHANGE ON 1/14/2026 @ 4:30 PM, CHANGED PARAMTER/ARGUMENT OF RENDER_AND_DRAW_SPRITE METHOD FUNCTION FROM A TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGUMENT TO A CONST TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGGUMENT 
-		void Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_object_argument, glm::vec3 position_of_object_argument, Object_Type type_of_object, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 sprite_color_argument = glm::vec3(1.0));
+		// CHANGE ON 1/14/2026 @ 4:30 PM, CHANGED PARAMTER/ARGUMENT OF RENDER_AND_DRAW_OBJECT METHOD FUNCTION FROM A TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGUMENT TO A CONST TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGGUMENT 
+		void Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_object_argument, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
 
 
 	private: // all of our private data/function members

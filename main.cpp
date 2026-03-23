@@ -3,6 +3,12 @@
 
 #include <iostream> // include iostream to send default output to the terminal
 
+
+#include "resource_manager.h"
+#include "logic_for_game.h"
+
+
+
 // prototype call-back glfw functions; baically you can call these whatever you want and then tie them to actual GLFW lib callback-functions along with the GLFWwindow pointer variable you created
 
 /*
@@ -35,12 +41,21 @@ void glfw_callback_window_resize(GLFWwindow* glfw_window_argument, int width_res
 //void glfw_callback_keyboard_input(GLFWwindow* glfw_window_argument, int input, int input_scan_code, int input_action, int input_mode);
 
 // create a constant global variable that stores the desired width of the screen
-const unsigned int WIDTH_OF_SCREEN = 800;
+const unsigned int WIDTH_OF_SCREEN = 1920;
 // create a constant global variable that stores the desired height of the screen
-const unsigned int HEIGHT_OF_SCREEN = 1000;
+const unsigned int HEIGHT_OF_SCREEN = 1080;
+
+GAME_OBJ game (WIDTH_OF_SCREEN, HEIGHT_OF_SCREEN);
 
 int main(int integer_arg, char* character_c_string_arg[]) // main function of C++; take in two arguments, a integer argument, and a char pointer array argument (essetially a c-string pointer) 
 {
+	// TEMPORARY
+	//RESOURCE_MANAGER::Shader_Load("3D_TEST.vert", "3D_TEST.frag", nullptr, "test");
+
+	//RENDER_OBJECT_OBJ obj(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
+
+	//RESOURCE_MANAGER::Texture_Load("PTP-Stone_01-128x128.png", false, "texture");
+
 	// initalize glfw 
 	glfwInit();
 	// provide window hints to glfw to let it know what version of OpenGL we are working in (OpenGL ver. 3.30 aka 3.3)
@@ -81,6 +96,8 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	// we set them to be the same size as the window itself
 	glViewport(0, 0, WIDTH_OF_SCREEN, HEIGHT_OF_SCREEN);
 
+	game.Initalize_Game();
+
 	// delta time variable
 	float dTime = 0.0;
 	// last frame variable
@@ -100,14 +117,18 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		// think of it like your current frame will be the last frame within the render loop as the curret frame is always increasing in value/time
 		lFrame = cFrame;
 
-		// glfw function that processes any events that happen within the glfw window; thus enabling our callback functions defined prior
-		glfwPollEvents();
+		//obj.Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 0.0f));
+
+
 
 		// render stuff
 		// glClearColor is an OpenGL function that changes our background/default color buffer to the set color within this function
 		glClearColor(0.5, 0.5, 0.5, 1.0);
 		// glClear is an OpenGL function that clears the specifed buffer with a buffer bit
 		glClear(GL_COLOR_BUFFER_BIT);
+
+
+		game.Render_Game();
 
 		/*
 			glfwSwapBuffers is a glfw function that swaps the front and back buffers of the glfw window specified
@@ -123,7 +144,12 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 			commands. Once all the rendering commands are complete, the back buffer is swapped to the front buffer.
 		*/
 		glfwSwapBuffers(glfw_window);
+
+		// glfw function that processes any events that happen within the glfw window; thus enabling our callback functions defined prior
+		glfwPollEvents();
 	}
+
+	RESOURCE_MANAGER::Clear_All_Resources();
 
 	// glfwTerminate is a glfw function that clears all windows and glfw relevant resouces
 	glfwTerminate();

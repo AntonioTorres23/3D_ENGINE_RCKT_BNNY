@@ -36,6 +36,21 @@
     <ClCompile Include="render_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="load_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="prep_mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plane_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cube_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic_for_game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_manager.h">
@@ -53,5 +68,24 @@
     <ClInclude Include="render_object.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="load_model.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="prep_mesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plane_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cube_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logic_for_game.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="3D_TEST.vert" />
+    <None Include="3D_TEST.frag" />
   </ItemGroup>
 </Project>

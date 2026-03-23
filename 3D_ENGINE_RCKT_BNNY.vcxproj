@@ -147,8 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cube_data.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="load_model.cpp" />
+    <ClCompile Include="logic_for_game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="plane_data.cpp" />
+    <ClCompile Include="prep_mesh.cpp" />
     <ClCompile Include="process_shader.cpp" />
     <ClCompile Include="process_texture.cpp" />
     <ClCompile Include="render_object.cpp" />
@@ -156,11 +161,20 @@
     <ClCompile Include="stb_image_init.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cube_data.h" />
+    <ClInclude Include="logic_for_game.h" />
+    <ClInclude Include="load_model.h" />
+    <ClInclude Include="plane_data.h" />
+    <ClInclude Include="prep_mesh.h" />
     <ClInclude Include="process_shader.h" />
     <ClInclude Include="process_texture.h" />
     <ClInclude Include="render_object.h" />
     <ClInclude Include="resource_manager.h" />
     <ClInclude Include="stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="3D_TEST.frag" />
+    <None Include="3D_TEST.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
