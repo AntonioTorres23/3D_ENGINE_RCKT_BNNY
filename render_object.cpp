@@ -56,7 +56,6 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_obj
 	case PLANE:
 		glDrawArrays(GL_TRIANGLES, 0, amount_of_triangles_to_draw_plane);
 		glBindVertexArray(0);
-		std::cout << "plane drawn" << std::endl;
 		break;
 
 
@@ -109,7 +108,9 @@ void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object)
 		glBufferData(GL_ARRAY_BUFFER, size_of_cube_vertex_data, &cube_vertex_data, GL_STATIC_DRAW);
 		glBindVertexArray(this->object_vertex_array_obj);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	
