@@ -23,7 +23,7 @@ GAME_OBJ::~GAME_OBJ()
 
 void GAME_OBJ::Initalize_Game()
 {
-	glm::mat4 view_matrix = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 view_matrix = glm::lookAt(glm::vec3(0.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 perspective_matrix = glm::perspective(glm::radians(90.0f), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
 
 
@@ -46,5 +46,6 @@ void GAME_OBJ::Initalize_Game()
 void GAME_OBJ::Render_Game()
 {
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f));
 }
