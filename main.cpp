@@ -178,6 +178,11 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 
 	RESOURCE_MANAGER::Clear_All_Resources();
 
+	// Shutdown IMGUI Resources
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
+
 	// glfwTerminate is a glfw function that clears all windows and glfw relevant resouces
 	glfwTerminate();
 
