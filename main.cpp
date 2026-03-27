@@ -1,3 +1,7 @@
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_glfw.h"
+
 #include <glad/glad.h> // include GLAD; a lib that loads the addresses of OpenGL function pointers
 #include <GLFW/glfw3.h> // include glfw3; a lib that ties OpenGL to a window and callback functions within a window
 
@@ -49,13 +53,6 @@ GAME_OBJ game (WIDTH_OF_SCREEN, HEIGHT_OF_SCREEN);
 
 int main(int integer_arg, char* character_c_string_arg[]) // main function of C++; take in two arguments, a integer argument, and a char pointer array argument (essetially a c-string pointer) 
 {
-	// TEMPORARY
-	//RESOURCE_MANAGER::Shader_Load("3D_TEST.vert", "3D_TEST.frag", nullptr, "test");
-
-	//RENDER_OBJECT_OBJ obj(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
-
-	//RESOURCE_MANAGER::Texture_Load("PTP-Stone_01-128x128.png", false, "texture");
-
 	// initalize glfw 
 	glfwInit();
 	// provide window hints to glfw to let it know what version of OpenGL we are working in (OpenGL ver. 3.30 aka 3.3)
@@ -81,6 +78,20 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		// return standard error and end the main function (return -1)
 		return -1;
 	}
+
+	//inititalize IMGUI
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	// have IMGUI grab input output from user
+	ImGuiIO& im_gui_input_output = ImGui::GetIO();
+	// enable keyboard input by using |= compound assignment operator with related enumeration
+	im_gui_input_output.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
+	// begin tying imgui to our glfw window object; 2nd parameter syncs GLFW callback functions
+	ImGui_ImplGlfw_InitForOpenGL(glfw_window, true); 
+	// initialize IMGUI with OpenGL version 3.XX
+	ImGui_ImplOpenGL3_Init();
+
 
 	// this is a GLFW function that ties to the function we defined to process the given keyboard input
 	/*
@@ -109,6 +120,17 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	// while !glfwWindowShouldClose(window) means while glfw window is not closed, process source code inside loop
 	while (!glfwWindowShouldClose(glfw_window))
 	{
+
+		// glfw function that processes any events that happen within the glfw window; thus enabling our callback functions defined prior
+		glfwPollEvents();
+
+		// setup new IMGUI FRAME's with OpenGL, GLFW, and IMGUI
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		// TEMPORARY, SHOW DEMO WINDOW
+		ImGui::ShowDemoWindow();
+
 		// get current frame to calculate delta time with glfwGetTime(); this gets the current time since the window was open
 		float cFrame = glfwGetTime();
 
@@ -131,6 +153,10 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 
 
 		game.Render_Game();
+		
+		// render IMGUI window
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		/*
 			glfwSwapBuffers is a glfw function that swaps the front and back buffers of the glfw window specified
@@ -147,8 +173,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		*/
 		glfwSwapBuffers(glfw_window);
 
-		// glfw function that processes any events that happen within the glfw window; thus enabling our callback functions defined prior
-		glfwPollEvents();
+
 	}
 
 	RESOURCE_MANAGER::Clear_All_Resources();
