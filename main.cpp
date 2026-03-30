@@ -1,6 +1,6 @@
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include "imgui/imgui_impl_glfw.h"
+//#include "imgui/imgui.h"
+//#include "imgui/imgui_impl_opengl3.h"
+//#include "imgui/imgui_impl_glfw.h"
 
 #include <glad/glad.h> // include GLAD; a lib that loads the addresses of OpenGL function pointers
 #include <GLFW/glfw3.h> // include glfw3; a lib that ties OpenGL to a window and callback functions within a window
@@ -10,7 +10,7 @@
 
 #include "resource_manager.h"
 #include "logic_for_game.h"
-
+#include "IM_GUI_OBJ.h"
 
 
 // prototype call-back glfw functions; baically you can call these whatever you want and then tie them to actual GLFW lib callback-functions along with the GLFWwindow pointer variable you created
@@ -79,19 +79,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		return -1;
 	}
 
-	//inititalize IMGUI
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	// have IMGUI grab input output from user
-	ImGuiIO& im_gui_input_output = ImGui::GetIO();
-	// enable keyboard input by using |= compound assignment operator with related enumeration
-	im_gui_input_output.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-
-	// begin tying imgui to our glfw window object; 2nd parameter syncs GLFW callback functions
-	ImGui_ImplGlfw_InitForOpenGL(glfw_window, true); 
-	// initialize IMGUI with OpenGL version 3.XX
-	ImGui_ImplOpenGL3_Init();
-
+	IM_GUI_OBJ im_gui_win(glfw_window);
 
 	// this is a GLFW function that ties to the function we defined to process the given keyboard input
 	/*
@@ -129,8 +117,8 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		// TEMPORARY, SHOW DEMO WINDOW
-		ImGui::ShowDemoWindow();
-
+		//ImGui::ShowDemoWindow();
+		
 		// get current frame to calculate delta time with glfwGetTime(); this gets the current time since the window was open
 		float cFrame = glfwGetTime();
 
@@ -140,10 +128,6 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		// set the last frame variable as the same value as the current frame variable which will equal the float value of glfwGetTime
 		// think of it like your current frame will be the last frame within the render loop as the curret frame is always increasing in value/time
 		lFrame = cFrame;
-
-		//obj.Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 0.0f));
-
-
 
 		// render stuff
 		// glClearColor is an OpenGL function that changes our background/default color buffer to the set color within this function
@@ -157,6 +141,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		// render IMGUI window
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		
 
 		/*
 			glfwSwapBuffers is a glfw function that swaps the front and back buffers of the glfw window specified
@@ -177,11 +162,6 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	}
 
 	RESOURCE_MANAGER::Clear_All_Resources();
-
-	// Shutdown IMGUI Resources
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
 
 	// glfwTerminate is a glfw function that clears all windows and glfw relevant resouces
 	glfwTerminate();

@@ -1,6 +1,15 @@
 #ifndef LOGIC_FOR_GAME_HEADER
 #define LOGIC_FOR_GAME_HEADER
 
+#include "IM_GUI_OBJ.h"
+
+#include "logic_for_game.h"
+
+#include "resource_manager.h"
+
+#include "render_object.h"
+
+#include <iostream>
 
 // Game class that stores all game related states/functionality
 class GAME_OBJ

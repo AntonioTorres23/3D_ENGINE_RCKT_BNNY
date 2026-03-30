@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="cube_data.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="IM_GUI_OBJ.cpp" />
     <ClCompile Include="include\imgui\imgui.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
     <ClCompile Include="include\imgui\imgui_draw.cpp" />
@@ -169,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube_data.h" />
+    <ClInclude Include="IM_GUI_OBJ.h" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
     <ClInclude Include="include\imgui\imgui_impl_glfw.h" />

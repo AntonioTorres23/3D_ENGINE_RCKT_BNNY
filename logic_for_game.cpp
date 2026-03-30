@@ -1,10 +1,7 @@
 #include "logic_for_game.h"
 
-#include "resource_manager.h"
 
-#include "render_object.h"
-
-#include <iostream>
+float amount_of_fov = 60.0f; 
 
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
@@ -23,6 +20,8 @@ GAME_OBJ::~GAME_OBJ()
 
 void GAME_OBJ::Initalize_Game()
 {
+	
+
 	glm::mat4 view_matrix = glm::lookAt(glm::vec3(0.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 perspective_matrix = glm::perspective(glm::radians(90.0f), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
 
@@ -45,6 +44,10 @@ void GAME_OBJ::Initalize_Game()
 
 void GAME_OBJ::Render_Game()
 {
+	ImGui::Text("DEBUG");
+	ImGui::SliderFloat("FOV", &amount_of_fov, 60.0f, 120.0f);
+	glm::mat4 perspective_matrix = glm::perspective(glm::radians(amount_of_fov), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
+	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f));

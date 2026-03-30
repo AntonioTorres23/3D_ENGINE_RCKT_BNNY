@@ -75,6 +75,9 @@
     <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp">
       <Filter>Resource Files\IMGUI</Filter>
     </ClCompile>
+    <ClCompile Include="IM_GUI_OBJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_manager.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="include\imgui\imgui_impl_opengl3_loader.h">
       <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IM_GUI_OBJ.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
