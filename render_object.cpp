@@ -37,6 +37,7 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_obj
 
 	transformation_matrix = glm::rotate(transformation_matrix, glm::radians(rotation_degree_argument), glm::vec3(0.0f, 1.0f, 0.0f));
 
+
 	//glm::mat4 view_matrix = glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	//glm::mat4 perspective_matrix = glm::perspective(glm::radians(90.0f), (float)800 / (float)1000, 0.1f, 100.0f);
 
