@@ -162,6 +162,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="plane_data.cpp" />
     <ClCompile Include="prep_mesh.cpp" />
+    <ClCompile Include="process_cubemap_texture.cpp" />
     <ClCompile Include="process_shader.cpp" />
     <ClCompile Include="process_texture.cpp" />
     <ClCompile Include="render_object.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="load_model.h" />
     <ClInclude Include="plane_data.h" />
     <ClInclude Include="prep_mesh.h" />
+    <ClInclude Include="process_cubemap_texture.h" />
     <ClInclude Include="process_shader.h" />
     <ClInclude Include="process_texture.h" />
     <ClInclude Include="render_object.h" />

@@ -6,12 +6,15 @@
 
 #include <fstream> // include fstream to read external files and put them in a read buffer
 
+#include <filesystem> // include filesystem to find files in a certain directory
+
 #include "stb_image.h" // include stb_image.h to allow us to convert image formats (.jpg, .png, etc) into data that OpenGL can process into a texture
 
 // instantiate (aka create/define the stored mapped members within this c++ file) the static map member variables
 std::map<std::string, TEXTURE_2D_OBJ> RESOURCE_MANAGER::stored_textures;
 std::map<std::string, SHADER_OBJ>	  RESOURCE_MANAGER::stored_shaders;
 std::map<std::string, const char*> RESOURCE_MANAGER::stored_model_paths;
+std::map<std::string, std::vector<TEXTURE_2D_OBJ>> RESOURCE_MANAGER::stored_skybox_textures;
 
 /*
 NOTICE HOW WE'RE DEFINING THE FUNCTIONS THAT ARE STORED WITHIN THE RESOURCE_MANAGER CLASS, SO IN THE C++ FILE HERE WE'RE DEFINING THE ACTUAL SOURCE CODE
@@ -50,6 +53,22 @@ TEXTURE_2D_OBJ RESOURCE_MANAGER::Texture_Get(std::string texture_name)
 {
 	// in this function we are simply getting the map of the corresponding texture_name provided in the argument; this will also return the texture object that is mapped to the texture_name
 	return stored_textures[texture_name];
+}
+
+
+std::vector<TEXTURE_2D_OBJ> RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name)
+{
+	for (auto& sky_box_textures_file_path : std::filesystem::directory_iterator(skybox_textures_folder_path))
+	{
+		
+		std::string str_version_of_sky_box_textures_file_path = sky_box_textures_file_path.path().string();
+		
+	
+
+		TEXTURE_2D_OBJ single_sky_box_texture(Texutre_Load_From_Ext_File(str_version_of_sky_box_textures_file_path.c_str(),textures_contain_alpha_value));
+	
+		single_sky_box_texture.
+	}
 }
 
 // define our static Clear_All_Resources public function here

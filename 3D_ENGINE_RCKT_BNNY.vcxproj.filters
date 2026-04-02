@@ -78,6 +78,9 @@
     <ClCompile Include="IM_GUI_OBJ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="process_cubemap_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_manager.h">
@@ -138,6 +141,9 @@
       <Filter>Resource Files\IMGUI</Filter>
     </ClInclude>
     <ClInclude Include="IM_GUI_OBJ.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process_cubemap_texture.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
