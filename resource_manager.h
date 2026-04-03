@@ -10,6 +10,7 @@
 
 #include "process_texture.h" // include our process texture header file
 #include "process_shader.h"  // include our process shader header file
+#include "process_cubemap_texture.h" // include our process cubemap texture header file
 
 // resource_manager_obj class template
 /*
@@ -28,7 +29,7 @@ public: // all of our public data members/functions
 	// map our model paths to a string to store for future use
 	static std::map<std::string, const char*> stored_model_paths;
 	// map our skybox textures to a string to store for future use
-	static std::map<std::string, std::vector<TEXTURE_2D_OBJ>> stored_skybox_textures;
+	static std::map<std::string, std::vector<CUBEMAP_TEXTURE_OBJ>> stored_skybox_textures;
 
 	// static function that loads and generates a shader program from a file loading vertex, fragment, and or geometry shader's source code. If geometry shader is not a nullptr, load it as well
 	static SHADER_OBJ Shader_Load(const char *vertexShaderFilePath, const char *fragmentShaderFilePath, const char *geometryShaderFilePath, std::string shader_name);
@@ -39,7 +40,7 @@ public: // all of our public data members/functions
 	// get a texture that is already stored
 	static TEXTURE_2D_OBJ Texture_Get(std::string texture_name);
 
-	static std::vector<TEXTURE_2D_OBJ> Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name);
+	static std::vector<CUBEMAP_TEXTURE_OBJ> Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name);
 
 	// de-allocate all loaded resources
 	static void Clear_All_Resources();
@@ -50,7 +51,9 @@ private: // all of our private data members/functions
 	RESOURCE_MANAGER() {}
 	// loads and creates a shader from a file
 	static SHADER_OBJ Shader_Load_From_Ext_File(const char* vertexShaderFilePath, const char* fragmentShaderFilePath, const char* geometryShaderFilePath = nullptr);
-	// loads and creates a shader from a file
+	// loads and creates a texture from a file
 	static TEXTURE_2D_OBJ Texutre_Load_From_Ext_File(const char* textureFilePath, bool contains_alpha_value);
+	// loads and creates a cubemap texture from a file
+	static CUBEMAP_TEXTURE_OBJ Cubemap_Texture_Load_From_Ext_File(const char* textureFilePath, GLenum skyBoxTexturePos, bool contains_alpha_value);
 };
 #endif // !RESOURCE_MANAGER_HEADER

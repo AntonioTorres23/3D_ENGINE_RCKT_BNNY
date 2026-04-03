@@ -15,7 +15,7 @@ CUBEMAP_TEXTURE_OBJ::CUBEMAP_TEXTURE_OBJ() : width_of_texture(0), height_of_text
 }
 
 // define create_texture member function
-void CUBEMAP_TEXTURE_OBJ::Create_Texture(unsigned int texture_w, unsigned int texture_h, unsigned char* texture_data)
+void CUBEMAP_TEXTURE_OBJ::Create_Texture(unsigned int texture_w, unsigned int texture_h, unsigned char* texture_data, GLenum sky_box_texture_position)
 {
 	// set the related object data method dimensions equal to the values that are in the arguments
 	this->width_of_texture = texture_w;
@@ -23,8 +23,7 @@ void CUBEMAP_TEXTURE_OBJ::Create_Texture(unsigned int texture_w, unsigned int te
 
 	// create the texture with OpenGL functions
 	glBindTexture(GL_TEXTURE_CUBE_MAP, this->texture_ID);
-	for (int number_of_faces_in_cube_map = 0; number_of_faces_in_cube_map < 6; number_of_faces_in_cube_map++)
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + number_of_faces_in_cube_map, 0, this->texture_format_internally, texture_w, texture_h, 0, this->texture_format_loaded, GL_UNSIGNED_BYTE, texture_data);
+	glTexImage2D(sky_box_texture_position, 0, this->texture_format_internally, texture_w, texture_h, 0, this->texture_format_loaded, GL_UNSIGNED_BYTE, texture_data);
 	// set the texture parameters with OpenGL functions
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_CLAMP_TO_EDGE, this->texture_wrap_s);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_CLAMP_TO_EDGE, this->texture_wrap_t);

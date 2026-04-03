@@ -10,11 +10,12 @@
 
 #include "stb_image.h" // include stb_image.h to allow us to convert image formats (.jpg, .png, etc) into data that OpenGL can process into a texture
 
+
 // instantiate (aka create/define the stored mapped members within this c++ file) the static map member variables
 std::map<std::string, TEXTURE_2D_OBJ> RESOURCE_MANAGER::stored_textures;
 std::map<std::string, SHADER_OBJ>	  RESOURCE_MANAGER::stored_shaders;
 std::map<std::string, const char*> RESOURCE_MANAGER::stored_model_paths;
-std::map<std::string, std::vector<TEXTURE_2D_OBJ>> RESOURCE_MANAGER::stored_skybox_textures;
+std::map<std::string, std::vector<CUBEMAP_TEXTURE_OBJ>> RESOURCE_MANAGER::stored_skybox_textures;
 
 /*
 NOTICE HOW WE'RE DEFINING THE FUNCTIONS THAT ARE STORED WITHIN THE RESOURCE_MANAGER CLASS, SO IN THE C++ FILE HERE WE'RE DEFINING THE ACTUAL SOURCE CODE
@@ -56,19 +57,25 @@ TEXTURE_2D_OBJ RESOURCE_MANAGER::Texture_Get(std::string texture_name)
 }
 
 
-std::vector<TEXTURE_2D_OBJ> RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name)
+std::vector<CUBEMAP_TEXTURE_OBJ> RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name)
 {
+	std::vector<std::string> sky_box_textures_vector;
+
 	for (auto& sky_box_textures_file_path : std::filesystem::directory_iterator(skybox_textures_folder_path))
 	{
 		
 		std::string str_version_of_sky_box_textures_file_path = sky_box_textures_file_path.path().string();
 		
-	
-
-		TEXTURE_2D_OBJ single_sky_box_texture(Texutre_Load_From_Ext_File(str_version_of_sky_box_textures_file_path.c_str(),textures_contain_alpha_value));
-	
-		single_sky_box_texture.
+		sky_box_textures_vector.push_back(str_version_of_sky_box_textures_file_path);	
 	}
+
+	for (unsigned int face = 0; face < 6; face++)
+	{
+		stored_skybox_textures[skybox_textures_name].push_back(RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(sky_box_textures_vector[face].c_str(), sky_box_tex_positions[face], false));
+	
+	}
+
+	return stored_skybox_textures[skybox_textures_name];
 }
 
 // define our static Clear_All_Resources public function here
@@ -181,4 +188,31 @@ TEXTURE_2D_OBJ RESOURCE_MANAGER::Texutre_Load_From_Ext_File(const char *textureF
 
 	// return the texture_object_2D to send it to the mapped stored_textures member within the Texture_Load static member public function from prior
 	return texture_object_2D;
+}
+
+CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(const char* textureFilePath, GLenum skyBoxTexturePos, bool contains_alpha_value)
+{
+	// create a CUBEMAP_TEXTURE_OBJ
+	CUBEMAP_TEXTURE_OBJ cubemap_object_texture; 
+	// if the boolean argument contains_alpha_value is true, then the internal and loaded format of the image will be GL_RGBA
+	if (contains_alpha_value)
+	{
+		cubemap_object_texture.texture_format_internally = GL_RGBA; 
+		cubemap_object_texture.texture_format_loaded = GL_RGBA; 
+	}
+
+	// load the provided image within the textureFilePath
+	// create 3 integer variables that will store the image's width, height, and amount of color channels
+	int width_of_texture, height_of_texture, number_of_color_channels;
+	// create a unsigned char pointer variable that will store the converted image data via the stb_image function stbi_load()
+	// this will also grab the width, height, and number_of_color_channels inside of the stbi_load function as well and will fill these variables with the corresponding values given by the function
+	// this is why we use the addresses of our prior variables so that it can just use those preexisting variables and fill them with the data gathered from the function
+	unsigned char* texture_data = stbi_load(textureFilePath, &width_of_texture, &height_of_texture, &number_of_color_channels, 0);
+	// we now use the method function Create_Texture within the object to create a OpenGL compatible object with the provided arguments as well as the default member values that are stored in the CUBEMAP_TEXTURE_OBJ constructor initalizer list
+	cubemap_object_texture.Create_Texture(width_of_texture, height_of_texture, texture_data, skyBoxTexturePos);
+	// free the image data from stb_image to get ready for the next texture if there
+	stbi_image_free(texture_data);
+	
+	return cubemap_object_texture;
+
 }

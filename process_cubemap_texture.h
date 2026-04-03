@@ -3,6 +3,20 @@
 
 #include <glad/glad.h> // include glad for OpenGL pointer functions 
 
+#include <vector>
+
+/*
+enum SKY_BOX_TEXTURE_POSITIONS
+{
+	POS_X = GL_TEXTURE_CUBE_MAP_POSITIVE_X, NEG_X = GL_TEXTURE_CUBE_MAP_NEGATIVE_X, POS_Y = GL_TEXTURE_CUBE_MAP_POSITIVE_Y, NEG_Y = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, POS_Z = GL_TEXTURE_CUBE_MAP_POSITIVE_Z, NEG_Z = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+};
+*/
+
+std::vector<GLenum> static sky_box_tex_positions =
+{
+	GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_X, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, GL_TEXTURE_CUBE_MAP_POSITIVE_Z, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
+};
+
 //  can store and set parameters of a CUBEMAP Texture; Along with function for utility
 class CUBEMAP_TEXTURE_OBJ
 {
@@ -27,7 +41,7 @@ public: // where all publicly accessible methods/functions go
 	// constructor for this class/object which sets default texture modes
 	CUBEMAP_TEXTURE_OBJ();
 	// prototype function definition that generates a texture from the image data provided
-	void Create_Texture(unsigned int texture_w, unsigned int texture_h, unsigned char* texture_data);
+	void Create_Texture(unsigned int texture_w, unsigned int texture_h, unsigned char* texture_data, GLenum sky_box_texture_position);
 	// binds current texture as an active GL_TEXTURE_2D object
 	void Bind_Texture() const; // defined as a const function to deny it permission to change the values of data value member within the texture class
 };
