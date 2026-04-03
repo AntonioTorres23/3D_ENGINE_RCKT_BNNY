@@ -16,6 +16,9 @@
     <Filter Include="Resource Files\IMGUI">
       <UniqueIdentifier>{bd61976c-9116-4429-a7f1-30e787f58310}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{5df5f15b-9d64-4664-8f37-679b4585b9ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -79,6 +82,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="process_cubemap_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="skybox_cube_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -146,9 +155,25 @@
     <ClInclude Include="process_cubemap_texture.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="skybox_cube_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="3D_TEST.vert" />
-    <None Include="3D_TEST.frag" />
+    <None Include="3D_TEST.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="3D_TEST.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\skybox.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\skybox.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

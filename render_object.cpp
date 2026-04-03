@@ -65,11 +65,36 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_obj
 		glBindVertexArray(0);
 		break;
 
+	case SKYBOX:
+		glDrawArrays(GL_TRIANGLES, 0, amount_of_triangles_to_draw_skybox);
+		glBindVertexArray(0);
+		break;
+
 	default:
 		std::cout << "NOT A COMPATIBLE OBJECT" << std::endl;
 	}
 
 	
+}
+
+// CHANGE ON 1/14/2026 @ 4:30 PM, CHANGED PARAMTER/ARGUMENT OF RENDER_AND_DRAW_OBJECT METHOD FUNCTION FROM A TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGUMENT TO A CONST TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGGUMENT 
+void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& texture_object_argument)
+{
+	this->object_shader_obj.Activate();
+
+	glActiveTexture(GL_TEXTURE0);
+	texture_object_argument.Bind_Texture();
+	glBindVertexArray(this->object_vertex_array_obj);
+	switch (this->Type_Of_Object)
+	{
+	case SKYBOX:
+		glDrawArrays(GL_TRIANGLES, 0, amount_of_triangles_to_draw_skybox);
+		glBindVertexArray(0);
+		break;
+
+	default:
+		std::cout << "NOT A COMPATIBLE OBJECT" << std::endl;
+	}
 }
 
 
@@ -116,6 +141,22 @@ void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object)
 		glBindVertexArray(0);
 	
 		std::cout << "CUBE SETUP COMPLETE" << std::endl;
+
+		break;
+
+	case SKYBOX:
+		unsigned int skybox_cube_vertex_buffer_object;
+
+		glGenVertexArrays(1, &this->object_vertex_array_obj);
+		glGenBuffers(1, &skybox_cube_vertex_buffer_object);
+		glBindBuffer(GL_ARRAY_BUFFER, skybox_cube_vertex_buffer_object);
+		glBufferData(GL_ARRAY_BUFFER, size_of_skybox_vertex_data, &skybox_cube_vertex_data, GL_STATIC_DRAW);
+		glBindVertexArray(this->object_vertex_array_obj);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glBindVertexArray(0);
+
+		std::cout << "SKYBOX SETUP COMPLETE" << std::endl;
 
 		break;
 	

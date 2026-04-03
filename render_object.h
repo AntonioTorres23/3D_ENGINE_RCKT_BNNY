@@ -12,15 +12,19 @@
 // include our process_shader header file to use the SHADER_OBJ type within this function
 #include "process_shader.h"
 
+#include "process_cubemap_texture.h"
+
 #include "plane_data.h"
 
 #include "cube_data.h"
+
+#include "skybox_cube_data.h"
 
 #include <iostream>
 
 enum Object_Type
 {
-	MODEL, CUBE, PLANE
+	MODEL, CUBE, PLANE, SKYBOX
 };
 
 class RENDER_OBJECT_OBJ
@@ -44,7 +48,7 @@ class RENDER_OBJECT_OBJ
 
 		// CHANGE ON 1/14/2026 @ 4:30 PM, CHANGED PARAMTER/ARGUMENT OF RENDER_AND_DRAW_OBJECT METHOD FUNCTION FROM A TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGUMENT TO A CONST TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGGUMENT 
 		void Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_object_argument, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
-
+		void Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& texture_object_argument);
 
 	private: // all of our private data/function members
 		// private SHADER_OBJ data member

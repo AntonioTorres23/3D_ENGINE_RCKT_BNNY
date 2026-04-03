@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="cube_data.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.cpp" />
     <ClCompile Include="IM_GUI_OBJ.cpp" />
     <ClCompile Include="include\imgui\imgui.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
@@ -167,10 +168,12 @@
     <ClCompile Include="process_texture.cpp" />
     <ClCompile Include="render_object.cpp" />
     <ClCompile Include="resource_manager.cpp" />
+    <ClCompile Include="skybox_cube_data.cpp" />
     <ClCompile Include="stb_image_init.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cube_data.h" />
+    <ClInclude Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.h" />
     <ClInclude Include="IM_GUI_OBJ.h" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
@@ -190,11 +193,14 @@
     <ClInclude Include="process_texture.h" />
     <ClInclude Include="render_object.h" />
     <ClInclude Include="resource_manager.h" />
+    <ClInclude Include="skybox_cube_data.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="3D_TEST.frag" />
     <None Include="3D_TEST.vert" />
+    <None Include="shaders\skybox.frag" />
+    <None Include="shaders\skybox.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

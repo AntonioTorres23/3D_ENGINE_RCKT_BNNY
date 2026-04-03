@@ -1,9 +1,11 @@
 #ifndef PROCESS_CUBEMAP_TEXTURE_HEADER
-#define PROCESS_CUBEMMAP_TEXTURE_HEADER
+#define PROCESS_CUBEMAP_TEXTURE_HEADER
 
 #include <glad/glad.h> // include glad for OpenGL pointer functions 
 
 #include <vector>
+
+#include "GLENUM_CUBEMAP_TEXTURE_POSITIONS.h"
 
 /*
 enum SKY_BOX_TEXTURE_POSITIONS
@@ -12,10 +14,12 @@ enum SKY_BOX_TEXTURE_POSITIONS
 };
 */
 
-std::vector<GLenum> static sky_box_tex_positions =
+/*
+std::vector<GLenum> extern sky_box_tex_positions =
 {
 	GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_X, GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, GL_TEXTURE_CUBE_MAP_POSITIVE_Z, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 };
+*/
 
 //  can store and set parameters of a CUBEMAP Texture; Along with function for utility
 class CUBEMAP_TEXTURE_OBJ

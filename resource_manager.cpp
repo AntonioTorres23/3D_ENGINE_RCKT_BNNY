@@ -15,7 +15,7 @@
 std::map<std::string, TEXTURE_2D_OBJ> RESOURCE_MANAGER::stored_textures;
 std::map<std::string, SHADER_OBJ>	  RESOURCE_MANAGER::stored_shaders;
 std::map<std::string, const char*> RESOURCE_MANAGER::stored_model_paths;
-std::map<std::string, std::vector<CUBEMAP_TEXTURE_OBJ>> RESOURCE_MANAGER::stored_skybox_textures;
+std::map<std::string, CUBEMAP_TEXTURE_OBJ> RESOURCE_MANAGER::stored_skybox_textures;
 
 /*
 NOTICE HOW WE'RE DEFINING THE FUNCTIONS THAT ARE STORED WITHIN THE RESOURCE_MANAGER CLASS, SO IN THE C++ FILE HERE WE'RE DEFINING THE ACTUAL SOURCE CODE
@@ -57,7 +57,7 @@ TEXTURE_2D_OBJ RESOURCE_MANAGER::Texture_Get(std::string texture_name)
 }
 
 
-std::vector<CUBEMAP_TEXTURE_OBJ> RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name)
+CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name)
 {
 	std::vector<std::string> sky_box_textures_vector;
 
@@ -66,17 +66,27 @@ std::vector<CUBEMAP_TEXTURE_OBJ> RESOURCE_MANAGER::Skybox_Textures_Load(const ch
 		
 		std::string str_version_of_sky_box_textures_file_path = sky_box_textures_file_path.path().string();
 		
-		sky_box_textures_vector.push_back(str_version_of_sky_box_textures_file_path);	
+		sky_box_textures_vector.push_back(str_version_of_sky_box_textures_file_path);
+
+		std::cout << str_version_of_sky_box_textures_file_path << std::endl;
 	}
 
 	for (unsigned int face = 0; face < 6; face++)
 	{
-		stored_skybox_textures[skybox_textures_name].push_back(RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(sky_box_textures_vector[face].c_str(), sky_box_tex_positions[face], false));
+		stored_skybox_textures[skybox_textures_name] = RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(sky_box_textures_vector[face].c_str(), sky_box_tex_positions[face], false);
 	
 	}
 
 	return stored_skybox_textures[skybox_textures_name];
 }
+
+
+CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Skybox_Textures_Get(std::string skybox_texture_name)
+{
+	return stored_skybox_textures[skybox_texture_name];
+}
+
+
 
 // define our static Clear_All_Resources public function here
 void RESOURCE_MANAGER::Clear_All_Resources()
