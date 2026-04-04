@@ -35,8 +35,8 @@ void GAME_OBJ::Initalize_Game()
 	RESOURCE_MANAGER::Shader_Load("shaders/skybox.vert", "shaders/skybox.frag", nullptr, "skybox_test");
 
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Stone_01-128x128.png", false, "texture");
-
-	RESOURCE_MANAGER::Skybox_Textures_Load("assets\\Classic", false, "skybox");
+	RESOURCE_MANAGER::Texture_Load("assets/PTP-Tile_05-128x128.png", false, "texture_2");
+	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Classic", false, "skybox");
 
 	RESOURCE_MANAGER::Shader_Get("test").Activate().uniform_integer("texture_image", 0);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("view_matrix", view_matrix);
@@ -99,6 +99,6 @@ void GAME_OBJ::Render_Game()
 
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
-	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f));
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f));
 
 }
