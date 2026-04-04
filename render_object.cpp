@@ -144,7 +144,7 @@ void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object)
 
 		break;
 
-	case SKYBOX:
+	case SKYBOX:		
 		unsigned int skybox_cube_vertex_buffer_object;
 
 		glGenVertexArrays(1, &this->object_vertex_array_obj);
