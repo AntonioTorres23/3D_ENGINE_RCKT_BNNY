@@ -59,6 +59,10 @@ TEXTURE_2D_OBJ RESOURCE_MANAGER::Texture_Get(std::string texture_name)
 
 CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name)
 {
+
+	CUBEMAP_TEXTURE_OBJ cubemap_object_texture;
+
+
 	std::vector<std::string> sky_box_textures_vector;
 
 	for (auto& sky_box_textures_file_path : std::filesystem::directory_iterator(skybox_textures_folder_path))
@@ -69,12 +73,15 @@ CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_te
 		sky_box_textures_vector.push_back(str_version_of_sky_box_textures_file_path);
 
 		std::cout << str_version_of_sky_box_textures_file_path << std::endl;
+
 	}
 
 	for (unsigned int face = 0; face < 6; face++)
 	{
-		stored_skybox_textures[skybox_textures_name] = RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(sky_box_textures_vector[face].c_str(), sky_box_tex_positions[face], false);
-	
+		stored_skybox_textures[skybox_textures_name] = RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(sky_box_textures_vector[face].c_str(), sky_box_tex_positions[face], cubemap_object_texture, textures_contain_alpha_value);
+		
+		std::cout << sky_box_tex_positions[face] << std::endl; 
+
 	}
 
 	return stored_skybox_textures[skybox_textures_name];
@@ -83,6 +90,7 @@ CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_te
 
 CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Skybox_Textures_Get(std::string skybox_texture_name)
 {
+
 	return stored_skybox_textures[skybox_texture_name];
 }
 
@@ -200,15 +208,18 @@ TEXTURE_2D_OBJ RESOURCE_MANAGER::Texutre_Load_From_Ext_File(const char *textureF
 	return texture_object_2D;
 }
 
-CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(const char* textureFilePath, GLenum skyBoxTexturePos, bool contains_alpha_value)
+CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(const char* textureFilePath, GLenum skyBoxTexturePos, CUBEMAP_TEXTURE_OBJ cubemap_obj_arg, bool contains_alpha_value)
 {
 	// create a CUBEMAP_TEXTURE_OBJ
-	CUBEMAP_TEXTURE_OBJ cubemap_object_texture; 
+	//CUBEMAP_TEXTURE_OBJ cubemap_object_texture; 
 	// if the boolean argument contains_alpha_value is true, then the internal and loaded format of the image will be GL_RGBA
 	if (contains_alpha_value)
 	{
-		cubemap_object_texture.texture_format_internally = GL_RGBA; 
-		cubemap_object_texture.texture_format_loaded = GL_RGBA; 
+		//cubemap_object_texture.texture_format_internally = GL_RGBA; 
+		//cubemap_object_texture.texture_format_loaded = GL_RGBA; 
+	
+		cubemap_obj_arg.texture_format_internally = GL_RGBA; 
+		cubemap_obj_arg.texture_format_internally = GL_RGBA;
 	}
 
 	// load the provided image within the textureFilePath
@@ -219,10 +230,11 @@ CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(const c
 	// this is why we use the addresses of our prior variables so that it can just use those preexisting variables and fill them with the data gathered from the function
 	unsigned char* texture_data = stbi_load(textureFilePath, &width_of_texture, &height_of_texture, &number_of_color_channels, 0);
 	// we now use the method function Create_Texture within the object to create a OpenGL compatible object with the provided arguments as well as the default member values that are stored in the CUBEMAP_TEXTURE_OBJ constructor initalizer list
-	cubemap_object_texture.Create_Texture(width_of_texture, height_of_texture, texture_data, skyBoxTexturePos);
+	//cubemap_object_texture.Create_Texture(width_of_texture, height_of_texture, texture_data, skyBoxTexturePos);
+	cubemap_obj_arg.Create_Texture(width_of_texture, height_of_texture, texture_data, skyBoxTexturePos);
 	// free the image data from stb_image to get ready for the next texture if there
 	stbi_image_free(texture_data);
 	
-	return cubemap_object_texture;
-
+	//return cubemap_object_texture;
+	return cubemap_obj_arg;
 }

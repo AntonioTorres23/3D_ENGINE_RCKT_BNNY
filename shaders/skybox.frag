@@ -10,4 +10,5 @@ void main()
 {
 	skybox = texture(skybox_texture, SBC);
 	
+	//skybox = vec4(1.0, 1.0, 0.0, 1.0);
 }

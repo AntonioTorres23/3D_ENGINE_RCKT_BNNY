@@ -56,6 +56,8 @@ private: // all of our private data members/functions
 	// loads and creates a texture from a file
 	static TEXTURE_2D_OBJ Texutre_Load_From_Ext_File(const char* textureFilePath, bool contains_alpha_value);
 	// loads and creates a cubemap texture from a file
-	static CUBEMAP_TEXTURE_OBJ Cubemap_Texture_Load_From_Ext_File(const char* textureFilePath, GLenum skyBoxTexturePos, bool contains_alpha_value);
+	//static CUBEMAP_TEXTURE_OBJ Cubemap_Texture_Load_From_Ext_File(const char* textureFilePath, GLenum skyBoxTexturePos, bool contains_alpha_value);
+	static CUBEMAP_TEXTURE_OBJ Cubemap_Texture_Load_From_Ext_File(const char* textureFilePath, GLenum skyBoxTexturePos, CUBEMAP_TEXTURE_OBJ cubemap_obj_arg, bool contains_alpha_value);
+
 };
 #endif // !RESOURCE_MANAGER_HEADER
