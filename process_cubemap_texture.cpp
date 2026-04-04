@@ -27,7 +27,7 @@ void CUBEMAP_TEXTURE_OBJ::Create_Texture(unsigned int texture_w, unsigned int te
 	// set the texture parameters with OpenGL functions
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_CLAMP_TO_EDGE, this->texture_wrap_s);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_CLAMP_TO_EDGE, this->texture_wrap_t);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_CLAMP_TO_EDGE, this->texture_wrap_t);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_CLAMP_TO_EDGE, this->texture_wrap_r);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, this->texture_min_filter);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, this->texture_mag_filter);
 	// unbind texture once done creating texture

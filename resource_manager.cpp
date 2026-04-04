@@ -76,6 +76,7 @@ CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Skybox_Textures_Load(const char* skybox_te
 
 	}
 
+
 	for (unsigned int face = 0; face < 6; face++)
 	{
 		stored_skybox_textures[skybox_textures_name] = RESOURCE_MANAGER::Cubemap_Texture_Load_From_Ext_File(sky_box_textures_vector[face].c_str(), sky_box_tex_positions[face], cubemap_object_texture, textures_contain_alpha_value);
