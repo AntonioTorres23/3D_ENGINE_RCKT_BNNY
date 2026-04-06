@@ -34,7 +34,7 @@ void GAME_OBJ::Initalize_Game()
 	RESOURCE_MANAGER::Shader_Load("shaders/3D_TEST.vert", "shaders/3D_TEST.frag", nullptr, "test");
 	RESOURCE_MANAGER::Shader_Load("shaders/skybox.vert", "shaders/skybox.frag", nullptr, "skybox_test");
 
-	RESOURCE_MANAGER::Texture_Load("assets/PTP-Stone_01-128x128.png", false, "texture");
+	RESOURCE_MANAGER::Texture_Load("assets/PTP-Pattern_03-128x128.png", false, "texture");
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Tile_05-128x128.png", false, "texture_2");
 	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Classic", false, "skybox");
 
