@@ -199,6 +199,8 @@
   <ItemGroup>
     <None Include="3D_TEST.frag" />
     <None Include="3D_TEST.vert" />
+    <None Include="shaders\3D_TEST.frag" />
+    <None Include="shaders\3D_TEST.vert" />
     <None Include="shaders\skybox.frag" />
     <None Include="shaders\skybox.vert" />
   </ItemGroup>

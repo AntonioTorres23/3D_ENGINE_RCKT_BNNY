@@ -6,7 +6,7 @@ out vec3 SBC;
 // we don't use the transformation matrix becuase the local positional coordinates are at the furthest points 1.0 and -1.0
 // the coordinates should stay within the origin position of (0,0,0), as well as we want the skybox to appear constantly far away
 
-uniform mat4 view_matrix;
+uniform mat4 skybox_view_matrix;
 
 uniform mat4 perspective_matrix;
 
@@ -15,7 +15,7 @@ void main()
 	SBC = skybox_local_positional_coordiantes;
 
 	// store output data in seperate 4 coordinate vector
-	vec4 vert_out = perspective_matrix * view_matrix * vec4(skybox_local_positional_coordiantes, 1.0);
+	vec4 vert_out = perspective_matrix * skybox_view_matrix * vec4(skybox_local_positional_coordiantes, 1.0);
 
 	// use gl_Position as our output since its built in by OpenGL to do perspective division as well as other things
 	// we use the homogenous w coordinate as our z coordinate becuase gl_Position does perspective division with the z and w coordinate

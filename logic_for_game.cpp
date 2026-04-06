@@ -81,9 +81,6 @@ void GAME_OBJ::Render_Game()
 	// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
 	glm::mat4 skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
 
-	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("view_matrix", skybox_view_matrix);
-	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
-
 	// render skybox FIRST
 
 	// enable depth function so that it passes vertices that are equal to depth buffer's content
@@ -96,9 +93,14 @@ void GAME_OBJ::Render_Game()
 	// set depth func back to original state which is GL_LESS
 	glDepthFunc(GL_LESS);
 
-
+	// PUT SKYBOX MATRICES HERE
+	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("skybox_view_matrix", skybox_view_matrix);
+	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
+	
+	
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f));
-
+	
+	
 }
