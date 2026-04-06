@@ -35,7 +35,9 @@ void GAME_OBJ::Initalize_Game()
 	RESOURCE_MANAGER::Shader_Load("shaders/skybox.vert", "shaders/skybox.frag", nullptr, "skybox_test");
 
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Pattern_03-128x128.png", false, "texture");
-	RESOURCE_MANAGER::Texture_Load("assets/PTP-Tile_05-128x128.png", false, "texture_2");
+	//RESOURCE_MANAGER::Texture_Load("assets/PTP-Tile_05-128x128.png", false, "texture_2");
+	RESOURCE_MANAGER::Texture_Load("assets/arcade_carpet_2_512.png", false, "texture_2");
+	
 	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Classic", false, "skybox");
 	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Empty_Space", false, "skybox_2");
 
@@ -61,7 +63,6 @@ void GAME_OBJ::Initalize_Game()
 
 void GAME_OBJ::Render_Game()
 {
-
 
 
 	ImGui::Text("DEBUG");

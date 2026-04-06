@@ -80,6 +80,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	}
 
 	IM_GUI_OBJ im_gui_win(glfw_window);
+	ImGuiIO& im_gui_input_output = ImGui::GetIO();
 
 	// this is a GLFW function that ties to the function we defined to process the given keyboard input
 	/*
@@ -118,7 +119,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		ImGui::NewFrame();
 		// TEMPORARY, SHOW DEMO WINDOW
 		//ImGui::ShowDemoWindow();
-		
+		ImGui::Text("FPS %.1f", im_gui_input_output.Framerate);
 		// get current frame to calculate delta time with glfwGetTime(); this gets the current time since the window was open
 		float cFrame = glfwGetTime();
 
