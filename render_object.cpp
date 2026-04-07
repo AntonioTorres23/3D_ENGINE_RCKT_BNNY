@@ -37,12 +37,20 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_obj
 
 	transformation_matrix = glm::rotate(transformation_matrix, glm::radians(rotation_degree_argument), glm::vec3(0.0f, 1.0f, 0.0f));
 
+	// GLM MAT3 MATRIX THAT IS FOR THE NORMAL COORDINATES WHICH IS THE INVERSED TRANSPOSED MATRIX OF OUR TRANSFORMATION MATRIX
+	// WE MAKE IT A 3X3 TO LOSE ITS TRANSLATION PROPERTIES
+	glm::mat3 normal_coordinates_transformation_matrix = glm::mat3(1.0f);
+
+	normal_coordinates_transformation_matrix = glm::transpose(glm::inverse(transformation_matrix));
+
 
 	//glm::mat4 view_matrix = glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	//glm::mat4 perspective_matrix = glm::perspective(glm::radians(90.0f), (float)800 / (float)1000, 0.1f, 100.0f);
 
 
 	object_shader_obj.uniform_matrix_4("transformation_matrix", transformation_matrix);
+
+	object_shader_obj.uniform_matrix_3("normal_coordinates_transformation_matrix", normal_coordinates_transformation_matrix);
 
 	//object_shader_obj.uniform_matrix_4("view_matrix", view_matrix);
 

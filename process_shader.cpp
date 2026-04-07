@@ -173,7 +173,7 @@ void	SHADER_OBJ::uniform_vector_4(const char* uniform_variable_name, float x_coo
 	glUniform4f(glGetUniformLocation(this->Shader_ID, uniform_variable_name), x_coordinate, y_coordinate, z_coordinate, w_coordinate);
 }
 // define our uniform matrix 4 function
-// set vector as constant to prevent address of matrix from changing within function
+// set matrix as constant to prevent address of matrix from changing within function
 void	SHADER_OBJ::uniform_matrix_4(const char* uniform_variable_name, const glm::mat4& uniform_value, bool activateShader)
 {
 	// if activateShader is true, activate the shader program by using our member function
@@ -183,6 +183,19 @@ void	SHADER_OBJ::uniform_matrix_4(const char* uniform_variable_name, const glm::
 	}
 	// look up the name of the uniform in the shader program that was provided and set the corresponding value specified in the arguments
 	glUniformMatrix4fv(glGetUniformLocation(this->Shader_ID, uniform_variable_name), 1, false, glm::value_ptr(uniform_value));
+}
+
+// define our uniform matrix 3 function
+// set matrix as constant to prevent address of matrix from changing within function
+void	SHADER_OBJ::uniform_matrix_3(const char* uniform_variable_name, const glm::mat3& uniform_value, bool activateShader)
+{
+	// if activateShader is true, activate the shader program by using our member function
+	if (activateShader)
+	{
+		this->Activate();
+	}
+	// look up the name of the uniform in the shader program that was provided and set the corresponding value specified in the arguments
+	glUniformMatrix3fv(glGetUniformLocation(this->Shader_ID, uniform_variable_name), 1, false, glm::value_ptr(uniform_value));
 }
 
 // define our validate shader errors private function

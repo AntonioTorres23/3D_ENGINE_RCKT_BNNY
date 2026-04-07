@@ -38,8 +38,10 @@ public: // all public members/functions
 	void	uniform_vector_4(const char* uniform_variable_name, const glm::vec4& uniform_value, bool activateShader = false);
 	// overloaded function if user wants to use singular float values for vector coordinates instead of a glm vector value
 	void	uniform_vector_4(const char* uniform_variable_name, float x_coordinate, float y_coordinate, float z_coordinate, float w_coordinate, bool activateShader = false);
-	// set vector as constant to prevent address of matrix from changing within function
+	// set matrix as constant to prevent address of matrix from changing within function
 	void	uniform_matrix_4(const char* uniform_variable_name, const glm::mat4& uniform_value, bool activateShader = false);
+	// set matrix as constant to prevent address of matrix from changing within function
+	void	uniform_matrix_3(const char* uniform_variable_name, const glm::mat3& uniform_value, bool activateShader = false);
 
 private: // all private members/functions that aren't accessible outside of the class
 	
