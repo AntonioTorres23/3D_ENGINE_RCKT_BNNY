@@ -158,6 +158,7 @@
     <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="LIGHTING_UNIFORMS.cpp" />
     <ClCompile Include="load_model.cpp" />
     <ClCompile Include="logic_for_game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="LIGHTING_UNIFORMS.h" />
     <ClInclude Include="logic_for_game.h" />
     <ClInclude Include="load_model.h" />
     <ClInclude Include="plane_data.h" />

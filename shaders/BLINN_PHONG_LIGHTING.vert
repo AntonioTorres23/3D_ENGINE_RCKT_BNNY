@@ -1,8 +1,8 @@
 #version 330 core
 
 layout (location = 0) in vec3 local_coordinates; 
-layout (location = 1) in vec2 texture_coordiantes; 
-layout (location = 2) in vec3 raw_normal_coordinates;
+layout (location = 1) in vec3 raw_normal_coordinates;
+layout (location = 2) in vec2 texture_coordiantes; 
 
 out vec2 tex_coords;
 out vec3 position_of_model_fragments;

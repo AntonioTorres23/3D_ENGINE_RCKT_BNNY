@@ -25,6 +25,9 @@ out vec4 color_output;
 
 uniform sampler2D texture_image;
 uniform vec3 camera_world_position;
+uniform DirectionalLighting directional_lighting_obj;
+
+vec3 DirectionalLightingCalculations (DirectionalLighting direction_lighting_arg, vec3 normal_coordinates_arg, vec3 pos_of_camera_arg);
 
 void main()
 {
@@ -32,10 +35,10 @@ void main()
 
 	vec3 normalized_direction_of_camera_from_the_model = normalize(camera_world_position - position_of_model_fragments);
 
-
+	vec3 lighting_calculations = DirectionalLightingCalculations(directional_lighting_obj, normalized_normal_coordiantes, normalized_direction_of_camera_from_the_model);
 	
-	vec3 tex = texture(texture_image, tex_coords).rgb;
-	color_output = vec4(tex, 1.0);
+	//vec3 tex = texture(texture_image, tex_coords).rgb;
+	color_output = vec4(lighting_calculations, 1.0);
 }
 
 

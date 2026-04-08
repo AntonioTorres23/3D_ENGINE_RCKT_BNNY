@@ -90,6 +90,9 @@
     <ClCompile Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LIGHTING_UNIFORMS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_manager.h">
@@ -159,6 +162,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LIGHTING_UNIFORMS.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,6 +9,9 @@ RENDER_OBJECT_OBJ *render_obj;
 RENDER_OBJECT_OBJ *render_obj_plane;
 RENDER_OBJECT_OBJ *skybox_obj;
 
+LIGHTING_UNIFORMS *test;
+
+
 GAME_OBJ::GAME_OBJ(unsigned int width_of_window, unsigned int height_of_window)
 	: Width_Of_Screen(width_of_window), Height_Of_Screen(height_of_window)
 {
@@ -31,7 +34,8 @@ void GAME_OBJ::Initalize_Game()
 	// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
 	glm::mat4 skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
 
-	RESOURCE_MANAGER::Shader_Load("shaders/3D_TEST.vert", "shaders/3D_TEST.frag", nullptr, "test");
+	//RESOURCE_MANAGER::Shader_Load("shaders/3D_TEST.vert", "shaders/3D_TEST.frag", nullptr, "test");
+	RESOURCE_MANAGER::Shader_Load("shaders/BLINN_PHONG_LIGHTING.vert", "shaders/BLINN_PHONG_LIGHTING.frag", nullptr, "test");
 	RESOURCE_MANAGER::Shader_Load("shaders/skybox.vert", "shaders/skybox.frag", nullptr, "skybox_test");
 
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Pattern_03-128x128.png", false, "texture");
@@ -58,6 +62,9 @@ void GAME_OBJ::Initalize_Game()
 	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), CUBE);
 	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
 	skybox_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("skybox_test"), SKYBOX);
+
+	test = new LIGHTING_UNIFORMS(RESOURCE_MANAGER::Shader_Get("test"));
+
 }
 
 
@@ -100,7 +107,10 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("skybox_view_matrix", skybox_view_matrix);
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 	
+	("directional_lighting_obj", RESOURCE_MANAGER::Shader_Get("test"));
 	
+	test->Configure_Directional_Lighting("directional_lighting_obj", world_position_of_camera);
+
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(5.0f));

@@ -9,6 +9,8 @@
 
 #include "render_object.h"
 
+#include "LIGHTING_UNIFORMS.h"
+
 #include <iostream>
 
 // Game class that stores all game related states/functionality
