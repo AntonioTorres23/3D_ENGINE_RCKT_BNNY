@@ -57,11 +57,11 @@ vec3 DirectionalLightingCalculations (DirectionalLighting direction_lighting_arg
 	// we only need the position of the camera and the direction of reflection since there is no "distance" between the light pos and the model/obj(s)
 	float specular_lighting = pow(max(dot(pos_of_camera_arg, halfway_direction), 0.0), 32);
 
-	vec3 ambient_return = direction_lighting_arg.ambient_color * vec3(texture(texture_image, tex_coords));
+	vec3 ambient_return = direction_lighting_arg.ambient_color * vec3(texture(texture_image, tex_coords).rgb);
 
-	vec3 diffuse_return = direction_lighting_arg.diffuse_color * diffuse_lighting * vec3(texture(texture_image, tex_coords));
+	vec3 diffuse_return = direction_lighting_arg.diffuse_color * diffuse_lighting * vec3(texture(texture_image, tex_coords).rgb);
 
-	vec3 specular_return = direction_lighting_arg.specular_color * specular_lighting * vec3(texture(texture_image, tex_coords));
+	vec3 specular_return = direction_lighting_arg.specular_color * specular_lighting * vec3(texture(texture_image, tex_coords).rgb);
 
 	//return (ambient_lighting + diffuse_lighting + specular_lighting);
 	return (ambient_return + diffuse_return + specular_return);
