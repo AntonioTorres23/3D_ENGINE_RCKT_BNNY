@@ -3,8 +3,21 @@
 
 float amount_of_fov = 60.0f; 
 
-glm::vec3 world_position_of_camera(0.0f, 0.0f, -8.0f);
+glm::vec3 world_position_of_camera(0.0f, 0.0f, 8.0f);
 glm::vec3 directional_lighting_facing_direction(-0.2f, -5.0f, -0.3f);
+
+float a[3] =
+{
+	0.0f, 0.0f, 0.0f
+};
+
+float b[3]
+{
+	0.0f, 0.0f, 0.0f
+};
+
+
+
 
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
@@ -55,11 +68,6 @@ void GAME_OBJ::Initalize_Game()
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("view_matrix", skybox_view_matrix);
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 
-
-	// WORKS
-	//render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
-
-	// IN TESTING
 	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), CUBE);
 	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
 	skybox_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("skybox_test"), SKYBOX);
@@ -75,6 +83,7 @@ void GAME_OBJ::Render_Game()
 
 	ImGui::Text("DEBUG");
 
+	ImGui::Text("World View Settings");
 
 	ImGui::SliderFloat("FOV", &amount_of_fov, 60.0f, 120.0f);
 
@@ -83,10 +92,16 @@ void GAME_OBJ::Render_Game()
 	ImGui::SliderFloat("World Y Position", &world_position_of_camera.y, -20.0f, 20.0f);
 	ImGui::SliderFloat("World Z Position", &world_position_of_camera.z, -20.0f, 20.0f);
 
+
+	ImGui::Text("Lighting Settings");
+
 	ImGui::SliderFloat("Light X Direction", &directional_lighting_facing_direction.x, -30.0f, -0.5f);
 	ImGui::SliderFloat("Light Y Direction", &directional_lighting_facing_direction.y, -30.0f, -0.5f);
 	ImGui::SliderFloat("Light Z Direction", &directional_lighting_facing_direction.z, -30.0f, -0.5f);
 
+	//ImGui::SliderFloat3("test", a, 0.0f, 1.0f);
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::ColorPicker3("Ambient Color", b);
 
 	glm::mat4 perspective_matrix = glm::perspective(glm::radians(amount_of_fov), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("perspective_matrix", perspective_matrix);
@@ -99,8 +114,9 @@ void GAME_OBJ::Render_Game()
 	
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("camera_world_position", world_position_of_camera);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.light_direction", directional_lighting_facing_direction);
-	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.ambient_color", glm::vec3(0.2f, 0.2f, 0.2f));
-	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.diffuse_color", glm::vec3(0.5f, 0.5f, 0.5f));
+	//RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.ambient_color", glm::vec3(0.5f, 0.5f, 0.f));
+	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.ambient_color", b[0], b[1], b[2]);
+	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.diffuse_color", glm::vec3(0.7f, 0.7f, 0.7f));
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.specular_color", glm::vec3(1.0f, 1.0f, 1.0f));
 	
 
