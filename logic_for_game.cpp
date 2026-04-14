@@ -3,19 +3,23 @@
 
 float amount_of_fov = 60.0f; 
 
-glm::vec3 world_position_of_camera(0.0f, 0.0f, 8.0f);
+glm::vec3 world_position_of_camera(0.0f, 0.0f, 15.0f);
 glm::vec3 directional_lighting_facing_direction(-0.2f, -5.0f, -0.3f);
 
-float a[3] =
+float ambient_color_values[3] =
 {
-	0.0f, 0.0f, 0.0f
+	0.3f, 0.3f, 0.3f
 };
 
-float b[3]
+float diffuse_color_values[3]
 {
-	0.0f, 0.0f, 0.0f
+	0.6f, 0.6f, 0.6f
 };
 
+float specular_color_values[3]
+{
+	1.0f, 1.0f, 1.0f
+};
 
 
 
@@ -99,9 +103,15 @@ void GAME_OBJ::Render_Game()
 	ImGui::SliderFloat("Light Y Direction", &directional_lighting_facing_direction.y, -30.0f, -0.5f);
 	ImGui::SliderFloat("Light Z Direction", &directional_lighting_facing_direction.z, -30.0f, -0.5f);
 
+	// To store color picker values, you need a 3-value float array
+
 	//ImGui::SliderFloat3("test", a, 0.0f, 1.0f);
 	ImGui::SetNextItemWidth(200.0f);
-	ImGui::ColorPicker3("Ambient Color", b);
+	ImGui::ColorPicker3("Ambient Color", ambient_color_values);
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::ColorPicker3("Diffuse Color", diffuse_color_values);
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::ColorPicker3("Specular Color", specular_color_values);
 
 	glm::mat4 perspective_matrix = glm::perspective(glm::radians(amount_of_fov), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("perspective_matrix", perspective_matrix);
@@ -115,9 +125,11 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("camera_world_position", world_position_of_camera);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.light_direction", directional_lighting_facing_direction);
 	//RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.ambient_color", glm::vec3(0.5f, 0.5f, 0.f));
-	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.ambient_color", b[0], b[1], b[2]);
-	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.diffuse_color", glm::vec3(0.7f, 0.7f, 0.7f));
-	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.specular_color", glm::vec3(1.0f, 1.0f, 1.0f));
+	// you must specify the index of the color picker array individually to send the values via a uniform
+	// remember that within the uniform vector member functions within a SHADER_OBJ they are overloaded to either take a glm vector or individual x, y, or z float values
+	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.ambient_color", ambient_color_values[0], ambient_color_values[1], ambient_color_values[2]);
+	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.diffuse_color", diffuse_color_values[0], diffuse_color_values[1], diffuse_color_values[2]);
+	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.specular_color", specular_color_values[0], specular_color_values[1], specular_color_values[2]);
 	
 
 	// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
