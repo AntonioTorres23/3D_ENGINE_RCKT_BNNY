@@ -48,13 +48,13 @@ vec3 DirectionalLightingCalculations (DirectionalLighting direction_lighting_arg
 	vec3 light_direction = normalize(-direction_lighting_arg.light_direction);
 
 	// calculations for diffuse_lighting
-	float diffuse_lighting = max(dot(normal_coordinates_arg, light_direction), 0.0);
+	float diffuse_lighting = max(dot(light_direction, normal_coordinates_arg), 0.0);
 
 	// halfway direction between camera_world_position and light_direction for specular_lighting
 	vec3 halfway_direction = normalize(light_direction + pos_of_camera_arg);
 	
 	// we only need the position of the camera and the direction of reflection since there is no "distance" between the light pos and the model/obj(s)
-	float specular_lighting = pow(max(dot(pos_of_camera_arg, halfway_direction), 0.0), 64);
+	float specular_lighting = pow(max(dot(normal_coordinates_arg, halfway_direction), 0.0), 32);
 
 	vec3 ambient_return = direction_lighting_arg.ambient_color * vec3(texture(texture_image, tex_coords).rgb);
 
