@@ -203,6 +203,8 @@
     <None Include="shaders\3D_TEST.vert" />
     <None Include="shaders\BLINN_PHONG_LIGHTING.frag" />
     <None Include="shaders\BLINN_PHONG_LIGHTING.vert" />
+    <None Include="shaders\GOURAND_LIGHTING.frag" />
+    <None Include="shaders\GOURAND_LIGHTING.vert" />
     <None Include="shaders\skybox.frag" />
     <None Include="shaders\skybox.vert" />
   </ItemGroup>

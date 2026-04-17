@@ -53,7 +53,9 @@ void GAME_OBJ::Initalize_Game()
 	glm::mat4 skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
 
 	//RESOURCE_MANAGER::Shader_Load("shaders/3D_TEST.vert", "shaders/3D_TEST.frag", nullptr, "test");
-	RESOURCE_MANAGER::Shader_Load("shaders/BLINN_PHONG_LIGHTING.vert", "shaders/BLINN_PHONG_LIGHTING.frag", nullptr, "test");
+	//RESOURCE_MANAGER::Shader_Load("shaders/BLINN_PHONG_LIGHTING.vert", "shaders/BLINN_PHONG_LIGHTING.frag", nullptr, "test");
+	RESOURCE_MANAGER::Shader_Load("shaders/GOURAND_LIGHTING.vert", "shaders/GOURAND_LIGHTING.frag", nullptr, "test");
+
 	RESOURCE_MANAGER::Shader_Load("shaders/skybox.vert", "shaders/skybox.frag", nullptr, "skybox_test");
 
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Pattern_03-128x128.png", false, "texture");

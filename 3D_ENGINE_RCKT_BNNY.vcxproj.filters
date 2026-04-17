@@ -187,5 +187,11 @@
     <None Include="shaders\BLINN_PHONG_LIGHTING.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="shaders\GOURAND_LIGHTING.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
