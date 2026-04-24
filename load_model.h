@@ -2,35 +2,36 @@
 
 #include <glad/glad.h>
 
-#include <glm/glm.hpp>
+#include <glm/glm.hpp> // our library
 
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp> // allows us to transform matrixes with this like scaling, translating, etc
 
-#include "stb_image.h"
+#include "stb_image.h" // the file that loads and processes textures of multiple file types into a format that OpenGL can read
 
-#include <assimp/Importer.hpp>
+#include <assimp/Importer.hpp> // open asset importer library that allows us to proccess a scene that takes in multiple 3D model file types: for example .obj, .sae, etc
 
-#include <assimp/scene.h>
+#include <assimp/scene.h> // allows us to load scenes from the model file types
 
 #include <assimp/postprocess.h>
 
-#include "prep_mesh.h"
-
-#include "process_shader.h"
-
 #include <string>
 
-#include "process_texture.h"
+#include <fstream>
 
-//#include <fstream>
+#include <sstream>
 
-//#include <sstream>
+#include <iostream>
 
-#include "resource_manager.h"
+#include <map>
 
-TEXTURE_2D_OBJ Load_Model_Textures(const char* texture_file_path);
+#include <vector>
 
+// create a model class
 
+class Model_OBJ
+{
+
+};
 
 
 
