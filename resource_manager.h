@@ -30,6 +30,9 @@ public: // all of our public data members/functions
 	static std::map<std::string, const char*> stored_model_paths;
 	// map our skybox textures to a string to store for future use
 	static std::map<std::string, CUBEMAP_TEXTURE_OBJ> stored_skybox_textures;
+	// TEST
+	// map our textures that are used for an individual model
+	static std::map<std::string, std::vector<TEXTURE_2D_OBJ>> model_textures;
 
 	// static function that loads and generates a shader program from a file loading vertex, fragment, and or geometry shader's source code. If geometry shader is not a nullptr, load it as well
 	static SHADER_OBJ Shader_Load(const char *vertexShaderFilePath, const char *fragmentShaderFilePath, const char *geometryShaderFilePath, std::string shader_name);
@@ -43,6 +46,11 @@ public: // all of our public data members/functions
 	static CUBEMAP_TEXTURE_OBJ Skybox_Textures_Load(const char* skybox_textures_folder_path, bool textures_contain_alpha_value, std::string skybox_textures_name);
 
 	static CUBEMAP_TEXTURE_OBJ Skybox_Textures_Get(std::string skybox_texture_name);
+
+	static const char* Store_Model_Path_Load(const char* model_path, std::string model_path_name);
+
+	static const char* Store_Model_Path_Get(std::string model_path_name);
+
 
 	// de-allocate all loaded resources
 	static void Clear_All_Resources();

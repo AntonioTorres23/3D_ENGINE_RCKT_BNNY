@@ -16,6 +16,8 @@ std::map<std::string, TEXTURE_2D_OBJ> RESOURCE_MANAGER::stored_textures;
 std::map<std::string, SHADER_OBJ>	  RESOURCE_MANAGER::stored_shaders;
 std::map<std::string, const char*> RESOURCE_MANAGER::stored_model_paths;
 std::map<std::string, CUBEMAP_TEXTURE_OBJ> RESOURCE_MANAGER::stored_skybox_textures;
+// TEST
+std::map<std::string, std::vector<TEXTURE_2D_OBJ>> model_textures;
 
 /*
 NOTICE HOW WE'RE DEFINING THE FUNCTIONS THAT ARE STORED WITHIN THE RESOURCE_MANAGER CLASS, SO IN THE C++ FILE HERE WE'RE DEFINING THE ACTUAL SOURCE CODE
@@ -95,7 +97,17 @@ CUBEMAP_TEXTURE_OBJ RESOURCE_MANAGER::Skybox_Textures_Get(std::string skybox_tex
 	return stored_skybox_textures[skybox_texture_name];
 }
 
+const char* RESOURCE_MANAGER::Store_Model_Path_Load(const char* model_path, std::string model_path_name)
+{
+	stored_model_paths[model_path_name] = model_path;
+	return stored_model_paths[model_path_name];
 
+}
+
+const char* RESOURCE_MANAGER::Store_Model_Path_Get(std::string model_path_name)
+{
+	return stored_model_paths[model_path_name]
+}
 
 // define our static Clear_All_Resources public function here
 void RESOURCE_MANAGER::Clear_All_Resources()
