@@ -3,6 +3,8 @@
 
 #include <glad/glad.h> // include glad for OpenGL pointer functions 
 
+#include <string>
+
 //  can store and set parameters of a 2D Texture; Along with function for utility
 class TEXTURE_2D_OBJ
 {
@@ -23,6 +25,9 @@ public: // where all publicly accessible methods/functions go
 	// methods for storing texture's min and mag filter parameters
 	unsigned int texture_min_filter; 
 	unsigned int texture_mag_filter;
+
+	// string that stores path for model textures
+	std::string model_texture_path;
 	// constructor for this class/object which sets default texture modes
 	TEXTURE_2D_OBJ();
 	// prototype function definition that generates a texture from the image data provided

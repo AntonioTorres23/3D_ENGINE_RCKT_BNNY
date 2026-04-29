@@ -30,11 +30,17 @@
 
 #include <vector>
 
+// prototype for processing textures from the directory that the model files are in
+unsigned int Textures_In_Model_Directory(const char* texture_file_path, const std::string& model_files_directory, bool gamma = false);
+
+
 // create a model class
 
 class MODEL_OBJ
 {
 public:
+	// create a vector method of the tData type to store the vertex data gathered from the model file
+	static std::vector<tData_Struct> tex_already_loaded; // a vector that stores all of the texture files that are already loaded
 	// create a vector member of the MESH_OBJ class type to store the meshes that we have processed
 	std::vector<MESH_OBJ> model_meshes;
 	// create a string member that stores the directory name where the model data is stored
@@ -225,8 +231,138 @@ private:
 
 	}
 
+
+
+	// Load_Textures_From_Materials is a private function that checks all material textures of a type (i.e. diffuse, specular, normal) and loads them if they already haven't been loaded yet
+	// all of the information is then returned as a tData_Struct
+	// takes a std::vector of our tData_Struct
+	// takes in 3 arguments: an pointer with the the aiMaterial datatype, an aiTexture type, and a string that specifies the type with our previous naming convention
+	std::vector<tData_Struct> Load_Textures_From_Materials(aiMaterial* model_material, aiTextureType tex_type, std::string tex_type_name)
+	{
+		// create a placeholder vector holding the tdata_Struct type
+		std::vector<tData_Struct> placeholder_texture_vector;
+		// create a for loop that will parse through how many textures are in the specific texture type specified within the tex_type argument
+		for (unsigned int texture = 0; texture < model_material->GetTextureCount(tex_type); texture++)
+		{
+			// create a variable with the aiString data type
+			aiString assimp_string;
+
+			// parse through the model_material and use the built in function GetTexture within the model_material object
+			// provide the GetTexture method function with the texture type, our loop argument (unsigned int texture = 0), as well as the address of the assimp string we just created previously
+			model_material->GetTexture(tex_type, texture, &assimp_string);
+			// this is where we check if the texture was loaded prior
+			// create a boolean variable that is set to false
+			bool skip_tex = false;
+			// nested for loop that parses tex_already_loaded vector with assimp_string and compares if the paths match
+			for (unsigned int already_loaded_texture = 0; already_loaded_texture < tex_already_loaded.size(); already_loaded_texture++)
+			{
+				// use the standard library builtin function strcmp to comprare the 2 strings to see if the paths match
+				// I believe the == 0 means if the strcmp is true since 0 is true and 1 is false for booleans
+				if (std::strcmp(tex_already_loaded[already_loaded_texture].tex_path.data(), assimp_string.C_Str()) == 0)
+				{
+					// push the already loaded texture into the placeholder_texture_vector
+					placeholder_texture_vector.push_back(MODEL_OBJ::tex_already_loaded[already_loaded_texture]);
+					// assign skip_tex value to true and move onto the next texture by breaking out of this nested for loop
+					skip_tex = true;
+					// break out of the nested for loop
+					break;
+				}
+			}
+			// if the tex_skip is still false set up the texture with the data provided from assimp
+			if (!skip_tex)
+			{
+				// create a tData_struct
+				tData_Struct material_tData;
+				// generate an OpenGL texture object using the Textures_In_Model_Directory function
+				// we use the assimp string as our path as well as the public model_files_directory method we are using for this object
+				material_tData.texID = Textures_In_Model_Directory(assimp_string.C_Str(), this->model_files_directory);
+				// we now assign the naming convention to the texture type
+				material_tData.tex_type = tex_type_name;
+				// we now provide the full path to the texture via assimp_string
+				material_tData.tex_path = assimp_string.C_Str();
+				// now we take the newly added data into our material_tData struct and push that struct into the placeholder_texture_vector
+				placeholder_texture_vector.push_back(material_tData);
+				// push back the material_tdata into the tex_already_loaded vector to store so we don't load duplicate textures
+				tex_already_loaded.push_back(material_tData);
+			}
+
+
+		}
+		// return that placeholder_texture_vector
+		return placeholder_texture_vector;
+	}
 };
 
+// Textures_In_Model_Directory is a function that takes the textures that are within the model's directory and loads them into a OpenGL format with stb_image
+// It also sets the repeat and filtering options of the textures as well
+
+unsigned int Textures_In_Model_Directory(const char* texture_file_path, const std::string& model_files_directory, bool gamma)
+{
+
+	// convert texture_file_path into a string
+	std::string name_of_texture_file = std::string(texture_file_path);
+
+	// concat the directory that the texture files are located in along with a / and then the name of the texture file
+	name_of_texture_file = model_files_directory + "/" + name_of_texture_file;
+
+	RESOURCE_MANAGER::Texture_Load(name_of_texture_file.c_str(), gamma, model_files_directory);
+
+	return RESOURCE_MANAGER::Texture_Get(model_files_directory).texture_ID;
+		/*
+		// create an unsigned int for a texture ID
+		unsigned int texID;
+		// generate a texture object using glGenTextures, we only want to create one object and provide the address of our texture ID
+		glGenTextures(1, &texID);
+		// provide the width, height, and ammount of RGB components
+		int w, h, amount_of_RGB_components;
+
+		// load texture with name_of_texture_file converted to a c-string as well as the addresses of the width, height and amount of RGB components
+		unsigned char* tex_data = stbi_load(name_of_texture_file.c_str(), &w, &h, &amount_of_RGB_components, 0);
+
+		// if there is texture data loaded from stbi_load, run this block of code
+		if (tex_data)
+		{
+			// Create a GLenum variable that takes the amount of color components that where gathered prior from the tex_data pointer and assign it to an enumeration that matches the color components gathered
+			GLenum tex_col_format;
+			if (amount_of_RGB_components == 1)
+				tex_col_format = GL_RED;
+			if (amount_of_RGB_components == 3)
+				tex_col_format = GL_RGB;
+			if (amount_of_RGB_components == 4)
+				tex_col_format = GL_RGBA;
+
+			// bind the texture object to the GL_TEXTURE_2D type enumeration
+			glBindTexture(GL_TEXTURE_2D, texID);
+			// enter the configuration you want within the glfw function glTexImaage 2D
+			glTexImage2D(GL_TEXTURE_2D, 0, tex_col_format, w, h, 0, tex_col_format, GL_UNSIGNED_BYTE, tex_data);
+			// generate a mipmap with this glfw function
+			glGenerateMipmap(GL_TEXTURE_2D);
+			// add our wrapping and filtering options on the current texture object
+
+			// texture wrapping options for the s coordinates
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // S is our X for texture coordinates
+			// texture wrapping options for the t coordinates
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // T is our Y for texture coordinates
+			// set filtering options for minimum (for textures on objects that are further away)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); // for the min texture filter, use the mipmap that was generated as well as the linear filtering method
+			// set filtering options for magnification (for textures on objects that are closer)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // for the mag texture filter, use only the linear filtering method, no mipmap
+
+			// free the previous image data with this stb image function for the next texture object
+			stbi_image_free(tex_data);
+
+		}
+		// if you cannot load texture data from path, send ERROR MESSAGE to default output and free the texture data with stbi_image_free
+		else
+		{
+			std::cout << "ERROR::CANNOT_LOAD_TEXTURE_AT_PATH: " << texture_file_path << std::endl;
+
+			stbi_image_free(tex_data);
+		}
+
+		return texID;
+		*/
+}
 
 
 #endif // !LOAD_MODEL_HEADER

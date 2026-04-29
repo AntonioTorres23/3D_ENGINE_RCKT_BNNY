@@ -106,7 +106,7 @@ const char* RESOURCE_MANAGER::Store_Model_Path_Load(const char* model_path, std:
 
 const char* RESOURCE_MANAGER::Store_Model_Path_Get(std::string model_path_name)
 {
-	return stored_model_paths[model_path_name]
+	return stored_model_paths[model_path_name];
 }
 
 // define our static Clear_All_Resources public function here
