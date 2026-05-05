@@ -32,7 +32,7 @@ public: // all of our public data members/functions
 	static std::map<std::string, CUBEMAP_TEXTURE_OBJ> stored_skybox_textures;
 	// TEST
 	// map our textures that are used for an individual model
-	static std::map<std::string, std::vector<TEXTURE_2D_OBJ>> model_textures;
+	//static std::map<std::string, std::vector<TEXTURE_2D_OBJ>> model_textures;
 
 	// static function that loads and generates a shader program from a file loading vertex, fragment, and or geometry shader's source code. If geometry shader is not a nullptr, load it as well
 	static SHADER_OBJ Shader_Load(const char *vertexShaderFilePath, const char *fragmentShaderFilePath, const char *geometryShaderFilePath, std::string shader_name);

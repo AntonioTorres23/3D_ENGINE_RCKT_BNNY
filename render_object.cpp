@@ -16,6 +16,16 @@ RENDER_OBJECT_OBJ::RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, O
 	this->vertex_data_intialize(type_of_object);
 
 }
+
+RENDER_OBJECT_OBJ::RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string model_name)
+{
+	this->Type_Of_Object = type_of_object; 
+	this->object_shader_obj = shader_object_argument;
+
+	this->vertex_data_intialize(type_of_object, path_to_3D_model_filetype, model_name);
+}
+
+
 // define deconstructor for RENDER_SPRITE_OBJ
 RENDER_OBJECT_OBJ::~RENDER_OBJECT_OBJ()
 {
@@ -106,6 +116,54 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& textur
 }
 
 
+void Render_and_Draw_Object(const SHADER_OBJ& shader_obj_arg, MODEL_OBJ model_arg, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0))
+{
+	// create an unsigned int variable to represent the ammount of diffuse textures
+	unsigned int number_of_diffuse_textures = 1;
+	// create an unsigned int variable to represent the ammount of specular textures 
+	unsigned int number_of_specular_textures = 1;
+	// create an unsigned int variable to represent the ammount of normal textures
+	unsigned int number_of_normal_textures = 1;
+	// create an unsigned int variable to represent the amount of height textures
+	unsigned int number_of_height_textures = 1;
+	
+	
+
+	for (unsigned int mesh = 0; mesh < model_arg.model_meshes.size(); mesh++)
+	
+		// parse through the size of the model_tData vector and activate the amount of textures gathered from the size
+		for (unsigned int for_loop_texture_size_integer = 0; for_loop_texture_size_integer < model_arg.model_meshes.size(); for_loop_texture_size_integer++)
+		{
+			// remember that the GL_TEXTURE has a data type of GLenum which is esentially an unsigned integer so we can loop through that as well as add to GL_TEXTURE0 to increase it to GL_TEXTURE1 and so on
+			glActiveTexture(GL_TEXTURE0 + for_loop_texture_size_integer);
+			// create a string that holds the current number of whatever texture type you are on, think of it as the diffTex1, or specTex3
+			std::string texNum;
+			// create another string called texName to store the name of whatever the texture type is called, like diffTex, or specTex, or normTex
+			// this was one of the variables that we have stored within this tData structure which is also a string
+			std::string texName = model_arg.model_meshes[mesh].model_tData[for_loop_texture_size_integer].tex_type;
+			// if texName is equal to diffTex convert the unsigned integer number of number_of_diffuse_textures to a string that gets sent to texNum and incremented at the same time 
+			if (texName == "diffTex")
+				texNum = std::to_string(number_of_diffuse_textures++);
+			// if texName is equal to specTex convert the unsigned integer of number_of_specular_textures to a string that gets sent to texNum and incremented at the same time
+			else if (texName == "specTex")
+				texNum = std::to_string(number_of_specular_textures++);
+			// if texName is equal to normTex convert the unsigned integer number of number_of_normal_textures to a string that gets sent to texNum and incremented at the same time
+			else if (texName == "normTex")
+				texNum = std::to_string(number_of_normal_textures++);
+			// if texName is equal to heightTex convert the unsigned integer number of number_of_height_textures to a string that gets sent to texNum and incremented at the same time
+			else if (texName == "heightTex")
+				texNum = std::to_string(number_of_height_textures++);
+
+			// set the uniform 1 integer function of the integer for loop variable we provided and concatenate texName and texNumber to find the location of the shader type in the shader program we just found within our if-else statments
+			// remember we are setting wherever the texture is located in the shader program ID and setting the for loop integer as its new value in the shaders
+			glUniform1i(glGetUniformLocation(shader_obj_arg.Shader_ID, (texName + texNum).c_str()), for_loop_texture_size_integer);
+			// then bind the current for_loop_texture integer with GL_TEXTURE_2D
+			glBindTexture(GL_TEXTURE_2D, model_arg.model_meshes[mesh].model_tData[for_loop_texture_size_integer].texID);
+
+		}
+
+}
+
 // define the void private member function vertex_data_initalize
 
 void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object)
@@ -171,9 +229,26 @@ void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object)
 		std::cout << "SKYBOX SETUP COMPLETE" << std::endl;
 
 		break;
+
+
 	
 	default:
 		std::cout << "COULD NOT SETUP OBJ" << std::endl; 
 	}
+
+}
+
+void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string name_for_model)
+{
+	switch (type_of_object)
+	{
+	case MODEL:
+		MODEL_OBJ(path_to_3D_model_filetype, name_for_model);
+
+	default: 
+		std::cout << "COULD NOT SETUP MODEL" << std::endl;
+	}
+
+	
 }
 

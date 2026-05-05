@@ -1,5 +1,5 @@
 #ifndef LOAD_MESH_HEADER
-
+#define LOAD_MESH_HEADER
 
 #include <glad/glad.h>
 
@@ -128,9 +128,4 @@ private:
 
 };
 
-
-
-
-
-#endif // !LOAD_MESH_HEADER
-
+#endif

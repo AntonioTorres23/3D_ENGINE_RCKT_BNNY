@@ -17,7 +17,7 @@ std::map<std::string, SHADER_OBJ>	  RESOURCE_MANAGER::stored_shaders;
 std::map<std::string, const char*> RESOURCE_MANAGER::stored_model_paths;
 std::map<std::string, CUBEMAP_TEXTURE_OBJ> RESOURCE_MANAGER::stored_skybox_textures;
 // TEST
-std::map<std::string, std::vector<TEXTURE_2D_OBJ>> model_textures;
+//std::map<std::string, std::vector<TEXTURE_2D_OBJ>> model_textures;
 
 /*
 NOTICE HOW WE'RE DEFINING THE FUNCTIONS THAT ARE STORED WITHIN THE RESOURCE_MANAGER CLASS, SO IN THE C++ FILE HERE WE'RE DEFINING THE ACTUAL SOURCE CODE
