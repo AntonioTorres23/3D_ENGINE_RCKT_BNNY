@@ -199,5 +199,11 @@
     <None Include="shaders\GOURAND_LIGHTING.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="shaders\model_test.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\model_test.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -207,6 +207,8 @@
     <None Include="shaders\BLINN_PHONG_LIGHTING.vert" />
     <None Include="shaders\GOURAND_LIGHTING.frag" />
     <None Include="shaders\GOURAND_LIGHTING.vert" />
+    <None Include="shaders\model_test.frag" />
+    <None Include="shaders\model_test.vert" />
     <None Include="shaders\skybox.frag" />
     <None Include="shaders\skybox.vert" />
   </ItemGroup>

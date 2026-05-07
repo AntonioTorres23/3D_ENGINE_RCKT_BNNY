@@ -17,7 +17,7 @@ void main()
 {
 	fragment_texture_coordinates = texture_position_coordinates;
 
-	gl_Position =   perspective_matrix * view_matrix * transformation_matrix * vec4(vector_position_coordinates, 1.0);
+	gl_Position =  perspective_matrix * view_matrix * transformation_matrix * vec4(vector_position_coordinates, 1.0);
 
 
 }
