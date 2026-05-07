@@ -52,7 +52,7 @@ class RENDER_OBJECT_OBJ
 		// CHANGE ON 1/14/2026 @ 4:30 PM, CHANGED PARAMTER/ARGUMENT OF RENDER_AND_DRAW_OBJECT METHOD FUNCTION FROM A TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGUMENT TO A CONST TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGGUMENT 
 		void Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_object_argument, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
 		void Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& texture_object_argument);
-		void Render_and_Draw_Object(const SHADER_OBJ& shader_obj_arg, MODEL_OBJ model_arg, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
+		void Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
 
 	private: // all of our private data/function members
 		// private SHADER_OBJ data member
@@ -61,6 +61,10 @@ class RENDER_OBJECT_OBJ
 		unsigned int object_vertex_array_obj;
 		// private element array object data member for our object
 		unsigned int object_element_array_obj; 
+
+		MODEL_OBJ model_obj_priv;
+
+
 		// private void function that sets up the sprite's vertex buffer object and vertex pointer attributes
 		void vertex_data_intialize(Object_Type type_of_object);
 

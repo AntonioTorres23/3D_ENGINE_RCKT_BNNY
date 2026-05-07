@@ -49,6 +49,8 @@ public:
 	// create a bool member that stores the gama correction option for textures
 	bool gammaCor;
 
+	MODEL_OBJ() {};
+
 	// the constructor of our class which takes in a path the model data filetype as well as enabling the member gammaCorrection prior to the code runnning in the bracket of our constructor, we are setting the results to false in the constructor arguments
 	MODEL_OBJ(std::string path_to_3D_model_filetype, std::string model_name, bool gam = false) : gammaCor(gam)
 	{

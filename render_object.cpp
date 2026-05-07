@@ -116,8 +116,30 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& textur
 }
 
 
-void Render_and_Draw_Object(const SHADER_OBJ& shader_obj_arg, MODEL_OBJ model_arg, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0))
+void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument, float rotation_degree_argument, glm::vec3 object_color_argument)
 {
+	this->object_shader_obj.Activate();
+
+	glm::mat4 transformation_matrix = glm::mat4(1.0f);
+
+	transformation_matrix = glm::translate(transformation_matrix, position_of_object_argument);
+
+	transformation_matrix = glm::scale(transformation_matrix, scale_size_argument);
+
+	transformation_matrix = glm::rotate(transformation_matrix, glm::radians(rotation_degree_argument), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	// GLM MAT3 MATRIX THAT IS FOR THE NORMAL COORDINATES WHICH IS THE INVERSED TRANSPOSED MATRIX OF OUR TRANSFORMATION MATRIX
+	// WE MAKE IT A 3X3 TO LOSE ITS TRANSLATION PROPERTIES
+	glm::mat3 normal_coordinates_transformation_matrix = glm::mat3(1.0f);
+
+	normal_coordinates_transformation_matrix = glm::transpose(glm::inverse(transformation_matrix));
+
+
+	object_shader_obj.uniform_matrix_4("transformation_matrix", transformation_matrix);
+
+	object_shader_obj.uniform_matrix_3("normal_coordinates_transformation_matrix", normal_coordinates_transformation_matrix);
+
+
 	// create an unsigned int variable to represent the ammount of diffuse textures
 	unsigned int number_of_diffuse_textures = 1;
 	// create an unsigned int variable to represent the ammount of specular textures 
@@ -129,10 +151,11 @@ void Render_and_Draw_Object(const SHADER_OBJ& shader_obj_arg, MODEL_OBJ model_ar
 	
 	
 
-	for (unsigned int mesh = 0; mesh < model_arg.model_meshes.size(); mesh++)
-	
+	for (unsigned int mesh = 0; mesh < this->model_obj_priv.model_meshes.size(); mesh++)
+	{
+
 		// parse through the size of the model_tData vector and activate the amount of textures gathered from the size
-		for (unsigned int for_loop_texture_size_integer = 0; for_loop_texture_size_integer < model_arg.model_meshes.size(); for_loop_texture_size_integer++)
+		for (unsigned int for_loop_texture_size_integer = 0; for_loop_texture_size_integer < this->model_obj_priv.model_meshes.size(); for_loop_texture_size_integer++)
 		{
 			// remember that the GL_TEXTURE has a data type of GLenum which is esentially an unsigned integer so we can loop through that as well as add to GL_TEXTURE0 to increase it to GL_TEXTURE1 and so on
 			glActiveTexture(GL_TEXTURE0 + for_loop_texture_size_integer);
@@ -140,7 +163,7 @@ void Render_and_Draw_Object(const SHADER_OBJ& shader_obj_arg, MODEL_OBJ model_ar
 			std::string texNum;
 			// create another string called texName to store the name of whatever the texture type is called, like diffTex, or specTex, or normTex
 			// this was one of the variables that we have stored within this tData structure which is also a string
-			std::string texName = model_arg.model_meshes[mesh].model_tData[for_loop_texture_size_integer].tex_type;
+			std::string texName = model_obj_priv.model_meshes[mesh].model_tData[for_loop_texture_size_integer].tex_type;
 			// if texName is equal to diffTex convert the unsigned integer number of number_of_diffuse_textures to a string that gets sent to texNum and incremented at the same time 
 			if (texName == "diffTex")
 				texNum = std::to_string(number_of_diffuse_textures++);
@@ -156,12 +179,17 @@ void Render_and_Draw_Object(const SHADER_OBJ& shader_obj_arg, MODEL_OBJ model_ar
 
 			// set the uniform 1 integer function of the integer for loop variable we provided and concatenate texName and texNumber to find the location of the shader type in the shader program we just found within our if-else statments
 			// remember we are setting wherever the texture is located in the shader program ID and setting the for loop integer as its new value in the shaders
-			glUniform1i(glGetUniformLocation(shader_obj_arg.Shader_ID, (texName + texNum).c_str()), for_loop_texture_size_integer);
+			glUniform1i(glGetUniformLocation(this->object_shader_obj.Shader_ID, (texName + texNum).c_str()), for_loop_texture_size_integer);
 			// then bind the current for_loop_texture integer with GL_TEXTURE_2D
-			glBindTexture(GL_TEXTURE_2D, model_arg.model_meshes[mesh].model_tData[for_loop_texture_size_integer].texID);
+			glBindTexture(GL_TEXTURE_2D, model_obj_priv.model_meshes[mesh].model_tData[for_loop_texture_size_integer].texID);
 
 		}
 
+		glBindVertexArray(model_obj_priv.model_meshes[mesh].Vertex_Array_Object);
+		glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(model_obj_priv.model_meshes[mesh].iData.size()), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+		glActiveTexture(GL_TEXTURE0);
+	}
 }
 
 // define the void private member function vertex_data_initalize
@@ -243,7 +271,8 @@ void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object, std::s
 	switch (type_of_object)
 	{
 	case MODEL:
-		MODEL_OBJ(path_to_3D_model_filetype, name_for_model);
+		this->model_obj_priv = MODEL_OBJ(path_to_3D_model_filetype, name_for_model);
+		std::cout << "MODEL SETUP COMPLETE" << std::endl;
 
 	default: 
 		std::cout << "COULD NOT SETUP MODEL" << std::endl;

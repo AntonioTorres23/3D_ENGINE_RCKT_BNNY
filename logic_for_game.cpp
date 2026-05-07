@@ -26,6 +26,7 @@ float specular_color_values[3]
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
 RENDER_OBJECT_OBJ *skybox_obj;
+RENDER_OBJECT_OBJ *model_obj;
 
 LIGHTING_UNIFORMS *test;
 
@@ -58,6 +59,9 @@ void GAME_OBJ::Initalize_Game()
 
 	RESOURCE_MANAGER::Shader_Load("shaders/skybox.vert", "shaders/skybox.frag", nullptr, "skybox_test");
 
+
+	RESOURCE_MANAGER::Shader_Load("shaders/model_test.vert", "shaders/model_test.frag", nullptr, "model_test");
+
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Pattern_03-128x128.png", false, "texture");
 	//RESOURCE_MANAGER::Texture_Load("assets/PTP-Tile_05-128x128.png", false, "texture_2");
 	RESOURCE_MANAGER::Texture_Load("assets/arcade_carpet_2_512.png", false, "texture_2");
@@ -79,6 +83,8 @@ void GAME_OBJ::Initalize_Game()
 	skybox_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("skybox_test"), SKYBOX);
 
 	test = new LIGHTING_UNIFORMS(RESOURCE_MANAGER::Shader_Get("test"));
+
+	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/quaddamage/quaddamage.obj", "quad_damage");
 
 }
 
@@ -122,6 +128,13 @@ void GAME_OBJ::Render_Game()
 	glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("view_matrix", view_matrix);
 
+	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
+
+
+	
+	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
+
+
 	//test->Configure_Directional_Lighting("directional_lighting_obj", world_position_of_camera);
 	
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("camera_world_position", world_position_of_camera);
@@ -132,6 +145,7 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.ambient_color", ambient_color_values[0], ambient_color_values[1], ambient_color_values[2]);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.diffuse_color", diffuse_color_values[0], diffuse_color_values[1], diffuse_color_values[2]);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.specular_color", specular_color_values[0], specular_color_values[1], specular_color_values[2]);
+	
 	
 
 	// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
@@ -144,7 +158,7 @@ void GAME_OBJ::Render_Game()
 
 
 
-	skybox_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Skybox_Textures_Get("skybox_2"));
+	skybox_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Skybox_Textures_Get("skybox"));
 
 	// set depth func back to original state which is GL_LESS
 	glDepthFunc(GL_LESS);
@@ -155,13 +169,15 @@ void GAME_OBJ::Render_Game()
 	
 	("directional_lighting_obj", RESOURCE_MANAGER::Shader_Get("test"));
 
-
-
-
-
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
-	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(5.0f, -17.f, 5.0f), glm::vec3(30.0f));
 	
+
+
+	
+
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.2f, 3.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.2f, 3.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(5.0f, -17.f, 5.0f), glm::vec3(30.0f));
+	model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 1.0f, 1.0f), glm::vec3(0.5f));
 	
 }
