@@ -134,8 +134,6 @@ void GAME_OBJ::Render_Game()
 
 	glm::mat4 perspective_matrix = glm::perspective(glm::radians(amount_of_fov), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("perspective_matrix", perspective_matrix);
-	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
-
 
 	//test->Configure_Directional_Lighting("directional_lighting_obj", world_position_of_camera);
 	
@@ -173,13 +171,13 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("skybox_view_matrix", skybox_view_matrix);
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 	
-	
-	//("directional_lighting_obj", RESOURCE_MANAGER::Shader_Get("test"));
-	
 
 	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	// render model view matrix here 
+	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	// SEND MODEL MATRICES HERE 
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
+	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
+
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
