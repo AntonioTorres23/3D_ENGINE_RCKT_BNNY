@@ -64,6 +64,8 @@ class RENDER_OBJECT_OBJ
 
 		MODEL_OBJ model_obj_priv;
 
+		glm::mat4 transformation_matrix;
+
 
 		// private void function that sets up the sprite's vertex buffer object and vertex pointer attributes
 		void vertex_data_intialize(Object_Type type_of_object);

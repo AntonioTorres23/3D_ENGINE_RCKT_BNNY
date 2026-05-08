@@ -39,7 +39,7 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_obj
 {
 	this->object_shader_obj.Activate();
 	
-	glm::mat4 transformation_matrix = glm::mat4(1.0f);
+	this->transformation_matrix = glm::mat4(1.0f);
 
 	transformation_matrix = glm::translate(transformation_matrix, position_of_object_argument);
 
@@ -120,7 +120,7 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argu
 {
 	this->object_shader_obj.Activate();
 
-	glm::mat4 transformation_matrix = glm::mat4(1.0f);
+	this->transformation_matrix = glm::mat4(1.0f);
 
 	transformation_matrix = glm::translate(transformation_matrix, position_of_object_argument);
 
