@@ -12,10 +12,15 @@ unsigned int Textures_In_Model_Directory(const char* texture_file_path, const st
 
 	// concat the directory that the texture files are located in along with a / and then the name of the texture file
 	name_of_texture_file = model_files_directory + "/" + name_of_texture_file;
+	std::cout << name_of_texture_file << std::endl;
 
 	RESOURCE_MANAGER::Texture_Load(name_of_texture_file.c_str(), gamma, model_files_directory);
 
-	return RESOURCE_MANAGER::Texture_Get(model_files_directory).texture_ID;
+	TEXTURE_2D_OBJ PLACE_HOLDER = RESOURCE_MANAGER::Texture_Get(model_files_directory);
+
+	PLACE_HOLDER.texture_min_filter = GL_LINEAR_MIPMAP_LINEAR;
+
+	return PLACE_HOLDER.texture_ID;
 	/*
 	// create an unsigned int for a texture ID
 	unsigned int texID;

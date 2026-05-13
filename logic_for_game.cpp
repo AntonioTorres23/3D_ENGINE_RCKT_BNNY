@@ -27,6 +27,7 @@ RENDER_OBJECT_OBJ *render_obj;
 RENDER_OBJECT_OBJ *render_obj_plane;
 RENDER_OBJECT_OBJ *skybox_obj;
 RENDER_OBJECT_OBJ *model_obj;
+RENDER_OBJECT_OBJ *model_obj_2;
 
 LIGHTING_UNIFORMS *test;
 
@@ -41,6 +42,8 @@ GAME_OBJ::~GAME_OBJ()
 {
 	delete render_obj;
 	delete render_obj_plane;
+	delete skybox_obj;
+	delete model_obj;
 }
 
 void GAME_OBJ::Initalize_Game()
@@ -90,7 +93,11 @@ void GAME_OBJ::Initalize_Game()
 
 	test = new LIGHTING_UNIFORMS(RESOURCE_MANAGER::Shader_Get("test"));
 
-	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/quaddamage/quaddamage.obj", "quad_damage");
+	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/quaddamage/quaddamage.obj", "quad_damage", true);
+
+	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/1965_MB_560_SEC_obj/d4411c08-dfa1-4727-a541-ef9bd7bde35a.obj", "quad_damage", true);
+
+	model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/PentagramofProtection/invulner.obj", "survival_backpack", true);
 
 }
 
@@ -174,13 +181,16 @@ void GAME_OBJ::Render_Game()
 
 	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	model_obj_2->Render_and_Draw_Object(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.1f), (100 * glfwGetTime()));
 	// SEND MODEL MATRICES HERE 
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
+	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
+	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(5.0f, -17.f, 5.0f), glm::vec3(30.0f));
 

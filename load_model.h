@@ -296,6 +296,5 @@ private:
 	}
 };
 
-
 #endif // !LOAD_MODEL_HEADER
 

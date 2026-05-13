@@ -17,12 +17,12 @@ RENDER_OBJECT_OBJ::RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, O
 
 }
 
-RENDER_OBJECT_OBJ::RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string model_name)
+RENDER_OBJECT_OBJ::RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string model_name, bool gamma)
 {
 	this->Type_Of_Object = type_of_object; 
 	this->object_shader_obj = shader_object_argument;
 
-	this->vertex_data_intialize(type_of_object, path_to_3D_model_filetype, model_name);
+	this->vertex_data_intialize(type_of_object, path_to_3D_model_filetype, model_name, gamma);
 }
 
 
@@ -177,13 +177,20 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argu
 			else if (texName == "heightTex")
 				texNum = std::to_string(number_of_height_textures++);
 
+			//std::cout << "for loop size integer" << for_loop_texture_size_integer << std::endl;
+			//std::cout << "texture id" << model_obj_priv.model_meshes[mesh].model_tData[for_loop_texture_size_integer].texID << std::endl;
+
 			// set the uniform 1 integer function of the integer for loop variable we provided and concatenate texName and texNumber to find the location of the shader type in the shader program we just found within our if-else statments
 			// remember we are setting wherever the texture is located in the shader program ID and setting the for loop integer as its new value in the shaders
 			glUniform1i(glGetUniformLocation(this->object_shader_obj.Shader_ID, (texName + texNum).c_str()), for_loop_texture_size_integer);
 			// then bind the current for_loop_texture integer with GL_TEXTURE_2D
 			glBindTexture(GL_TEXTURE_2D, model_obj_priv.model_meshes[mesh].model_tData[for_loop_texture_size_integer].texID);
 
+			
+
 		}
+
+
 
 		glBindVertexArray(model_obj_priv.model_meshes[mesh].Vertex_Array_Object);
 		glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(model_obj_priv.model_meshes[mesh].iData.size()), GL_UNSIGNED_INT, 0);
@@ -266,16 +273,13 @@ void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object)
 
 }
 
-void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string name_for_model)
+void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string name_for_model, bool gamma)
 {
 	switch (type_of_object)
 	{
 	case MODEL:
-		this->model_obj_priv = MODEL_OBJ(path_to_3D_model_filetype, name_for_model);
+		this->model_obj_priv = MODEL_OBJ(path_to_3D_model_filetype, name_for_model, gamma);
 		std::cout << "MODEL SETUP COMPLETE" << std::endl;
-
-	default: 
-		std::cout << "COULD NOT SETUP MODEL" << std::endl;
 	}
 
 	

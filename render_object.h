@@ -36,7 +36,7 @@ class RENDER_OBJECT_OBJ
 		// constructor for RENDER_SPRITE_OBJ which requires an address of a shader object as its parameter 
 		// CHANGE ON 1/14/2026 @ 2:45 PM, CHANGED CONSTRUCTOR PARAMTER/ARGUMENT OF RENDER_SPRITE_OBJ FROM A SHADER_OBJ &SHADER_OBJECT_ARGUMENT TO A CONST SHADER_OBJ &SHADER_OBJECT_ARGUMENT 
 		RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, Object_Type type_of_object);
-		RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string model_name);
+		RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string model_name, bool gamma);
 
 		// deconstructor for RENDER_SPRITE_OBJ
 		~RENDER_OBJECT_OBJ();
@@ -70,7 +70,7 @@ class RENDER_OBJECT_OBJ
 		// private void function that sets up the sprite's vertex buffer object and vertex pointer attributes
 		void vertex_data_intialize(Object_Type type_of_object);
 
-		void vertex_data_intialize(Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string name_for_model);
+		void vertex_data_intialize(Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string name_for_model, bool gamma);
 };
 
 
