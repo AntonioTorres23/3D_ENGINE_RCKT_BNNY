@@ -205,5 +205,17 @@
     <None Include="shaders\model_test.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING_MODEL.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING_MODEL.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
