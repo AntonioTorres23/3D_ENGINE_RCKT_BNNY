@@ -9,8 +9,6 @@
 
 #include "render_object.h"
 
-#include "LIGHTING_UNIFORMS.h"
-
 #include <iostream>
 
 // Game class that stores all game related states/functionality
@@ -28,8 +26,5 @@ public:
 
 	void Render_Game(); // renders the game on the players screen
 };
-
-
-
 
 #endif // !LOGIC_FOR_GAME_HEADER
