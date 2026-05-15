@@ -90,10 +90,13 @@ void GAME_OBJ::Initalize_Game()
 
 	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/quaddamage/quaddamage.obj", "quad_damage", true);
 
+	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/survival-guitar-backpack/source/Survival_BackPack_2/Survival_BackPack_2.fbx", "quad_damage", true);
+
 	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/1965_MB_560_SEC_obj/d4411c08-dfa1-4727-a541-ef9bd7bde35a.obj", "quad_damage", true);
 
-	model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/PentagramofProtection/invulner.obj", "survival_backpack", true);
-
+	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/PentagramofProtection/invulner.obj", "survival_backpack", true);
+	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/B.D. Joe/B.D. Joe.obj", "quad_damage", false);
+	model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/B.D. Joe/B.D. Joe.obj", "quad_damage", false);
 }
 
 
@@ -163,11 +166,11 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("skybox_view_matrix", skybox_view_matrix);
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 	
-	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	model_obj_2->Render_and_Draw_Object(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.1f), (100 * glfwGetTime()));
+	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	//model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	//model_obj->Render_and_Draw_Object(glm::vec3(1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	model_obj_2->Render_and_Draw_Object(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(2), (100 * glfwGetTime()));
 	// SEND MODEL MATRICES HERE 
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);

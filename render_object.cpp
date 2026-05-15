@@ -150,12 +150,12 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argu
 	unsigned int number_of_height_textures = 1;
 	
 	
-
+	
 	for (unsigned int mesh = 0; mesh < this->model_obj_priv.model_meshes.size(); mesh++)
 	{
-
+		
 		// parse through the size of the model_tData vector and activate the amount of textures gathered from the size
-		for (unsigned int for_loop_texture_size_integer = 0; for_loop_texture_size_integer < this->model_obj_priv.model_meshes.size(); for_loop_texture_size_integer++)
+		for (unsigned int for_loop_texture_size_integer = 0; for_loop_texture_size_integer < this->model_obj_priv.model_meshes[mesh].model_tData.size(); for_loop_texture_size_integer++)
 		{
 			// remember that the GL_TEXTURE has a data type of GLenum which is esentially an unsigned integer so we can loop through that as well as add to GL_TEXTURE0 to increase it to GL_TEXTURE1 and so on
 			glActiveTexture(GL_TEXTURE0 + for_loop_texture_size_integer);
@@ -163,6 +163,11 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argu
 			std::string texNum;
 			// create another string called texName to store the name of whatever the texture type is called, like diffTex, or specTex, or normTex
 			// this was one of the variables that we have stored within this tData structure which is also a string
+
+
+			//std::cout << model_obj_priv.model_meshes[mesh].model_tData[for_loop_texture_size_integer].tex_type.size() << std::endl;
+			//std::cout << for_loop_texture_size_integer << std::endl;
+
 			std::string texName = model_obj_priv.model_meshes[mesh].model_tData[for_loop_texture_size_integer].tex_type;
 			// if texName is equal to diffTex convert the unsigned integer number of number_of_diffuse_textures to a string that gets sent to texNum and incremented at the same time 
 			if (texName == "diffTex")
@@ -176,6 +181,8 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argu
 			// if texName is equal to heightTex convert the unsigned integer number of number_of_height_textures to a string that gets sent to texNum and incremented at the same time
 			else if (texName == "heightTex")
 				texNum = std::to_string(number_of_height_textures++);
+			
+			//std::cout << for_loop_texture_size_integer << std::endl;
 
 			// set the uniform 1 integer function of the integer for loop variable we provided and concatenate texName and texNumber to find the location of the shader type in the shader program we just found within our if-else statments
 			// remember we are setting wherever the texture is located in the shader program ID and setting the for loop integer as its new value in the shaders
@@ -184,7 +191,7 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argu
 			glBindTexture(GL_TEXTURE_2D, model_obj_priv.model_meshes[mesh].model_tData[for_loop_texture_size_integer].texID);
 
 		}
-
+		
 		glBindVertexArray(model_obj_priv.model_meshes[mesh].Vertex_Array_Object);
 		glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(model_obj_priv.model_meshes[mesh].iData.size()), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);

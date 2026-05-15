@@ -211,12 +211,21 @@ TEXTURE_2D_OBJ RESOURCE_MANAGER::Texutre_Load_From_Ext_File(const char *textureF
 	// this will also grab the width, height, and number_of_color_channels inside of the stbi_load function as well and will fill these variables with the corresponding values given by the function
 	// this is why we use the addresses of our prior variables so that it can just use those preexisting variables and fill them with the data gathered from the function
 	unsigned char* texture_data = stbi_load(textureFilePath, &width_of_texture, &height_of_texture, &number_of_color_channels, 0);
-	// we now use the method function Create_Texture within the object to create a OpenGL compatible object with the provided arguments as well as the default member values that are stored in the TEXTURE_2D_OBJ constructor initalizer list
-	texture_object_2D.Create_Texture(width_of_texture, height_of_texture, texture_data);
+	
+	if (texture_data)
+	{
+		// we now use the method function Create_Texture within the object to create a OpenGL compatible object with the provided arguments as well as the default member values that are stored in the TEXTURE_2D_OBJ constructor initalizer list
+		texture_object_2D.Create_Texture(width_of_texture, height_of_texture, texture_data);
 
-	// free the image data from stb_image to get ready for the next texture if there
-	stbi_image_free(texture_data);
-
+		// free the image data from stb_image to get ready for the next texture if there
+		stbi_image_free(texture_data);
+	}
+	else
+	{
+		std::cout << "FAILED TO LOAD TEXTURE" << textureFilePath << std::endl;
+		stbi_image_free(texture_data);
+	}
+	
 	// return the texture_object_2D to send it to the mapped stored_textures member within the Texture_Load static member public function from prior
 	return texture_object_2D;
 }
