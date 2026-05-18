@@ -166,11 +166,11 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("skybox_view_matrix", skybox_view_matrix);
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 	
-	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	//model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	//model_obj->Render_and_Draw_Object(glm::vec3(1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
-	model_obj_2->Render_and_Draw_Object(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(2), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
+	model_obj_2->Render_and_Draw_Object(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1), (100 * glfwGetTime()));
 	// SEND MODEL MATRICES HERE 
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);

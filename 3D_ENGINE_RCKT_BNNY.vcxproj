@@ -167,6 +167,7 @@
     <ClCompile Include="prep_mesh.cpp" />
     <ClCompile Include="process_cubemap_texture.cpp" />
     <ClCompile Include="process_shader.cpp" />
+    <ClCompile Include="process_shadow_map.cpp" />
     <ClCompile Include="process_texture.cpp" />
     <ClCompile Include="render_object.cpp" />
     <ClCompile Include="resource_manager.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="process_shadow_map.h" />
     <None Include="shaders\3D_TEST.frag" />
     <None Include="shaders\3D_TEST.vert" />
     <None Include="shaders\BLINN_PHONG_LIGHTING.frag" />

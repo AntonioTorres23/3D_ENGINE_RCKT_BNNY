@@ -199,6 +199,14 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argu
 	}
 }
 
+void Render_and_Draw_Object(SHADOW_MAP_OBJ shadow_map_object_arg, glm::mat4 light_space_matrix_for_shadow_mapping)
+{
+	//LEFT OFF HERE
+
+	// set viewport to size of shadow map's texture dimensions
+	glViewport(0, 0, shadow_map_object_arg.width_of_texture, shadow_map_object_arg.height_of_texture);
+}
+
 // define the void private member function vertex_data_initalize
 
 void RENDER_OBJECT_OBJ::vertex_data_intialize(Object_Type type_of_object)

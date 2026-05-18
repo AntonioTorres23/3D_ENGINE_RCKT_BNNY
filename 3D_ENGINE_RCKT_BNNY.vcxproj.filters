@@ -96,6 +96,9 @@
     <ClCompile Include="load_mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="process_shadow_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_manager.h">
@@ -216,6 +219,9 @@
     </None>
     <None Include="shaders\GOURAND_LIGHTING_MODEL.frag">
       <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="process_shadow_map.h">
+      <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
 </Project>
