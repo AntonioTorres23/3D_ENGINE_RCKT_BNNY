@@ -1,6 +1,9 @@
 #include "logic_for_game.h"
 
 
+// prototype for shadow mapping function only relevant to this C++ file
+void Render_Shadows(SHADOW_MAP_OBJ shadow_mapping_object_argument);
+
 float amount_of_fov = 60.0f; 
 
 glm::vec3 world_position_of_camera(0.0f, 0.0f, 15.0f);
@@ -187,4 +190,17 @@ void GAME_OBJ::Render_Game()
 	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 0.2f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 	
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(5.0f, -17.f, 5.0f), glm::vec3(30.0f));
+}
+
+
+
+void Render_Shadows(SHADOW_MAP_OBJ shadow_mapping_object_argument)
+{
+	// set viewport to shadow map's texture dimensions
+	glViewport(0, 0, shadow_mapping_object_argument.width_of_texture, shadow_mapping_object_argument.height_of_texture);
+	// bind depth framebuffer object
+	glBindFramebuffer(GL_FRAMEBUFFER, shadow_mapping_object_argument.depth_map_frame_buffer_object);
+	// clear depth buffer
+	glClear(GL_DEPTH_BUFFER_BIT);
+
 }

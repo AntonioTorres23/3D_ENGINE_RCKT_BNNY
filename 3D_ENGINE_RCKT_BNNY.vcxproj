@@ -209,10 +209,14 @@
     <None Include="shaders\BLINN_PHONG_LIGHTING.vert" />
     <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL.frag" />
     <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL.vert" />
+    <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL_W_SHADOW_MAPPING.vert" />
+    <None Include="shaders\BLINN_PHONG_LIGHTING_W_SHADOW_MAPPING.frag" />
     <None Include="shaders\GOURAND_LIGHTING.frag" />
     <None Include="shaders\GOURAND_LIGHTING.vert" />
     <None Include="shaders\GOURAND_LIGHTING_MODEL.frag" />
     <None Include="shaders\GOURAND_LIGHTING_MODEL.vert" />
+    <None Include="shaders\GOURAND_LIGHTING_W_SHADOW_MAPPING.frag" />
+    <None Include="shaders\GOURAND_LIGHTING_W_SHADOW_MAPPING.vert" />
     <None Include="shaders\model_test.frag" />
     <None Include="shaders\model_test.vert" />
     <None Include="shaders\skybox.frag" />

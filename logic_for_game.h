@@ -9,6 +9,8 @@
 
 #include "render_object.h"
 
+#include "process_shadow_map.h"
+
 #include <iostream>
 
 // Game class that stores all game related states/functionality

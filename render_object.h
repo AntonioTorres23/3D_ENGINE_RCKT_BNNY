@@ -22,8 +22,6 @@
 
 #include "skybox_cube_data.h"
 
-#include "process_shadow_map.h"
-
 #include <iostream>
 
 enum Object_Type
@@ -55,7 +53,6 @@ class RENDER_OBJECT_OBJ
 		void Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_object_argument, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
 		void Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& texture_object_argument);
 		void Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
-		void Render_and_Draw_Object(SHADOW_MAP_OBJ shadow_map_object_arg, glm::mat4 light_space_matrix_for_shadow_mapping);
 
 	private: // all of our private data/function members
 		// private SHADER_OBJ data member

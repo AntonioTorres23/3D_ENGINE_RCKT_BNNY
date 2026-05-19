@@ -223,5 +223,17 @@
     <None Include="process_shadow_map.h">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL_W_SHADOW_MAPPING.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING_W_SHADOW_MAPPING.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING_W_SHADOW_MAPPING.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING_W_SHADOW_MAPPING.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
