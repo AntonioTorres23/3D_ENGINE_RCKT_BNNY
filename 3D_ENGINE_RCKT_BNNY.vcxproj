@@ -211,6 +211,8 @@
     <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL.vert" />
     <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL_W_SHADOW_MAPPING.vert" />
     <None Include="shaders\BLINN_PHONG_LIGHTING_W_SHADOW_MAPPING.frag" />
+    <None Include="shaders\DEPTH_SHADER.frag" />
+    <None Include="shaders\DEPTH_SHADER.vert" />
     <None Include="shaders\GOURAND_LIGHTING.frag" />
     <None Include="shaders\GOURAND_LIGHTING.vert" />
     <None Include="shaders\GOURAND_LIGHTING_MODEL.frag" />

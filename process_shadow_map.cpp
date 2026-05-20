@@ -14,8 +14,8 @@ SHADOW_MAP_OBJ::SHADOW_MAP_OBJ(unsigned int shadow_map_texture_width, unsigned i
 	this->texture_mag_filter = GL_NEAREST;
 	this->texture_format_internally = GL_DEPTH_COMPONENT;
 	this->texture_format_internally = GL_DEPTH_COMPONENT; 
-	this->texture_wrap_s = GL_REPEAT;
-	this->texture_wrap_t = GL_REPEAT;
+	this->texture_wrap_s = GL_CLAMP_TO_EDGE;
+	this->texture_wrap_t = GL_CLAMP_TO_EDGE;
 	this->Initialize_Depth_Map_FBO(shadow_map_texture_width, shadow_map_texture_height);
 }
 

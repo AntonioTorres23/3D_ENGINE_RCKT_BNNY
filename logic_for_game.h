@@ -10,6 +10,7 @@
 #include "render_object.h"
 
 #include "process_shadow_map.h"
+#include "process_texture.h"
 
 #include <iostream>
 
@@ -28,5 +29,6 @@ public:
 
 	void Render_Game(); // renders the game on the players screen
 };
+
 
 #endif // !LOGIC_FOR_GAME_HEADER
