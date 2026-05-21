@@ -43,6 +43,10 @@ class RENDER_OBJECT_OBJ
 
 		Object_Type Type_Of_Object;
 
+
+		// public SHADER_OBJ data member
+		SHADER_OBJ object_shader_obj;
+
 		/*
 		void function that draws / renders a 3D object on screen, takes a TEXTURE_2D_OBJ's address, a 3-value vector that represents its position in the game environment,
 		a scale size 3-value vector which by default is set to 10.0 on both x, y, and z, a float value that represents the amount of rotation of the object in degrees which
@@ -55,8 +59,7 @@ class RENDER_OBJECT_OBJ
 		void Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
 
 	private: // all of our private data/function members
-		// private SHADER_OBJ data member
-		SHADER_OBJ object_shader_obj;
+		
 		// private vertex array object data member for our object
 		unsigned int object_vertex_array_obj;
 		// private element array object data member for our object

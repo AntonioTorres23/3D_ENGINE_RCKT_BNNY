@@ -105,11 +105,11 @@ void GAME_OBJ::Initalize_Game()
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 
 
-	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), CUBE);
-	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("test"), PLANE);
+	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("depth_map_shader"), CUBE);
+	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("depth_map_shader"), PLANE);
 	skybox_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("skybox_test"), SKYBOX);
 
-	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/quaddamage/quaddamage.obj", "quad_damage", true);
+	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("depth_map_shader"), MODEL, "assets/Models/quaddamage/quaddamage.obj", "quad_damage", true);
 
 	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/survival-guitar-backpack/source/Survival_BackPack_2/Survival_BackPack_2.fbx", "quad_damage", true);
 
@@ -117,28 +117,16 @@ void GAME_OBJ::Initalize_Game()
 
 	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/PentagramofProtection/invulner.obj", "survival_backpack", true);
 	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/B.D. Joe/B.D. Joe.obj", "quad_damage", false);
-	model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/B.D. Joe/B.D. Joe.obj", "quad_damage", false);
+	model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("depth_map_shader"), MODEL, "assets/Models/B.D. Joe/B.D. Joe.obj", "quad_damage", false);
+
+
 }
 
 
 void GAME_OBJ::Render_Game()
 {
+
 	SHADOW_MAP_OBJ shadow_map(1024, 1024);
-
-	glm::mat4 orthographic_light_perspective_matrix = glm::ortho(10.0f, 10.0f, 10.0f, 10.0f, 1.0f, 7.5f);
-	glm::mat4 light_view_matrix = glm::lookAt(directional_lighting_facing_direction, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-	glm::mat4 light_matrix_for_shadow_mapping = orthographic_light_perspective_matrix * light_view_matrix;
-
-	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
-	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
-	// set viewport to shadow map's texture dimensions
-	glViewport(0, 0, shadow_map.width_of_texture, shadow_map.height_of_texture);
-	// bind depth framebuffer object
-	glBindFramebuffer(GL_FRAMEBUFFER, shadow_map.depth_map_frame_buffer_object);
-	// clear depth buffer
-	glClear(GL_DEPTH_BUFFER_BIT);
-
 
 		ImGui::Text("DEBUG");
 
@@ -168,10 +156,19 @@ void GAME_OBJ::Render_Game()
 		ImGui::SetNextItemWidth(200.0f);
 		ImGui::ColorPicker3("Specular Color", specular_color_values);
 
+		glm::mat4 orthographic_light_perspective_matrix = glm::ortho(10.0f, 10.0f, 10.0f, 10.0f, 1.0f, 7.5f);
+		glm::mat4 light_view_matrix = glm::lookAt(directional_lighting_facing_direction, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+		glm::mat4 perspective_matrix = glm::perspective(glm::radians(amount_of_fov), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
+
+		glm::mat4 light_matrix_for_shadow_mapping = orthographic_light_perspective_matrix * light_view_matrix;
+		
+		Render_Shadows(shadow_map);
+
 
 		//Render_Shadows(shadow_map);
 
-		//glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		//RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("view_matrix", view_matrix);
 
 
@@ -190,7 +187,7 @@ void GAME_OBJ::Render_Game()
 
 
 		// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
-		//glm::mat4 skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
+		glm::mat4 skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
 
 		// render skybox FIRST
 
@@ -228,23 +225,30 @@ void GAME_OBJ::Render_Game()
 	
 		render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(5.0f, -17.f, 5.0f), glm::vec3(30.0f));
 
+		RESOURCE_MANAGER::Shader_Get("depth_map_shader").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
+
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glViewport(0, 0, this->Width_Of_Screen, this->Height_Of_Screen);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+
+
+	render_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("test");
+	render_obj_plane->object_shader_obj = RESOURCE_MANAGER::Shader_Get("test");
+	model_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("model_test");
+	model_obj_2->object_shader_obj = RESOURCE_MANAGER::Shader_Get("model_test");
+
 
 	orthographic_light_perspective_matrix = glm::ortho(10.0f, 10.0f, 10.0f, 10.0f, 1.0f, 7.5f);
 	light_view_matrix = glm::lookAt(directional_lighting_facing_direction, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	light_matrix_for_shadow_mapping = orthographic_light_perspective_matrix * light_view_matrix;
 
-	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
-
-	glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("view_matrix", view_matrix);
 
-
-	glm::mat4 perspective_matrix = glm::perspective(glm::radians(amount_of_fov), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
 	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("camera_world_position", world_position_of_camera);
@@ -256,47 +260,74 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("test").uniform_vector_3("directional_lighting_obj.specular_color", specular_color_values[0], specular_color_values[1], specular_color_values[2]);
 
 
-
-
-	// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
-	glm::mat4 skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
-
-	// render skybox FIRST
+	
 
 	// enable depth function so that it passes vertices that are equal to depth buffer's content
 	glDepthFunc(GL_LEQUAL);
 
 	skybox_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Skybox_Textures_Get("skybox_2"));
 
+
+
 	// set depth func back to original state which is GL_LESS
 	glDepthFunc(GL_LESS);
+
+	// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
+	skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
 
 	// PUT SKYBOX MATRICES HERE
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("skybox_view_matrix", skybox_view_matrix);
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
+
+
+	
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 5.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
+
+
+
+
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 5.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
+
+
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(5.0f, -17.f, 5.0f), glm::vec3(30.0f));
+
+
+
 
 	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 5.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, -1.0f, 10.0f), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj_2->Render_and_Draw_Object(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1), (100 * glfwGetTime()));
+	
+
+	
+	
 	// SEND MODEL MATRICES HERE 
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_vector_3("camera_world_position", world_position_of_camera);
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_vector_3("directional_lighting_obj.light_direction", directional_lighting_facing_direction);
+	
+	
+	
 	// you must specify the index of the color picker array individually to send the values via a uniform
 	// remember that within the uniform vector member functions within a SHADER_OBJ they are overloaded to either take a glm vector or individual x, y, or z float values
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_vector_3("directional_lighting_obj.ambient_color", ambient_color_values[0], ambient_color_values[1], ambient_color_values[2]);
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_vector_3("directional_lighting_obj.diffuse_color", diffuse_color_values[0], diffuse_color_values[1], diffuse_color_values[2]);
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_vector_3("directional_lighting_obj.specular_color", specular_color_values[0], specular_color_values[1], specular_color_values[2]);
 
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(0.0f, 5.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(7.0f, 5.0f, 3.0f), glm::vec3(5.0f), (100 * glfwGetTime()));
 
-	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(5.0f, -17.f, 5.0f), glm::vec3(30.0f));
+	RESOURCE_MANAGER::Shader_Get("test").Activate();
+	RESOURCE_MANAGER::Shader_Get("model_test").Activate();
 
+
+
+	RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
+	RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
+
+	
 
 }
 
