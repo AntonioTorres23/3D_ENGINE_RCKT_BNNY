@@ -30,7 +30,7 @@ uniform sampler2D shadowDepthMapTexture;
 uniform vec3 camera_world_position;
 uniform DirectionalLighting directional_lighting_obj;
 
-vec3 DirectionalLightingCalculations (DirectionalLighting direction_lighting_arg, vec3 normal_coordinates_arg, vec3 pos_of_camera_arg);
+vec3 DirectionalLightingCalculations (DirectionalLighting direction_lighting_arg, vec3 normal_coordinates_arg, vec3 pos_of_camera_arg, vec4 light_fragments);
 
 void main()
 {
@@ -38,16 +38,18 @@ void main()
 
 	vec3 normalized_direction_of_camera_from_the_model = normalize(camera_world_position - position_of_model_fragments);
 
-	vec3 lighting_calculations = DirectionalLightingCalculations(directional_lighting_obj, normalized_normal_coordiantes, normalized_direction_of_camera_from_the_model);
+	vec3 lighting_calculations = DirectionalLightingCalculations(directional_lighting_obj, normalized_normal_coordiantes, normalized_direction_of_camera_from_the_model, position_of_model_fragments_from_light_pov);
 	
 	//vec3 tex = texture(texture_image, tex_coords).rgb;
 	//color_output = vec4(lighting_calculations, 1.0);
+
+
 
 	color_output = vec4(lighting_calculations, 1.0);
 }
 
 
-vec3 DirectionalLightingCalculations (DirectionalLighting direction_lighting_arg, vec3 normal_coordinates_arg, vec3 pos_of_camera_arg)
+vec3 DirectionalLightingCalculations (DirectionalLighting direction_lighting_arg, vec3 normal_coordinates_arg, vec3 pos_of_camera_arg, vec4 light_fragments)
 {
 
 
@@ -70,7 +72,7 @@ vec3 DirectionalLightingCalculations (DirectionalLighting direction_lighting_arg
 	vec3 specular_return = direction_lighting_arg.specular_color * specular_lighting * vec3(texture(diffTex1, tex_coords).rgb);
 
 	// use calculate shadows function to see if current fragment is in shadow or not
-	float in_shadow = Calculate_Shadows(position_of_model_fragments_from_light_pov);
+	float in_shadow = Calculate_Shadows(light_fragments);
 
 	//return (ambient_lighting + diffuse_lighting + specular_lighting);
 	

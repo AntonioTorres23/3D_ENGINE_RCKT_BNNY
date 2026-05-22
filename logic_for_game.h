@@ -10,7 +10,6 @@
 #include "render_object.h"
 
 #include "process_shadow_map.h"
-#include "process_texture.h"
 
 #include <iostream>
 

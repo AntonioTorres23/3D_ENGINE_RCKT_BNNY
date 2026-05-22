@@ -1,5 +1,8 @@
 #ifndef PROCESS_SHADOW_MAP_HEADER
 #define PROCESS_SHADOW_MAP_HEADER
+
+#include <iostream>
+
 #include "process_texture.h"
 
 class SHADOW_MAP_OBJ : public TEXTURE_2D_OBJ
