@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\IMGUI">
+      <UniqueIdentifier>{bd61976c-9116-4429-a7f1-30e787f58310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{5df5f15b-9d64-4664-8f37-679b4585b9ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resource_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image_init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="process_shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="process_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="render_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="load_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="prep_mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="plane_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cube_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logic_for_game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui.cpp">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_demo.cpp">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_draw.cpp">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_tables.cpp">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_widgets.cpp">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_impl_glfw.cpp">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IM_GUI_OBJ.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="process_cubemap_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="skybox_cube_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LIGHTING_UNIFORMS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="load_mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="process_shadow_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource_manager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process_shader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process_texture.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="render_object.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="load_model.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="prep_mesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plane_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cube_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="logic_for_game.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imconfig.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_internal.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_rectpack.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_textedit.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_truetype.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_impl_glfw.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_impl_opengl3.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Resource Files\IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IM_GUI_OBJ.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="process_cubemap_texture.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="skybox_cube_data.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LIGHTING_UNIFORMS.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="load_mesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\skybox.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\skybox.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\3D_TEST.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\3D_TEST.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\model_test.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\model_test.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING_MODEL.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING_MODEL.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="process_shadow_map.h">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING_MODEL_W_SHADOW_MAPPING.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING_W_SHADOW_MAPPING.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\BLINN_PHONG_LIGHTING_W_SHADOW_MAPPING.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\GOURAND_LIGHTING_W_SHADOW_MAPPING.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\DEPTH_SHADER.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="shaders\DEPTH_SHADER.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

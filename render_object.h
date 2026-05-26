@@ -1,0 +1,81 @@
+#ifndef RENDER_OBJECT_HEADER
+#define RENDER_OBJECT_HEADER
+
+#include <glad/glad.h> // include glad to access OpenGL pointer functions
+#include <glm/glm.hpp> // include glm, a library that allows for us to create OpenGL vectors, matrices, etc. 
+#include <glm/gtc/matrix_transform.hpp> // another glm feature that allows us to transform matrices such as rotation, scaling, translation
+
+#include <GLFW/glfw3.h> // TEST FOR ROTATION
+
+// include our process_texture header file to use the TEXTURE_2D_OBJ type within this function
+#include "process_texture.h"
+// include our process_shader header file to use the SHADER_OBJ type within this function
+#include "process_shader.h"
+
+#include "process_cubemap_texture.h"
+
+#include "load_model.h"
+
+#include "plane_data.h"
+
+#include "cube_data.h"
+
+#include "skybox_cube_data.h"
+
+#include <iostream>
+
+enum Object_Type
+{
+	MODEL, CUBE, PLANE, SKYBOX
+};
+
+class RENDER_OBJECT_OBJ
+{
+
+	public: // all of our public data/function members
+		// constructor for RENDER_SPRITE_OBJ which requires an address of a shader object as its parameter 
+		// CHANGE ON 1/14/2026 @ 2:45 PM, CHANGED CONSTRUCTOR PARAMTER/ARGUMENT OF RENDER_SPRITE_OBJ FROM A SHADER_OBJ &SHADER_OBJECT_ARGUMENT TO A CONST SHADER_OBJ &SHADER_OBJECT_ARGUMENT 
+		RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, Object_Type type_of_object);
+		RENDER_OBJECT_OBJ(const SHADER_OBJ& shader_object_argument, Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string model_name, bool gamma);
+
+		// deconstructor for RENDER_SPRITE_OBJ
+		~RENDER_OBJECT_OBJ();
+
+		Object_Type Type_Of_Object;
+
+
+		// public SHADER_OBJ data member
+		SHADER_OBJ object_shader_obj;
+
+		/*
+		void function that draws / renders a 3D object on screen, takes a TEXTURE_2D_OBJ's address, a 3-value vector that represents its position in the game environment,
+		a scale size 3-value vector which by default is set to 10.0 on both x, y, and z, a float value that represents the amount of rotation of the object in degrees which
+		by default is set to 0.0, and a 3-value vector that represents a color to set the object as which by default is 1.0 on r, g, and b (white)
+		*/
+
+		// CHANGE ON 1/14/2026 @ 4:30 PM, CHANGED PARAMTER/ARGUMENT OF RENDER_AND_DRAW_OBJECT METHOD FUNCTION FROM A TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGUMENT TO A CONST TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGGUMENT 
+		void Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_object_argument, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
+		void Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& texture_object_argument);
+		void Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
+
+	private: // all of our private data/function members
+		
+		// private vertex array object data member for our object
+		unsigned int object_vertex_array_obj;
+		// private element array object data member for our object
+		unsigned int object_element_array_obj; 
+
+		MODEL_OBJ model_obj_priv;
+
+		glm::mat4 transformation_matrix;
+
+
+		// private void function that sets up the sprite's vertex buffer object and vertex pointer attributes
+		void vertex_data_intialize(Object_Type type_of_object);
+
+		void vertex_data_intialize(Object_Type type_of_object, std::string path_to_3D_model_filetype, std::string name_for_model, bool gamma);
+};
+
+
+#endif // !RENDER_OBJECT_HEADER
+
