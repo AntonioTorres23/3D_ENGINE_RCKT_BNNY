@@ -116,7 +116,7 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& textur
 }
 
 
-void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument, float rotation_degree_argument, glm::vec3 object_color_argument)
+void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument, float rotation_degree_argument, glm::vec3 rotation_axis, glm::vec3 object_color_argument)
 {
 	this->object_shader_obj.Activate();
 
@@ -126,7 +126,7 @@ void RENDER_OBJECT_OBJ::Render_and_Draw_Object(glm::vec3 position_of_object_argu
 
 	transformation_matrix = glm::scale(transformation_matrix, scale_size_argument);
 
-	transformation_matrix = glm::rotate(transformation_matrix, glm::radians(rotation_degree_argument), glm::vec3(0.0f, 1.0f, 0.0f));
+	transformation_matrix = glm::rotate(transformation_matrix, glm::radians(rotation_degree_argument), rotation_axis);
 
 	// GLM MAT3 MATRIX THAT IS FOR THE NORMAL COORDINATES WHICH IS THE INVERSED TRANSPOSED MATRIX OF OUR TRANSFORMATION MATRIX
 	// WE MAKE IT A 3X3 TO LOSE ITS TRANSLATION PROPERTIES

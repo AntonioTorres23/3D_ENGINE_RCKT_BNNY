@@ -56,7 +56,7 @@ class RENDER_OBJECT_OBJ
 		// CHANGE ON 1/14/2026 @ 4:30 PM, CHANGED PARAMTER/ARGUMENT OF RENDER_AND_DRAW_OBJECT METHOD FUNCTION FROM A TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGUMENT TO A CONST TEXTURE_2D_OBJ &TEXTURE_2D_OBJECT_ARGGUMENT 
 		void Render_and_Draw_Object(const TEXTURE_2D_OBJ& texture_object_argument, glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
 		void Render_and_Draw_Object(const CUBEMAP_TEXTURE_OBJ& texture_object_argument);
-		void Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 object_color_argument = glm::vec3(1.0));
+		void Render_and_Draw_Object(glm::vec3 position_of_object_argument, glm::vec3 scale_size_argument = glm::vec3(10.0f, 10.0f, 10.0f), float rotation_degree_argument = 0.0f, glm::vec3 rotation_axis = glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3 object_color_argument = glm::vec3(1.0));
 
 	private: // all of our private data/function members
 		

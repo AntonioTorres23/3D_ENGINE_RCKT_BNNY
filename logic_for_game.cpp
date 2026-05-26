@@ -133,8 +133,8 @@ void GAME_OBJ::Initalize_Game()
 	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), PLANE);
 	skybox_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("skybox_test"), SKYBOX);
 
-	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/Counter-Terrorists_GIGN/COUNTER-TERRORIST_GIGN.obj", "quad_damage", false);
-
+	//model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/Counter-Terrorists_GIGN/COUNTER-TERRORIST_GIGN.obj", "quad_damage", false);
+	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/Dust2/Dust2.obj", "quad_damage", false);
 	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/survival-guitar-backpack/source/Survival_BackPack_2/Survival_BackPack_2.fbx", "quad_damage", true);
 
 	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/1965_MB_560_SEC_obj/d4411c08-dfa1-4727-a541-ef9bd7bde35a.obj", "quad_damage", true);
@@ -239,12 +239,12 @@ void GAME_OBJ::Render_Game()
 	// clear depth buffer
 	glClear(GL_DEPTH_BUFFER_BIT);
 	
-	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
-	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -297,11 +297,14 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 
 	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
-	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
-	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, -0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
+	//model_obj->Render_and_Draw_Object(glm::vec3(2.0f, 0.0f, 1.0f), glm::vec3(1.0f), (100 * glfwGetTime()));
+	//model_obj->Render_and_Draw_Object(glm::vec3(-2.0f, 0.0f, -1.0f), glm::vec3(1.0f), (100 * glfwGetTime()));
 }
 
 
