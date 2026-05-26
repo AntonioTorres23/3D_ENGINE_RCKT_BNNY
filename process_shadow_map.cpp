@@ -58,22 +58,12 @@ void SHADOW_MAP_OBJ::Initialize_Depth_Map_FBO(unsigned int shadow_map_texture_wi
 	// tell OpenGL that we do not want to read or draw any color data with this framebuffer object
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
-	
-	//GLint att;
-
-	//glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE, &att);
-
-	//std::cout << att << std::endl;
-
-	//std::cout << "Framebuffer Texture Mapped" << std::endl;
-
 
 	// unbind depth map buffer object
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	//std::cout << this->depth_map_frame_buffer_object << std::endl;
 	std::cout << this->texture_ID << std::endl;
-	//std::cout << shadow_map_texture_width << " " << shadow_map_texture_height << std::endl; 
+
 
 
 }

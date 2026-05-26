@@ -92,8 +92,8 @@ void GAME_OBJ::Initalize_Game()
 
 
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Pattern_03-128x128.png", false, "texture");
-	//RESOURCE_MANAGER::Texture_Load("assets/PTP-Tile_05-128x128.png", false, "texture_2");
-	RESOURCE_MANAGER::Texture_Load("assets/arcade_carpet_2_512.png", false, "texture_2");
+	RESOURCE_MANAGER::Texture_Load("assets/PTP-Tile_05-128x128.png", false, "texture_2");
+	//RESOURCE_MANAGER::Texture_Load("assets/arcade_carpet_2_512.png", false, "texture_2");
 	
 	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Classic", false, "skybox");
 	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Empty_Space", false, "skybox_2");
@@ -133,7 +133,7 @@ void GAME_OBJ::Initalize_Game()
 	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), PLANE);
 	skybox_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("skybox_test"), SKYBOX);
 
-	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/quaddamage/quaddamage.dae", "quad_damage", true);
+	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/Counter-Terrorists_GIGN/COUNTER-TERRORIST_GIGN.obj", "quad_damage", false);
 
 	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/survival-guitar-backpack/source/Survival_BackPack_2/Survival_BackPack_2.fbx", "quad_damage", true);
 
@@ -171,9 +171,6 @@ void GAME_OBJ::Render_Game()
 	ImGui::SliderFloat("Light X Direction", &directional_lighting_facing_direction.x, -50.0f, 0.0f);
 	ImGui::SliderFloat("Light Y Direction", &directional_lighting_facing_direction.y, -50.0f, 50.0f);
 	ImGui::SliderFloat("Light Z Direction", &directional_lighting_facing_direction.z, -50.0f, 0.0f);
-
-	ImGui::SliderInt("Orthographic Matrix", &orthographic_matrix, 0, 1000);
-
 	// To store color picker values, you need a 3-value float array
 
 	//ImGui::SliderFloat3("test", a, 0.0f, 1.0f);
@@ -183,37 +180,35 @@ void GAME_OBJ::Render_Game()
 	ImGui::ColorPicker3("Diffuse Color", diffuse_color_values);
 	ImGui::SetNextItemWidth(200.0f);
 	ImGui::ColorPicker3("Specular Color", specular_color_values);
+	ImGui::SetNextItemWidth(200.0f);
+	ImGui::SliderInt("Ortographic Matrix Size", &orthographic_matrix, 10, 100);
 
+	ImGui::SetNextItemWidth(200.0f);
 	ImGui::SliderFloat("NEAR_SHADOW_PLANE", &near_plane_shadow, -100.0f, 100.0f);
 	ImGui::SliderFloat("FAR_SHADOW_PLANE", &far_plane_shadow, -100.0f, 100.0f);
-
+	ImGui::SetNextItemWidth(200.0f);
 	ImGui::SliderFloat("Model X Direction", &model_position.x, -50.0f, 50.0f);
 
 	ImGui::SliderFloat("Model Y Direction", &model_position.y, -50.0f, 50.0f);
 
 
 	ImGui::SliderFloat("Model Z Direction", &model_position.z, -50.0f, 50.0f);
-
+	ImGui::SetNextItemWidth(200.0f);
 	ImGui::SliderFloat("Model Scale Size", &model_scale_size, -100.0f, 100.0f);
-
+	ImGui::SetNextItemWidth(200.0f);
 	ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f);
 
 	ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f);
 
-
 	ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f);
-
-
-
+	ImGui::SetNextItemWidth(200.0f);
 	ImGui::SliderFloat("CUBE 2  X Direction", &cube_position_2.x, -50.0f, 50.0f);
 
 	ImGui::SliderFloat("CUBE 2  Y Direction", &cube_position_2.y, -50.0f, 50.0f);
 
 
 	ImGui::SliderFloat("CUBE 2  Z Direction", &cube_position_2.z, -50.0f, 50.0f);
-
-
-
+	ImGui::SetNextItemWidth(200.0f);
 	glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	//glm::mat4 orthographic_light_perspective_matrix = glm::ortho(-(static_cast<float>(orthographic_matrix)), (static_cast<float>(orthographic_matrix)), -(static_cast<float>(orthographic_matrix)), (static_cast<float>(orthographic_matrix)), near_plane_shadow, far_plane_shadow);
@@ -230,20 +225,10 @@ void GAME_OBJ::Render_Game()
 	// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
 	glm::mat4 skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
 
-	/*
 	RESOURCE_MANAGER::Shader_Get("depth_map_shader").Activate();
 	render_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 	render_obj_plane->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
-	//model_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("model_test");
-	model_obj_2->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
-
-	RESOURCE_MANAGER::Shader_Get("depth_map_shader").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
-	*/
-
-	RESOURCE_MANAGER::Shader_Get("depth_map_shader").Activate();
-	render_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
-	render_obj_plane->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
-	//model_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("model_test");
+	model_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 	model_obj_2->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 
 	RESOURCE_MANAGER::Shader_Get("depth_map_shader").Activate().uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
@@ -253,24 +238,14 @@ void GAME_OBJ::Render_Game()
 	glBindFramebuffer(GL_FRAMEBUFFER, shadow_map->depth_map_frame_buffer_object);
 	// clear depth buffer
 	glClear(GL_DEPTH_BUFFER_BIT);
-
-	//glEnable(GL_DEPTH_TEST);
-	//glCullFace(GL_FRONT);
-
-
-	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
-	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
-
-	
-	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
+	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
 
-	
-
-	//glCullFace(GL_BACK);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
@@ -286,7 +261,7 @@ void GAME_OBJ::Render_Game()
 
 
 	// SEND MODEL MATRICES HERE 
-		// you must specify the index of the color picker array individually to send the values via a uniform
+	// you must specify the index of the color picker array individually to send the values via a uniform
 	// remember that within the uniform vector member functions within a SHADER_OBJ they are overloaded to either take a glm vector or individual x, y, or z float values
 	RESOURCE_MANAGER::Shader_Get("model_test").uniform_vector_3("directional_lighting_obj.light_direction", directional_lighting_facing_direction);
 	glActiveTexture(GL_TEXTURE18);
@@ -325,11 +300,9 @@ void GAME_OBJ::Render_Game()
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
-	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
-
+	model_obj->Render_and_Draw_Object(glm::vec3(1.0f, 0.0f, 0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
 }
-
 
 
 void Render_Shadows(SHADOW_MAP_OBJ &shadow_mapping_object_argument)
