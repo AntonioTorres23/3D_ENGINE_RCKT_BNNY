@@ -90,8 +90,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		return -1;
 	}
 
-	IM_GUI_OBJ im_gui_win(glfw_window);
-	ImGuiIO& im_gui_input_output = ImGui::GetIO();
+	
 
 	// this is a GLFW function that ties to the function we defined to process the given keyboard input
 	/*
@@ -110,6 +109,10 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	// this is a GLFW function disables the cursor icon when on this window 
 	glfwSetInputMode(glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
+	// ADD IMGUI window and io after callback functions to both capture mouse and use im_gui
+	IM_GUI_OBJ im_gui_win(glfw_window);
+	ImGuiIO& im_gui_input_output = ImGui::GetIO();
+
 	// specify the viewport dimensions (how we view our renderings/game environment)
 	// we set them to be the same size as the window itself
 	glViewport(0, 0, WIDTH_OF_SCREEN, HEIGHT_OF_SCREEN);
@@ -127,6 +130,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	// while !glfwWindowShouldClose(window) means while glfw window is not closed, process source code inside loop
 	while (!glfwWindowShouldClose(glfw_window))
 	{
+
 
 		// get current frame to calculate delta time with glfwGetTime(); this gets the current time since the window was open
 		float cFrame = glfwGetTime();
@@ -249,6 +253,20 @@ void glfw_callback_keyboard_input(GLFWwindow* glfw_window_argument, int input, i
 	}
 
 
+	if (input == GLFW_KEY_L && input_action == GLFW_PRESS)
+	{
+
+		// this is a GLFW function disables the cursor icon when on this window 
+		glfwSetInputMode(glfw_window_argument, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+
+
+	if (input == GLFW_KEY_P && input_action == GLFW_PRESS)
+	{
+
+		// this is a GLFW function disables the cursor icon when on this window 
+		glfwSetInputMode(glfw_window_argument, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
 
 	// if our input is greater than or equal to 0 (which I guess means 1 if we are thinking about how arrays work) and less than 1024, process input
 	if (input >= 0 && input < 1024)
