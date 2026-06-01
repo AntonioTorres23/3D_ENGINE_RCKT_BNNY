@@ -11,6 +11,8 @@
 
 #include "process_shadow_map.h"
 
+#include "cam.h"
+
 #include <iostream>
 
 // Game class that stores all game related states/functionality
@@ -21,10 +23,29 @@ public:
 	GAME_OBJ(unsigned int width_of_window, unsigned int height_of_window); // constructor with arguments required to create a GAME_OBJ object
 	~GAME_OBJ(); // deconstructor of GAME_OBJ
 
+
+	bool		 Key_Pressed_Buffer[1024]; // buffer that stores key's that are pressed by player
+	bool		 Processed_Keys[1024];    //  buffer that stores key's that have been processed
+
 	unsigned int Width_Of_Screen, Height_Of_Screen; // stores the width and height of the actual game window
+
+	// where the last yaw position that was grabbed from the callback function is stored
+	float last_mouse_yaw_position;
+	// where the last pitch position that was grabbed from the callback function is stored
+	float last_mouse_pitch_position;
+
+	float flt_raw_mouse_yaw;
+
+	float flt_raw_mouse_pitch;
+
+
+	void Process_User_Input(float delta_time); // function that processes keys/movement done by player
 
 	// initalize the current state of the game (load all the shaders, textures, and levels)
 	void Initalize_Game();
+
+	void Update_Game(float delta_time); // updates game to reflect prior user/movement and state of ball
+
 
 	void Render_Game(); // renders the game on the players screen
 };

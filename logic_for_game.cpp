@@ -1,8 +1,7 @@
 #include "logic_for_game.h"
 
 
-// prototype for shadow mapping function only relevant to this C++ file
-void Render_Shadows(SHADOW_MAP_OBJ &shadow_mapping_object_argument);
+
 
 float amount_of_fov = 60.0f; 
 
@@ -44,12 +43,16 @@ RENDER_OBJECT_OBJ *skybox_obj;
 RENDER_OBJECT_OBJ *model_obj;
 RENDER_OBJECT_OBJ *model_obj_2;
 SHADOW_MAP_OBJ *shadow_map;
+CAM_OBJ *camera_obj;
 
 
 GAME_OBJ::GAME_OBJ(unsigned int width_of_window, unsigned int height_of_window)
 	: Width_Of_Screen(width_of_window), Height_Of_Screen(height_of_window)
 {
-
+	// where the last yaw position that was grabbed from the callback function is stored
+	float last_mouse_yaw_position = Width_Of_Screen / 2.0f;
+	// where the last pitch position that was grabbed from the callback function is stored
+	float last_mouse_pitch_position = Height_Of_Screen / 2.0f;
 }
 
 GAME_OBJ::~GAME_OBJ()
@@ -58,8 +61,9 @@ GAME_OBJ::~GAME_OBJ()
 	delete render_obj_plane;
 	delete skybox_obj;
 	delete model_obj;
+	delete model_obj_2;
+	delete shadow_map;
 }
-
 void GAME_OBJ::Initalize_Game()
 {
 	//SHADOW_MAP_OBJ shadow_map(1024, 1024);
@@ -145,6 +149,8 @@ void GAME_OBJ::Initalize_Game()
 	
 	shadow_map = new SHADOW_MAP_OBJ(1024, 1024);
 
+	camera_obj = new CAM_OBJ();
+
 	//glActiveTexture(GL_TEXTURE18);
 	//glBindTexture(GL_TEXTURE_2D, shadow_map->texture_ID);
 	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_integer("shadowDepthMapTexture", 18);
@@ -209,7 +215,9 @@ void GAME_OBJ::Render_Game()
 
 	ImGui::SliderFloat("CUBE 2  Z Direction", &cube_position_2.z, -50.0f, 50.0f);
 	ImGui::SetNextItemWidth(200.0f);
-	glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	glm::mat4 view_matrix = camera_obj->Obtain_View_Matrix();
+
 
 	//glm::mat4 orthographic_light_perspective_matrix = glm::ortho(-(static_cast<float>(orthographic_matrix)), (static_cast<float>(orthographic_matrix)), -(static_cast<float>(orthographic_matrix)), (static_cast<float>(orthographic_matrix)), near_plane_shadow, far_plane_shadow);
 	glm::mat4 orthographic_light_perspective_matrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 150.0f);
@@ -228,7 +236,7 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("depth_map_shader").Activate();
 	render_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 	render_obj_plane->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
-	model_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
+	//model_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 	model_obj_2->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 
 	RESOURCE_MANAGER::Shader_Get("depth_map_shader").Activate().uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
@@ -240,9 +248,9 @@ void GAME_OBJ::Render_Game()
 	glClear(GL_DEPTH_BUFFER_BIT);
 	
 	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5), (100 * glfwGetTime()));
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
+	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5), (100 * glfwGetTime()));
+	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
+	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
 	model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -298,8 +306,8 @@ void GAME_OBJ::Render_Game()
 
 	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
 	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
-	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
+	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
+	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
 	model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, -0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
@@ -307,14 +315,34 @@ void GAME_OBJ::Render_Game()
 	//model_obj->Render_and_Draw_Object(glm::vec3(-2.0f, 0.0f, -1.0f), glm::vec3(1.0f), (100 * glfwGetTime()));
 }
 
-
-void Render_Shadows(SHADOW_MAP_OBJ &shadow_mapping_object_argument)
+void GAME_OBJ::Process_User_Input(float delta_time)
 {
-	// set viewport to shadow map's texture dimensions
-	glViewport(0, 0, shadow_mapping_object_argument.width_of_texture, shadow_mapping_object_argument.height_of_texture);
-	// bind depth framebuffer object
-	glBindFramebuffer(GL_FRAMEBUFFER, shadow_mapping_object_argument.depth_map_frame_buffer_object);
-	// clear depth buffer
-	glClear(GL_DEPTH_BUFFER_BIT);
 
+	if (this->Key_Pressed_Buffer[GLFW_KEY_W])
+		camera_obj->obj_cam_pos += camera_obj->obj_cam_front_view * camera_obj->obj_cam_speed;
+	if (this->Key_Pressed_Buffer[GLFW_KEY_A])
+		camera_obj->obj_cam_pos -= camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
+	if (this->Key_Pressed_Buffer[GLFW_KEY_S])
+		camera_obj->obj_cam_pos -= camera_obj->obj_cam_front_view * camera_obj->obj_cam_speed;
+	if (this->Key_Pressed_Buffer[GLFW_KEY_D])
+		camera_obj->obj_cam_pos += camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
+
+	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
+	float mouse_yaw_offset = last_mouse_yaw_position - flt_raw_mouse_yaw;
+	// subtracts the difference of the pitch position last stored and the current pitch position that was called.
+	float mouse_pitch_offset = flt_raw_mouse_pitch - last_mouse_pitch_position;
+	// set the yaw position that was just called as the last yaw position
+	// this gets us set up for the next time this function is called
+	last_mouse_yaw_position = flt_raw_mouse_yaw;
+	// sets the pitch position that was just called as the last pitch position
+	// this gets us set up for the next time this function is called 
+	last_mouse_pitch_position = flt_raw_mouse_pitch;
+
+	camera_obj->MOUSE(mouse_yaw_offset, mouse_pitch_offset);
+
+}
+
+void GAME_OBJ::Update_Game(float delta_time)
+{
+	GAME_OBJ::Process_User_Input(delta_time);
 }

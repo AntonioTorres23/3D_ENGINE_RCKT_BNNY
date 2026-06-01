@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cam.cpp" />
     <ClCompile Include="cube_data.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="stb_image_init.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cam.h" />
     <ClInclude Include="cube_data.h" />
     <ClInclude Include="GLENUM_CUBEMAP_TEXTURE_POSITIONS.h" />
     <ClInclude Include="IM_GUI_OBJ.h" />

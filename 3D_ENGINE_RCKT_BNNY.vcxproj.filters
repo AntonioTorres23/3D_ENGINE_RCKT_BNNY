@@ -99,6 +99,9 @@
     <ClCompile Include="process_shadow_map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_manager.h">
@@ -174,6 +177,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="load_mesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cam.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
