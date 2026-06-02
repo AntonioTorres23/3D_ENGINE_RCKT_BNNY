@@ -45,6 +45,13 @@ RENDER_OBJECT_OBJ *model_obj_2;
 SHADOW_MAP_OBJ *shadow_map;
 CAM_OBJ *camera_obj;
 
+reactphysics3d::RigidBody* bod; 
+
+reactphysics3d::PhysicsCommon phys_common;
+
+reactphysics3d::PhysicsWorld* phys_world;
+
+reactphysics3d::PhysicsWorld::WorldSettings world_settings;
 
 GAME_OBJ::GAME_OBJ(unsigned int width_of_window, unsigned int height_of_window)
 	: Width_Of_Screen(width_of_window), Height_Of_Screen(height_of_window)
@@ -63,6 +70,7 @@ GAME_OBJ::~GAME_OBJ()
 	delete model_obj;
 	delete model_obj_2;
 	delete shadow_map;
+	phys_common.destroyPhysicsWorld(phys_world);
 }
 void GAME_OBJ::Initalize_Game()
 {
@@ -131,7 +139,28 @@ void GAME_OBJ::Initalize_Game()
 	//RESOURCE_MANAGER::Shader_Get("model_test").Activate().uniform_integer("shadowDepthMapTexture", shadow_map->texture_ID);
 	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
 	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
+	world_settings.defaultVelocitySolverNbIterations = 20;
+	world_settings.isSleepingEnabled = false;
+	world_settings.gravity = reactphysics3d::Vector3(0, -9.1, 0);
 
+	phys_world = phys_common.createPhysicsWorld(world_settings);
+
+	phys_world->setNbIterationsVelocitySolver(15);
+	phys_world->setNbIterationsPositionSolver(8);
+
+
+	phys_world->enableSleeping(false);
+
+	reactphysics3d::Vector3 pos(0.0, 3.0, 0.0);
+	reactphysics3d::Quaternion quart = reactphysics3d::Quaternion::identity();
+	reactphysics3d::Transform tran(pos, quart);
+	bod = phys_world->createRigidBody(tran);
+	bod->setType(reactphysics3d::BodyType::KINEMATIC);
+	bod->enableGravity(false);
+
+	reactphysics3d::Vector3 forc(2.0, 0.0, 0.0);
+
+	bod->applyLocalForceAtCenterOfMass(forc);
 
 	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), CUBE);
 	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), PLANE);
@@ -160,6 +189,9 @@ void GAME_OBJ::Initalize_Game()
 
 void GAME_OBJ::Render_Game()
 {
+
+
+
 	ImGui::Text("DEBUG");
 
 	ImGui::Text("World View Settings");
@@ -345,4 +377,6 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 void GAME_OBJ::Update_Game(float delta_time)
 {
 	GAME_OBJ::Process_User_Input(delta_time);
+
+	phys_world->update(5);
 }

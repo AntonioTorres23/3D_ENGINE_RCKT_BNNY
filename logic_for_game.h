@@ -13,6 +13,8 @@
 
 #include "cam.h"
 
+#include <reactphysics3d/reactphysics3d.h>
+
 #include <iostream>
 
 // Game class that stores all game related states/functionality
