@@ -6,7 +6,7 @@
 #include <GLFW/glfw3.h> // include glfw3; a lib that ties OpenGL to a window and callback functions within a window
 
 #include <iostream> // include iostream to send default output to the terminal
-#include <reactphysics3d/reactphysics3d.h>
+
 
 #include "resource_manager.h"
 #include "logic_for_game.h"
@@ -166,7 +166,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 		// glClear is an OpenGL function that clears the specifed buffer with a buffer bit
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		game.Process_User_Input(dTime);
+		game.Update_Game(dTime);
 
 		//game.Update_Game(dTime);
 

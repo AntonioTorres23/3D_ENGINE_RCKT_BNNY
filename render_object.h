@@ -47,6 +47,9 @@ class RENDER_OBJECT_OBJ
 		// public SHADER_OBJ data member
 		SHADER_OBJ object_shader_obj;
 
+
+		glm::mat4 transformation_matrix;
+
 		/*
 		void function that draws / renders a 3D object on screen, takes a TEXTURE_2D_OBJ's address, a 3-value vector that represents its position in the game environment,
 		a scale size 3-value vector which by default is set to 10.0 on both x, y, and z, a float value that represents the amount of rotation of the object in degrees which
@@ -66,8 +69,6 @@ class RENDER_OBJECT_OBJ
 		unsigned int object_element_array_obj; 
 
 		MODEL_OBJ model_obj_priv;
-
-		glm::mat4 transformation_matrix;
 
 
 		// private void function that sets up the sprite's vertex buffer object and vertex pointer attributes

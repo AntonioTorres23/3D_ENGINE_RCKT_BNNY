@@ -1,6 +1,8 @@
 #include "logic_for_game.h"
 
 
+reactphysics3d::PhysicsCommon physCom;
+reactphysics3d::PhysicsWorld* physWorld = physCom.createPhysicsWorld();
 
 
 float amount_of_fov = 60.0f; 
@@ -12,7 +14,6 @@ glm::vec3 cube_position_1(0.0f, 0.5f, 0.0f);
 glm::vec3 cube_position_2(5.0f, 0.5f, 0.0f);
 
 int orthographic_matrix = 30;
-
 
 glm::vec3 world_position_of_camera(0.0f, 0.0f, 15.0f);
 glm::vec3 directional_lighting_facing_direction(-2.0f, 4.0f, -1.0f);
@@ -37,6 +38,24 @@ float specular_color_values[3]
 	1.0f, 1.0f, 1.0f
 };
 
+reactphysics3d::Vector3 POS(cube_position_1.x, cube_position_1.y, cube_position_1.z);
+reactphysics3d::Quaternion quart = reactphysics3d::Quaternion::identity();
+reactphysics3d::Transform trans(POS, quart);
+reactphysics3d::RigidBody* bod_rigid = physWorld->createRigidBody(trans);
+
+reactphysics3d::Vector3 POS2(cube_position_2.x, cube_position_2.y, cube_position_2.z);
+reactphysics3d::Quaternion quart2 = reactphysics3d::Quaternion::identity();
+reactphysics3d::Transform trans2(POS2, quart2);
+reactphysics3d::RigidBody* bod_rigid2 = physWorld->createRigidBody(trans2);
+
+reactphysics3d::Vector3 HalfSpace(0.5, 0.5, 0.5);
+
+reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
+
+reactphysics3d::Collider* collider1 = bod_rigid->addCollider(BoxCollision, trans);
+
+reactphysics3d::Collider* collider2 = bod_rigid->addCollider(BoxCollision, trans2);
+
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
 RENDER_OBJECT_OBJ *skybox_obj;
@@ -45,13 +64,7 @@ RENDER_OBJECT_OBJ *model_obj_2;
 SHADOW_MAP_OBJ *shadow_map;
 CAM_OBJ *camera_obj;
 
-reactphysics3d::RigidBody* bod; 
 
-reactphysics3d::PhysicsCommon phys_common;
-
-reactphysics3d::PhysicsWorld* phys_world;
-
-reactphysics3d::PhysicsWorld::WorldSettings world_settings;
 
 GAME_OBJ::GAME_OBJ(unsigned int width_of_window, unsigned int height_of_window)
 	: Width_Of_Screen(width_of_window), Height_Of_Screen(height_of_window)
@@ -70,10 +83,16 @@ GAME_OBJ::~GAME_OBJ()
 	delete model_obj;
 	delete model_obj_2;
 	delete shadow_map;
-	phys_common.destroyPhysicsWorld(phys_world);
+	delete camera_obj;
 }
 void GAME_OBJ::Initalize_Game()
 {
+
+	bod_rigid->setType(reactphysics3d::BodyType::DYNAMIC);
+	bod_rigid2->setType(reactphysics3d::BodyType::DYNAMIC);
+
+	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
+
 	//SHADOW_MAP_OBJ shadow_map(1024, 1024);
 
 
@@ -139,28 +158,7 @@ void GAME_OBJ::Initalize_Game()
 	//RESOURCE_MANAGER::Shader_Get("model_test").Activate().uniform_integer("shadowDepthMapTexture", shadow_map->texture_ID);
 	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
 	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
-	world_settings.defaultVelocitySolverNbIterations = 20;
-	world_settings.isSleepingEnabled = false;
-	world_settings.gravity = reactphysics3d::Vector3(0, -9.1, 0);
 
-	phys_world = phys_common.createPhysicsWorld(world_settings);
-
-	phys_world->setNbIterationsVelocitySolver(15);
-	phys_world->setNbIterationsPositionSolver(8);
-
-
-	phys_world->enableSleeping(false);
-
-	reactphysics3d::Vector3 pos(0.0, 3.0, 0.0);
-	reactphysics3d::Quaternion quart = reactphysics3d::Quaternion::identity();
-	reactphysics3d::Transform tran(pos, quart);
-	bod = phys_world->createRigidBody(tran);
-	bod->setType(reactphysics3d::BodyType::KINEMATIC);
-	bod->enableGravity(false);
-
-	reactphysics3d::Vector3 forc(2.0, 0.0, 0.0);
-
-	bod->applyLocalForceAtCenterOfMass(forc);
 
 	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), CUBE);
 	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), PLANE);
@@ -180,6 +178,8 @@ void GAME_OBJ::Initalize_Game()
 
 	camera_obj = new CAM_OBJ();
 
+
+
 	//glActiveTexture(GL_TEXTURE18);
 	//glBindTexture(GL_TEXTURE_2D, shadow_map->texture_ID);
 	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_integer("shadowDepthMapTexture", 18);
@@ -189,7 +189,6 @@ void GAME_OBJ::Initalize_Game()
 
 void GAME_OBJ::Render_Game()
 {
-
 
 
 	ImGui::Text("DEBUG");
@@ -234,11 +233,11 @@ void GAME_OBJ::Render_Game()
 	ImGui::SetNextItemWidth(200.0f);
 	ImGui::SliderFloat("Model Scale Size", &model_scale_size, -100.0f, 100.0f);
 	ImGui::SetNextItemWidth(200.0f);
-	ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f);
+	//ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f);
 
-	ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f);
+	//ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f);
 
-	ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f);
+	//ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f);
 	ImGui::SetNextItemWidth(200.0f);
 	ImGui::SliderFloat("CUBE 2  X Direction", &cube_position_2.x, -50.0f, 50.0f);
 
@@ -279,12 +278,12 @@ void GAME_OBJ::Render_Game()
 	// clear depth buffer
 	glClear(GL_DEPTH_BUFFER_BIT);
 	
-	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
-	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5), (100 * glfwGetTime()));
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5), (100 * glfwGetTime()));
 	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
-	model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
-	model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
+	//model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -337,11 +336,11 @@ void GAME_OBJ::Render_Game()
 	RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
 
 	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
-	//render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
-	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
 	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
-	model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
-	model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
+	//model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, -0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
 	//model_obj->Render_and_Draw_Object(glm::vec3(2.0f, 0.0f, 1.0f), glm::vec3(1.0f), (100 * glfwGetTime()));
 	//model_obj->Render_and_Draw_Object(glm::vec3(-2.0f, 0.0f, -1.0f), glm::vec3(1.0f), (100 * glfwGetTime()));
@@ -358,6 +357,8 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		camera_obj->obj_cam_pos -= camera_obj->obj_cam_front_view * camera_obj->obj_cam_speed;
 	if (this->Key_Pressed_Buffer[GLFW_KEY_D])
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
+	if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
+		camera_obj->obj_cam_pos.y += 0.05;
 
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
 	float mouse_yaw_offset = last_mouse_yaw_position - flt_raw_mouse_yaw;
@@ -376,7 +377,24 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 void GAME_OBJ::Update_Game(float delta_time)
 {
+	
 	GAME_OBJ::Process_User_Input(delta_time);
 
-	phys_world->update(5);
+	const reactphysics3d::decimal ts = 1.0f / 60.0f;
+
+	bod_rigid2->enableGravity(false);
+
+	physWorld->update(ts);
+
+	// get updated position of the body
+	const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+	const reactphysics3d::Vector3 posit = transf.getPosition();
+	cube_position_1 = glm::vec3(posit.x, posit.y, posit.z);
+	const reactphysics3d::Transform& transf2 = bod_rigid2->getTransform();
+	const reactphysics3d::Vector3 posit2 = transf2.getPosition();
+	cube_position_2 = glm::vec3(posit2.x, posit2.y, posit2.z);
+
+	std::cout << "Position of Rigid Bod: " << posit.x << "," << posit.y << "," << posit.z << std::endl;
+
+
 }
