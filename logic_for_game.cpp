@@ -1,5 +1,6 @@
 #include "logic_for_game.h"
 
+const reactphysics3d::decimal ts = 1.0f / 60.0f;
 
 reactphysics3d::PhysicsCommon physCom;
 reactphysics3d::PhysicsWorld* physWorld = physCom.createPhysicsWorld();
@@ -12,6 +13,8 @@ glm::vec3 model_position(0.0f, 0.0f, 0.0f);
 glm::vec3 cube_position_1(0.0f, 0.5f, 0.0f);
 
 glm::vec3 cube_position_2(5.0f, 0.5f, 0.0f);
+
+glm::vec3 floor_position(0.0f, 0.0f, 0.0f);
 
 int orthographic_matrix = 30;
 
@@ -48,13 +51,23 @@ reactphysics3d::Quaternion quart2 = reactphysics3d::Quaternion::identity();
 reactphysics3d::Transform trans2(POS2, quart2);
 reactphysics3d::RigidBody* bod_rigid2 = physWorld->createRigidBody(trans2);
 
+reactphysics3d::Vector3 POS3(floor_position.x, floor_position.y, floor_position.z);
+reactphysics3d::Quaternion quart3 = reactphysics3d::Quaternion::identity();
+reactphysics3d::Transform trans3(POS3, quart3);
+reactphysics3d::RigidBody* bod_rigid3 = physWorld->createRigidBody(trans3);
+
 reactphysics3d::Vector3 HalfSpace(0.5, 0.5, 0.5);
+reactphysics3d::Vector3 FloorHalfSpace(0.5, 0.0, 0.5);
 
 reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
+reactphysics3d::BoxShape* FloorBoxCollision = physCom.createBoxShape(FloorHalfSpace);
 
 reactphysics3d::Collider* collider1 = bod_rigid->addCollider(BoxCollision, trans);
 
-reactphysics3d::Collider* collider2 = bod_rigid->addCollider(BoxCollision, trans2);
+reactphysics3d::Collider* collider2 = bod_rigid2->addCollider(BoxCollision, trans2);
+
+reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(FloorBoxCollision, trans3);
+
 
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
@@ -90,6 +103,7 @@ void GAME_OBJ::Initalize_Game()
 
 	bod_rigid->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid2->setType(reactphysics3d::BodyType::DYNAMIC);
+	bod_rigid3->setType(reactphysics3d::BodyType::STATIC);
 
 	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
 
@@ -380,9 +394,9 @@ void GAME_OBJ::Update_Game(float delta_time)
 	
 	GAME_OBJ::Process_User_Input(delta_time);
 
-	const reactphysics3d::decimal ts = 1.0f / 60.0f;
+	//const reactphysics3d::decimal ts = 1.0f / 60.0f;
 
-	bod_rigid2->enableGravity(false);
+	//bod_rigid2->enableGravity(false);
 
 	physWorld->update(ts);
 
@@ -393,6 +407,9 @@ void GAME_OBJ::Update_Game(float delta_time)
 	const reactphysics3d::Transform& transf2 = bod_rigid2->getTransform();
 	const reactphysics3d::Vector3 posit2 = transf2.getPosition();
 	cube_position_2 = glm::vec3(posit2.x, posit2.y, posit2.z);
+	const reactphysics3d::Transform& transf3 = bod_rigid3->getTransform();
+	const reactphysics3d::Vector3 posit3 = transf3.getPosition();
+
 
 	std::cout << "Position of Rigid Bod: " << posit.x << "," << posit.y << "," << posit.z << std::endl;
 
