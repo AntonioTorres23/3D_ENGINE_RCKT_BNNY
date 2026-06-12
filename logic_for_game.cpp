@@ -56,17 +56,28 @@ reactphysics3d::Quaternion quart3 = reactphysics3d::Quaternion::identity();
 reactphysics3d::Transform trans3(POS3, quart3);
 reactphysics3d::RigidBody* bod_rigid3 = physWorld->createRigidBody(trans3);
 
+
+reactphysics3d::Vector3 POS4;
+reactphysics3d::Quaternion quart4 = reactphysics3d::Quaternion::identity();
+reactphysics3d::Transform trans4(POS4, quart4);
+reactphysics3d::RigidBody* bod_rigid4 = physWorld->createRigidBody(trans4);
+
+
 reactphysics3d::Vector3 HalfSpace(0.5, 0.5, 0.5);
 reactphysics3d::Vector3 FloorHalfSpace(0.5, 0.0, 0.5);
 
 reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
 reactphysics3d::BoxShape* FloorBoxCollision = physCom.createBoxShape(FloorHalfSpace);
+reactphysics3d::CapsuleShape* PlayerCollision = physCom.createCapsuleShape(5.0, 8.0);
 
 reactphysics3d::Collider* collider1 = bod_rigid->addCollider(BoxCollision, trans);
 
 reactphysics3d::Collider* collider2 = bod_rigid2->addCollider(BoxCollision, trans2);
 
 reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(FloorBoxCollision, trans3);
+
+reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(BoxCollision, trans4);
+
 
 
 RENDER_OBJECT_OBJ *render_obj; 
@@ -103,9 +114,11 @@ void GAME_OBJ::Initalize_Game()
 
 	bod_rigid->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid2->setType(reactphysics3d::BodyType::DYNAMIC);
+	bod_rigid4->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid3->setType(reactphysics3d::BodyType::STATIC);
+	
 
-	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
+	//physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
 
 	//SHADOW_MAP_OBJ shadow_map(1024, 1024);
 
@@ -190,9 +203,11 @@ void GAME_OBJ::Initalize_Game()
 	
 	shadow_map = new SHADOW_MAP_OBJ(1024, 1024);
 
-	camera_obj = new CAM_OBJ();
+	camera_obj = new CAM_OBJ(glm::vec3(1.0f, 5.0f, 0.0f));
 
-
+	POS4.x = camera_obj->obj_cam_pos.x;
+	POS4.y = camera_obj->obj_cam_pos.y;
+	POS4.z = camera_obj->obj_cam_pos.z;
 
 	//glActiveTexture(GL_TEXTURE18);
 	//glBindTexture(GL_TEXTURE_2D, shadow_map->texture_ID);
@@ -372,7 +387,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 	if (this->Key_Pressed_Buffer[GLFW_KEY_D])
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
 	if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
-		camera_obj->obj_cam_pos.y += 0.05;
+		camera_obj->obj_cam_pos.y += 50;
 
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
 	float mouse_yaw_offset = last_mouse_yaw_position - flt_raw_mouse_yaw;
@@ -392,7 +407,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 void GAME_OBJ::Update_Game(float delta_time)
 {
 	
-	GAME_OBJ::Process_User_Input(delta_time);
+
 
 	//const reactphysics3d::decimal ts = 1.0f / 60.0f;
 
@@ -411,6 +426,16 @@ void GAME_OBJ::Update_Game(float delta_time)
 	const reactphysics3d::Vector3 posit3 = transf3.getPosition();
 
 
+	
+
+	const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
+	const reactphysics3d::Vector3 posit4 = transf4.getPosition();
+	//camera_obj->obj_cam_pos.x = posit4.x;
+	camera_obj->obj_cam_pos.y = posit4.y;
+	//camera_obj->obj_cam_pos.z = posit4.z;
+
+	GAME_OBJ::Process_User_Input(delta_time);
+	
 	std::cout << "Position of Rigid Bod: " << posit.x << "," << posit.y << "," << posit.z << std::endl;
 
 
