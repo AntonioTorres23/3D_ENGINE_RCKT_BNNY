@@ -8,11 +8,11 @@ reactphysics3d::PhysicsWorld* physWorld = physCom.createPhysicsWorld();
 
 float amount_of_fov = 60.0f; 
 
-glm::vec3 model_position(0.0f, 0.0f, 0.0f);
+glm::vec3 model_position(-1.0f, 5.0f, 0.0f);
 
-glm::vec3 cube_position_1(0.0f, 0.5f, 0.0f);
+glm::vec3 cube_position_1(-5.0f, 10.0, 0.0f);
 
-glm::vec3 cube_position_2(5.0f, 0.5f, 0.0f);
+glm::vec3 cube_position_2(0.0f, 0.0f, 0.0f);
 
 glm::vec3 floor_position(0.0f, 0.0f, 0.0f);
 
@@ -57,14 +57,14 @@ reactphysics3d::Transform trans3(POS3, quart3);
 reactphysics3d::RigidBody* bod_rigid3 = physWorld->createRigidBody(trans3);
 
 
-reactphysics3d::Vector3 POS4;
-reactphysics3d::Quaternion quart4 = reactphysics3d::Quaternion::identity();
-reactphysics3d::Transform trans4(POS4, quart4);
-reactphysics3d::RigidBody* bod_rigid4 = physWorld->createRigidBody(trans4);
+//reactphysics3d::Vector3 POS4;
+//reactphysics3d::Quaternion quart4 = reactphysics3d::Quaternion::identity();
+//reactphysics3d::Transform trans4(POS4, quart4);
+//reactphysics3d::RigidBody* bod_rigid4 = physWorld->createRigidBody(trans4);
 
 
-reactphysics3d::Vector3 HalfSpace(0.5, 0.5, 0.5);
-reactphysics3d::Vector3 FloorHalfSpace(0.5, 0.0, 0.5);
+reactphysics3d::Vector3 HalfSpace(0.4, 0.4, 0.4);
+reactphysics3d::Vector3 FloorHalfSpace(100.0, 1.0, 100.0);
 
 reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
 reactphysics3d::BoxShape* FloorBoxCollision = physCom.createBoxShape(FloorHalfSpace);
@@ -76,7 +76,7 @@ reactphysics3d::Collider* collider2 = bod_rigid2->addCollider(BoxCollision, tran
 
 reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(FloorBoxCollision, trans3);
 
-reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(BoxCollision, trans4);
+//reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(PlayerCollision, trans4);
 
 
 
@@ -114,11 +114,11 @@ void GAME_OBJ::Initalize_Game()
 
 	bod_rigid->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid2->setType(reactphysics3d::BodyType::DYNAMIC);
-	bod_rigid4->setType(reactphysics3d::BodyType::DYNAMIC);
+	//bod_rigid4->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid3->setType(reactphysics3d::BodyType::STATIC);
 	
 
-	//physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
+	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
 
 	//SHADOW_MAP_OBJ shadow_map(1024, 1024);
 
@@ -205,9 +205,9 @@ void GAME_OBJ::Initalize_Game()
 
 	camera_obj = new CAM_OBJ(glm::vec3(1.0f, 5.0f, 0.0f));
 
-	POS4.x = camera_obj->obj_cam_pos.x;
-	POS4.y = camera_obj->obj_cam_pos.y;
-	POS4.z = camera_obj->obj_cam_pos.z;
+	//POS4.x = camera_obj->obj_cam_pos.x;
+	//POS4.y = camera_obj->obj_cam_pos.y;
+	//POS4.z = camera_obj->obj_cam_pos.z;
 
 	//glActiveTexture(GL_TEXTURE18);
 	//glBindTexture(GL_TEXTURE_2D, shadow_map->texture_ID);
@@ -253,15 +253,15 @@ void GAME_OBJ::Render_Game()
 	ImGui::SliderFloat("NEAR_SHADOW_PLANE", &near_plane_shadow, -100.0f, 100.0f);
 	ImGui::SliderFloat("FAR_SHADOW_PLANE", &far_plane_shadow, -100.0f, 100.0f);
 	ImGui::SetNextItemWidth(200.0f);
-	ImGui::SliderFloat("Model X Direction", &model_position.x, -50.0f, 50.0f);
+	//ImGui::SliderFloat("Model X Direction", &model_position.x, -50.0f, 50.0f);
 
-	ImGui::SliderFloat("Model Y Direction", &model_position.y, -50.0f, 50.0f);
+	//ImGui::SliderFloat("Model Y Direction", &model_position.y, -50.0f, 50.0f);
 
 
-	ImGui::SliderFloat("Model Z Direction", &model_position.z, -50.0f, 50.0f);
-	ImGui::SetNextItemWidth(200.0f);
-	ImGui::SliderFloat("Model Scale Size", &model_scale_size, -100.0f, 100.0f);
-	ImGui::SetNextItemWidth(200.0f);
+	//ImGui::SliderFloat("Model Z Direction", &model_position.z, -50.0f, 50.0f);
+	//ImGui::SetNextItemWidth(200.0f);
+	//ImGui::SliderFloat("Model Scale Size", &model_scale_size, -100.0f, 100.0f);
+	//ImGui::SetNextItemWidth(200.0f);
 	//ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f);
 
 	//ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f);
@@ -297,7 +297,7 @@ void GAME_OBJ::Render_Game()
 	render_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 	render_obj_plane->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 	//model_obj->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
-	model_obj_2->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
+	//model_obj_2->object_shader_obj = RESOURCE_MANAGER::Shader_Get("depth_map_shader");
 
 	RESOURCE_MANAGER::Shader_Get("depth_map_shader").Activate().uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
 	// set viewport to shadow map's texture dimensions
@@ -309,7 +309,7 @@ void GAME_OBJ::Render_Game()
 	
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5), (100 * glfwGetTime()));
-	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
 	//model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -367,7 +367,7 @@ void GAME_OBJ::Render_Game()
 	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
-	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
+	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
 	//model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, -0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
@@ -388,6 +388,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
 	if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
 		camera_obj->obj_cam_pos.y += 50;
+	
 
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
 	float mouse_yaw_offset = last_mouse_yaw_position - flt_raw_mouse_yaw;
@@ -407,6 +408,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 void GAME_OBJ::Update_Game(float delta_time)
 {
 	
+	GAME_OBJ::Process_User_Input(delta_time);
 
 
 	//const reactphysics3d::decimal ts = 1.0f / 60.0f;
@@ -428,15 +430,15 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	
 
-	const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
-	const reactphysics3d::Vector3 posit4 = transf4.getPosition();
+	//const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
+	//const reactphysics3d::Vector3 posit4 = transf4.getPosition();
 	//camera_obj->obj_cam_pos.x = posit4.x;
-	camera_obj->obj_cam_pos.y = posit4.y;
+	//camera_obj->obj_cam_pos.y = posit4.y;
 	//camera_obj->obj_cam_pos.z = posit4.z;
 
-	GAME_OBJ::Process_User_Input(delta_time);
-	
-	std::cout << "Position of Rigid Bod: " << posit.x << "," << posit.y << "," << posit.z << std::endl;
+
+	//std::cout << "Position of Rigid Bod: " << posit.x << "," << posit.y << "," << posit.z << std::endl;
+	//std::cout << "Position of Rigid Bod 2 : " << posit2.x << "," << posit2.y << "," << posit2.z << std::endl;
 
 
 }
