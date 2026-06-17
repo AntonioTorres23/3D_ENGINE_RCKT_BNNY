@@ -383,7 +383,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
-		reactphysics3d::Vector3 temp_vec(posit.x, posit.y, camera_obj->obj_cam_pos.z);
+		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, camera_obj->obj_cam_pos.y, camera_obj->obj_cam_pos.z);
 		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
 
 		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
@@ -396,7 +396,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
-		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, posit.z);
+		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, camera_obj->obj_cam_pos.y, camera_obj->obj_cam_pos.z);
 		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
 
 		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
@@ -409,7 +409,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
-		reactphysics3d::Vector3 temp_vec(posit.x, posit.y, camera_obj->obj_cam_pos.z);
+		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, camera_obj->obj_cam_pos.y, camera_obj->obj_cam_pos.z);
 		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
 
 		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
@@ -423,7 +423,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
-		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, posit.z);
+		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, camera_obj->obj_cam_pos.y, camera_obj->obj_cam_pos.z);
 		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
 
 		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
@@ -528,9 +528,9 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
 	const reactphysics3d::Vector3 posit4 = transf4.getPosition();
-	//camera_obj->obj_cam_pos.x = posit4.x;
+	camera_obj->obj_cam_pos.x = posit4.x;
 	camera_obj->obj_cam_pos.y = posit4.y;
-	//camera_obj->obj_cam_pos.z = posit4.z;
+	camera_obj->obj_cam_pos.z = posit4.z;
 
 
 	//std::cout << "Position of Rigid Bod: " << posit.x << "," << posit.y << "," << posit.z << std::endl;
