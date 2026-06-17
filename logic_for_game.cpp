@@ -408,14 +408,34 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 void GAME_OBJ::Update_Game(float delta_time)
 {
 	
-	GAME_OBJ::Process_User_Input(delta_time);
+	
+	if (ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f))
+	{
+		const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		const reactphysics3d::Vector3 posit = transf.getPosition();
+		
+		reactphysics3d::Vector3 temp_vec(cube_position_1.x, posit.y, posit.z);
+		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		
+		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
 
+		bod_rigid->setTransform(asdfasdf);
+	}
+
+	ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f);
+
+	ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f);
+
+	GAME_OBJ::Process_User_Input(delta_time);
 
 	//const reactphysics3d::decimal ts = 1.0f / 60.0f;
 
 	//bod_rigid2->enableGravity(false);
 
 	physWorld->update(ts);
+
+
+
 
 	// get updated position of the body
 	const reactphysics3d::Transform& transf = bod_rigid->getTransform();
