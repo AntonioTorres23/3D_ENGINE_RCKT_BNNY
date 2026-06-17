@@ -57,14 +57,14 @@ reactphysics3d::Transform trans3(POS3, quart3);
 reactphysics3d::RigidBody* bod_rigid3 = physWorld->createRigidBody(trans3);
 
 
-//reactphysics3d::Vector3 POS4;
-//reactphysics3d::Quaternion quart4 = reactphysics3d::Quaternion::identity();
-//reactphysics3d::Transform trans4(POS4, quart4);
-//reactphysics3d::RigidBody* bod_rigid4 = physWorld->createRigidBody(trans4);
+reactphysics3d::Vector3 POS4;
+reactphysics3d::Quaternion quart4 = reactphysics3d::Quaternion::identity();
+reactphysics3d::Transform trans4(POS4, quart4);
+reactphysics3d::RigidBody* bod_rigid4 = physWorld->createRigidBody(trans4);
 
 
 reactphysics3d::Vector3 HalfSpace(0.4, 0.4, 0.4);
-reactphysics3d::Vector3 FloorHalfSpace(100.0, 1.0, 100.0);
+reactphysics3d::Vector3 FloorHalfSpace(50.0, 10.0, 50.0);
 
 reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
 reactphysics3d::BoxShape* FloorBoxCollision = physCom.createBoxShape(FloorHalfSpace);
@@ -76,7 +76,7 @@ reactphysics3d::Collider* collider2 = bod_rigid2->addCollider(BoxCollision, tran
 
 reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(FloorBoxCollision, trans3);
 
-//reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(PlayerCollision, trans4);
+reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(BoxCollision, trans4);
 
 
 
@@ -387,7 +387,17 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 	if (this->Key_Pressed_Buffer[GLFW_KEY_D])
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
 	if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
-		camera_obj->obj_cam_pos.y += 50;
+	{
+		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Vector3 posit = transf.getPosition();
+
+		reactphysics3d::Vector3 temp_vec(posit.x + 0.5, posit.y + 0.5, posit.z);
+		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+
+		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+
+		bod_rigid4->setTransform(asdfasdf);
+	}
 	
 
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
@@ -472,10 +482,10 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	
 
-	//const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
-	//const reactphysics3d::Vector3 posit4 = transf4.getPosition();
+	const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
+	const reactphysics3d::Vector3 posit4 = transf4.getPosition();
 	//camera_obj->obj_cam_pos.x = posit4.x;
-	//camera_obj->obj_cam_pos.y = posit4.y;
+	camera_obj->obj_cam_pos.y = posit4.y;
 	//camera_obj->obj_cam_pos.z = posit4.z;
 
 
