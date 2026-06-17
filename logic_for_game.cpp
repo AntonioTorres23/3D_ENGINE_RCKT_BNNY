@@ -422,9 +422,31 @@ void GAME_OBJ::Update_Game(float delta_time)
 		bod_rigid->setTransform(asdfasdf);
 	}
 
-	ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f);
+	if (ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f))
+	{
+		const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		const reactphysics3d::Vector3 posit = transf.getPosition();
 
-	ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f);
+		reactphysics3d::Vector3 temp_vec(posit.x, cube_position_1.y, posit.z);
+		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+
+		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+
+		bod_rigid->setTransform(asdfasdf);
+	}
+
+	if (ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f))
+	{
+		const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		const reactphysics3d::Vector3 posit = transf.getPosition();
+
+		reactphysics3d::Vector3 temp_vec(posit.x, posit.y, cube_position_1.z);
+		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+
+		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+
+		bod_rigid->setTransform(asdfasdf);
+	}
 
 	GAME_OBJ::Process_User_Input(delta_time);
 
