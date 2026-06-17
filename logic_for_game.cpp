@@ -79,7 +79,6 @@ reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(FloorBoxCollision,
 reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(BoxCollision, trans4);
 
 
-
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
 RENDER_OBJECT_OBJ *skybox_obj;
@@ -114,7 +113,7 @@ void GAME_OBJ::Initalize_Game()
 
 	bod_rigid->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid2->setType(reactphysics3d::BodyType::DYNAMIC);
-	//bod_rigid4->setType(reactphysics3d::BodyType::DYNAMIC);
+	bod_rigid4->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid3->setType(reactphysics3d::BodyType::STATIC);
 	
 
@@ -379,13 +378,58 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 {
 
 	if (this->Key_Pressed_Buffer[GLFW_KEY_W])
+	{
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_front_view * camera_obj->obj_cam_speed;
+		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Vector3 posit = transf.getPosition();
+
+		reactphysics3d::Vector3 temp_vec(posit.x, posit.y, camera_obj->obj_cam_pos.z);
+		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+
+		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+
+		bod_rigid4->setTransform(asdfasdf);
+	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_A])
+	{
 		camera_obj->obj_cam_pos -= camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
+		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Vector3 posit = transf.getPosition();
+
+		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, posit.z);
+		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+
+		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+
+		bod_rigid4->setTransform(asdfasdf);
+	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_S])
+	{
 		camera_obj->obj_cam_pos -= camera_obj->obj_cam_front_view * camera_obj->obj_cam_speed;
+		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Vector3 posit = transf.getPosition();
+
+		reactphysics3d::Vector3 temp_vec(posit.x, posit.y, camera_obj->obj_cam_pos.z);
+		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+
+		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+
+		bod_rigid4->setTransform(asdfasdf);
+	
+	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_D])
+	{
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
+		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Vector3 posit = transf.getPosition();
+
+		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, posit.z);
+		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+
+		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+
+		bod_rigid4->setTransform(asdfasdf);
+	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
 	{
 		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
