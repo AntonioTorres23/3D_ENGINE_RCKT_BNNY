@@ -63,7 +63,7 @@ reactphysics3d::Transform trans4(POS4, quart4);
 reactphysics3d::RigidBody* bod_rigid4 = physWorld->createRigidBody(trans4);
 
 
-reactphysics3d::Vector3 HalfSpace(0.4, 0.4, 0.4);
+reactphysics3d::Vector3 HalfSpace(0.5, 0.5, 0.5);
 reactphysics3d::Vector3 FloorHalfSpace(50.0, 0.0, 50.0);
 
 reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
@@ -119,7 +119,7 @@ void GAME_OBJ::Initalize_Game()
 	
 
 	mat.setBounciness(0.0);
-	mat.setMassDensity(0.0);
+	bod_rigid4->setLinearDamping(0.1);
 
 	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
 
@@ -388,11 +388,11 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
-		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
-		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(asdfasdf);
+		bod_rigid4->setTransform(temp_trans);
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_A])
 	{
@@ -401,11 +401,11 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
-		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
-		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(asdfasdf);
+		bod_rigid4->setTransform(temp_trans);
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_S])
 	{
@@ -414,11 +414,11 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
-		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
-		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(asdfasdf);
+		bod_rigid4->setTransform(temp_trans);
 	
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_D])
@@ -428,11 +428,11 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
-		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
-		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(asdfasdf);
+		bod_rigid4->setTransform(temp_trans);
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
 	{
@@ -440,11 +440,11 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(posit.x, posit.y + 0.008, posit.z);
-		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
-		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(asdfasdf);
+		bod_rigid4->setTransform(temp_trans);
 	}
 	
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
