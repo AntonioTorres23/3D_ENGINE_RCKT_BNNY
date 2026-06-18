@@ -12,7 +12,7 @@ glm::vec3 model_position(-1.0f, 5.0f, 0.0f);
 
 glm::vec3 cube_position_1(-5.0f, 10.0, 0.0f);
 
-glm::vec3 cube_position_2(0.0f, 0.0f, 0.0f);
+glm::vec3 cube_position_2(0.0f, 1.0f, 0.0f);
 
 glm::vec3 floor_position(0.0f, 0.0f, 0.0f);
 
@@ -118,7 +118,8 @@ void GAME_OBJ::Initalize_Game()
 	bod_rigid3->setType(reactphysics3d::BodyType::STATIC);
 	
 
-	mat.setBounciness(-100.0);
+	mat.setBounciness(0.0);
+	mat.setMassDensity(0.0);
 
 	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
 
@@ -399,7 +400,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
-		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x,posit.y, camera_obj->obj_cam_pos.z);
+		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
 		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
 
 		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
@@ -438,7 +439,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
-		reactphysics3d::Vector3 temp_vec(posit.x + 0.5, posit.y + 0.5, posit.z);
+		reactphysics3d::Vector3 temp_vec(posit.x, posit.y + 0.008, posit.z);
 		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
 
 		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
@@ -446,7 +447,6 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		bod_rigid4->setTransform(asdfasdf);
 	}
 	
-
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
 	float mouse_yaw_offset = last_mouse_yaw_position - flt_raw_mouse_yaw;
 	// subtracts the difference of the pitch position last stored and the current pitch position that was called.
