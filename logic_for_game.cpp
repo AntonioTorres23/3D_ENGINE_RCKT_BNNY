@@ -63,22 +63,52 @@ reactphysics3d::Transform trans4(POS4, quart4);
 reactphysics3d::RigidBody* bod_rigid4 = physWorld->createRigidBody(trans4);
 
 
-reactphysics3d::Vector3 HalfSpace(0.5, 0.5, 0.5);
+reactphysics3d::Vector3 HalfSpace(1.5, 1.5, 1.5);
 reactphysics3d::Vector3 FloorHalfSpace(50.0, 0.0, 50.0);
 
 reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
 reactphysics3d::BoxShape* FloorBoxCollision = physCom.createBoxShape(FloorHalfSpace);
-reactphysics3d::CapsuleShape* PlayerCollision = physCom.createCapsuleShape(5.0, 8.0);
+reactphysics3d::CapsuleShape* PlayerCollision = physCom.createCapsuleShape(0.5, 0.8);
 
 reactphysics3d::Collider* collider1 = bod_rigid->addCollider(BoxCollision, trans);
 
 reactphysics3d::Collider* collider2 = bod_rigid2->addCollider(BoxCollision, trans2);
 
-reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(FloorBoxCollision, trans3);
+//reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(FloorBoxCollision, trans3);
 
-reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(BoxCollision, trans4);
+reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(PlayerCollision, trans4);
 
 reactphysics3d::Material& mat = collider4->getMaterial();
+
+const int num_of_plane_vertices = 6;
+
+const int num_of_plane_triangles = 2;
+
+float plane_vertices[3 * num_of_plane_vertices] =
+{
+	   25.0f, -0.5f,  25.0f,
+	  -25.0f, -0.5f,  25.0f,
+	  -25.0f, -0.5f, -25.0f,
+
+	   25.0f, -0.5f,  25.0f,
+	  -25.0f, -0.5f, -25.0f,
+	   25.0f, -0.5f, -25.0f
+};
+
+unsigned int plane_indices[6] = { 0, 1, 2, 3, 4, 5, };
+
+reactphysics3d::TriangleVertexArray plane_vertex_array = reactphysics3d::TriangleVertexArray(num_of_plane_vertices, plane_vertices, 
+	3 * sizeof(float), 2, plane_indices, 3 * sizeof( unsigned int), reactphysics3d::TriangleVertexArray::VertexDataType::VERTEX_FLOAT_TYPE, 
+	reactphysics3d::TriangleVertexArray::IndexDataType::INDEX_INTEGER_TYPE);
+
+
+
+std::vector<reactphysics3d::Message> plane_messages;
+reactphysics3d::TriangleMesh* plane_mesh = physCom.createTriangleMesh(plane_vertex_array, plane_messages);
+
+reactphysics3d::ConcaveMeshShape* new_floor = physCom.createConcaveMeshShape(plane_mesh);
+
+reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(new_floor, trans3);
 
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;

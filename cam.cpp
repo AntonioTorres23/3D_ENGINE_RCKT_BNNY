@@ -3,7 +3,7 @@
 
 float CAM_YAW = -90.0f; // default value of how left or right we are looking in our view vector, set to -90 by default to look towards negative z-axis
 float CAM_PITCH = 0.0f; // default value of how up or down we are looing in our view vector, set to 0 by default for no effect at first
-float CAM_SPEED = 0.3f; // global value of how fast we want the camera to move within the world environment, will be multiplied to the keybindings
+float CAM_SPEED = 0.1f; // global value of how fast we want the camera to move within the world environment, will be multiplied to the keybindings
 float MOUSE_SENS = 0.1f; // global value of how fast we want our camera to move left, right, down, or up in terms of the view vector/when we move the mouse via call back
 
 
