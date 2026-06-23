@@ -10,7 +10,7 @@ float amount_of_fov = 60.0f;
 
 glm::vec3 model_position(-1.0f, 5.0f, 0.0f);
 
-glm::vec3 cube_position_1(-5.0f, 10.0, 0.0f);
+glm::vec3 cube_position_1(-1.0f, 1.0f, 0.0f);
 
 glm::vec3 cube_position_2(0.0f, 1.0f, 0.0f);
 
@@ -150,6 +150,8 @@ void GAME_OBJ::Initalize_Game()
 
 	mat.setBounciness(0.0);
 	bod_rigid4->setLinearDamping(0.1);
+	bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(0.0, 1.0, 0.0));
+	bod_rigid4->applyLocalTorque(reactphysics3d::Vector3(0.5, 0.5, 0.5));
 
 	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
 
@@ -413,6 +415,23 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 	if (this->Key_Pressed_Buffer[GLFW_KEY_W])
 	{
+		if (camera_obj->obj_pitch == -89.0f || camera_obj->obj_pitch == -88.0f)
+		{
+
+			camera_obj->obj_cam_pos += camera_obj->obj_cam_front_view * (camera_obj->obj_cam_speed + 1);
+			const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			const reactphysics3d::Vector3 posit = transf.getPosition();
+
+			reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
+			reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
+
+			reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
+
+			bod_rigid4->setTransform(temp_trans);
+
+		}
+
+
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_front_view * camera_obj->obj_cam_speed;
 		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
@@ -423,6 +442,9 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
 		bod_rigid4->setTransform(temp_trans);
+
+
+
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_A])
 	{
@@ -450,6 +472,23 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 		bod_rigid4->setTransform(temp_trans);
 	
+
+		if (camera_obj->obj_pitch == -89.0f)
+		{
+
+			camera_obj->obj_cam_pos -= camera_obj->obj_cam_front_view * (camera_obj->obj_cam_speed + 1);
+			const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			const reactphysics3d::Vector3 posit = transf.getPosition();
+
+			reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
+			reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
+
+			reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
+
+			bod_rigid4->setTransform(temp_trans);
+
+		}
+
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_D])
 	{

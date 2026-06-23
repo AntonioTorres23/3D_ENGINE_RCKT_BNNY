@@ -302,6 +302,4 @@ void mouse_functionality(GLFWwindow* win, double raw_mouse_yaw, double raw_mouse
 		inital_mouse_win = false;
 	}
 
-
-
 }
