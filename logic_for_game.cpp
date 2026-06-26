@@ -1,5 +1,9 @@
 #include "logic_for_game.h"
 
+
+int key_pressed_counter = 0;
+int time_key_can_be_held = 100;
+
 const reactphysics3d::decimal ts = 1.0f / 60.0f;
 
 reactphysics3d::PhysicsCommon physCom;
@@ -505,16 +509,32 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
 	{
-		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
-		const reactphysics3d::Vector3 posit = transf.getPosition();
+		if (key_pressed_counter < time_key_can_be_held)
 
-		reactphysics3d::Vector3 temp_vec(posit.x, posit.y + 0.008, posit.z);
-		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
+		{
 
-		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
+			const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			const reactphysics3d::Vector3 posit = transf.getPosition();
 
-		bod_rigid4->setTransform(temp_trans);
+			reactphysics3d::Vector3 temp_vec(posit.x, posit.y + 0.008, posit.z);
+			reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
+
+			reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
+
+			bod_rigid4->setTransform(temp_trans);
+
+			key_pressed_counter++;
+
+		}
+
 	}
+
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
+	{
+		key_pressed_counter = 0;
+
+	}
+
 	
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
 	float mouse_yaw_offset = last_mouse_yaw_position - flt_raw_mouse_yaw;
