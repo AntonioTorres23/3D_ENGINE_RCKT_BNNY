@@ -129,7 +129,7 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	// while !glfwWindowShouldClose(window) means while glfw window is not closed, process source code inside loop
 	while (!glfwWindowShouldClose(glfw_window))
 	{
-
+		game.Mouse_Moved = false;
 
 		// get current frame to calculate delta time with glfwGetTime(); this gets the current time since the window was open
 		float cFrame = glfwGetTime();
@@ -301,5 +301,8 @@ void mouse_functionality(GLFWwindow* win, double raw_mouse_yaw, double raw_mouse
 		// set initial_mouse_win to false to allow us to caclulate the difference between last_mouse_position and flt_raw_mouse so that the result isn't always 0
 		inital_mouse_win = false;
 	}
+
+	game.Mouse_Moved = true; 
+
 
 }

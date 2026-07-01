@@ -29,6 +29,9 @@ public:
 	bool		 Key_Pressed_Buffer[1024]; // buffer that stores key's that are pressed by player
 	bool		 Processed_Keys[1024];    //  buffer that stores key's that have been processed
 
+	bool		 Mouse_Moved;
+
+
 	unsigned int Width_Of_Screen, Height_Of_Screen; // stores the width and height of the actual game window
 
 	// where the last yaw position that was grabbed from the callback function is stored
@@ -48,6 +51,7 @@ public:
 
 	void Update_Game(float delta_time); // updates game to reflect prior user/movement and state of ball
 
+	void Mouse_Velocity_Physics(bool mouse_moved_argument);
 
 	void Render_Game(); // renders the game on the players screen
 };

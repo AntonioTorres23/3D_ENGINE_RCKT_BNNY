@@ -114,6 +114,10 @@ reactphysics3d::ConcaveMeshShape* new_floor = physCom.createConcaveMeshShape(pla
 
 reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(new_floor, trans3);
 
+
+reactphysics3d::Material& mat2 = collider3->getMaterial();
+
+
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
 RENDER_OBJECT_OBJ *skybox_obj;
@@ -151,13 +155,21 @@ void GAME_OBJ::Initalize_Game()
 	bod_rigid4->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid3->setType(reactphysics3d::BodyType::STATIC);
 	
-
 	mat.setBounciness(0.0);
-	bod_rigid4->setLinearDamping(0.1);
-	bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(0.0, 1.0, 0.0));
-	bod_rigid4->applyLocalTorque(reactphysics3d::Vector3(0.5, 0.5, 0.5));
+	mat2.setBounciness(0.0);
+	
+	std::cout << "Player Bounciness: " << mat.getBounciness() << std::endl; 
 
-	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.05, 0.0));
+
+	bod_rigid4->setLinearDamping(0.5);
+	//mat.setFrictionCoefficient(0.5);
+
+	//bod_rigid4->setMass(0.5);
+
+
+	// THIS AFFECTS A LOT OF THE PHYSICS IN THE WORLD
+	//physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.07, 0.0));
+	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.8, 0.0));
 
 	//SHADOW_MAP_OBJ shadow_map(1024, 1024);
 
@@ -417,6 +429,8 @@ void GAME_OBJ::Render_Game()
 void GAME_OBJ::Process_User_Input(float delta_time)
 {
 
+	bod_rigid4->resetForce();
+
 	if (this->Key_Pressed_Buffer[GLFW_KEY_W])
 	{
 		if (camera_obj->obj_pitch == -89.0f || camera_obj->obj_pitch == -88.0f)
@@ -549,11 +563,12 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 	camera_obj->MOUSE(mouse_yaw_offset, mouse_pitch_offset);
 
+	//Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
+
 }
 
 void GAME_OBJ::Update_Game(float delta_time)
 {
-	
 	
 	if (ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f))
 	{
@@ -596,6 +611,8 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	GAME_OBJ::Process_User_Input(delta_time);
 
+	Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
+
 	//const reactphysics3d::decimal ts = 1.0f / 60.0f;
 
 	//bod_rigid2->enableGravity(false);
@@ -629,4 +646,30 @@ void GAME_OBJ::Update_Game(float delta_time)
 	//std::cout << "Position of Rigid Bod 2 : " << posit2.x << "," << posit2.y << "," << posit2.z << std::endl;
 
 
+}
+
+// CURRENTLY TESTING FUNCTION
+void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
+{
+	//std::cout << mouse_moved_argument << std::endl;
+	
+	if (mouse_moved_argument)
+	{ 
+
+		if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A])
+		{
+
+
+			//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
+			
+			bod_rigid4->applyWorldForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
+		}
+
+		if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D])
+		{
+
+			//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
+			bod_rigid4->applyWorldForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
+		}
+	}
 }
