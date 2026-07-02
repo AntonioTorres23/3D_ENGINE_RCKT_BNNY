@@ -545,9 +545,10 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 	}
 
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(bod_rigid3, bod_rigid4))
 	{
 		key_pressed_counter = 0;
+
 
 	}
 
@@ -672,18 +673,39 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 		if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A])
 		{
 
-
-			//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-			bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 3, 0.5, camera_obj->obj_cam_front_view.z * 3));
-			
+			if (key_pressed_counter < time_key_can_be_held)
+			{
+				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
+				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 3, 0.5, camera_obj->obj_cam_front_view.z * 3));
+			}
 		}
 
 		if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D])
 		{
-
-			//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-			bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 3, 0.5, camera_obj->obj_cam_front_view.z * 3));
+			if (key_pressed_counter < time_key_can_be_held)
+			{
+				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
+				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 3, 0.5, camera_obj->obj_cam_front_view.z * 3));
+			}
 		}
 	}
+
+
+
+
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D])
+	{
+		key_pressed_counter = 0;
+
+	}
+
+
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A])
+	{
+		key_pressed_counter = 0;
+
+	}
+
+
 
 }
