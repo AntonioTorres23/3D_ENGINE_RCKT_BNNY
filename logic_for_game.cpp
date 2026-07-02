@@ -7,8 +7,8 @@ int time_key_can_be_held = 100;
 const reactphysics3d::decimal ts = 1.0f / 60.0f;
 
 reactphysics3d::PhysicsCommon physCom;
-reactphysics3d::PhysicsWorld* physWorld = physCom.createPhysicsWorld();
 
+reactphysics3d::PhysicsWorld* physWorld = physCom.createPhysicsWorld();
 
 float amount_of_fov = 60.0f; 
 
@@ -157,11 +157,14 @@ void GAME_OBJ::Initalize_Game()
 	
 	mat.setBounciness(0.0);
 	mat2.setBounciness(0.0);
-	
+
+
 	std::cout << "Player Bounciness: " << mat.getBounciness() << std::endl; 
 
 
 	bod_rigid4->setLinearDamping(0.5);
+	bod_rigid4->setAngularDamping(0.5);
+
 	//mat.setFrictionCoefficient(0.5);
 
 	//bod_rigid4->setMass(0.5);
@@ -429,7 +432,6 @@ void GAME_OBJ::Render_Game()
 void GAME_OBJ::Process_User_Input(float delta_time)
 {
 
-	bod_rigid4->resetForce();
 
 	if (this->Key_Pressed_Buffer[GLFW_KEY_W])
 	{
@@ -530,7 +532,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 			const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
 			const reactphysics3d::Vector3 posit = transf.getPosition();
 
-			reactphysics3d::Vector3 temp_vec(posit.x, posit.y + 0.008, posit.z);
+			reactphysics3d::Vector3 temp_vec(posit.x, posit.y + 0.07, posit.z);
 			reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
 			reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
@@ -563,7 +565,10 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 	camera_obj->MOUSE(mouse_yaw_offset, mouse_pitch_offset);
 
-	//Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
+	Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
+	
+
+	
 
 }
 
@@ -611,15 +616,24 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	GAME_OBJ::Process_User_Input(delta_time);
 
+
+	// USE THIS TO PREVENT THE PHYSICS ENGINE FROM GIVING TOO MUCH "BOUNCINESS" WITHIN ITS PHYSICS SIM
+	if (physWorld->testOverlap(bod_rigid3, bod_rigid4))
+	{
+		std::cout << "player on floor" << std::endl;
+		bod_rigid4->setLinearVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+		bod_rigid4->setAngularVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+	}
+	if (!physWorld->testOverlap(bod_rigid3, bod_rigid4))
+	{
+		std::cout << "player not on floor" << std::endl;
+	}
+
+	
+
 	Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
 
-	//const reactphysics3d::decimal ts = 1.0f / 60.0f;
-
-	//bod_rigid2->enableGravity(false);
-
 	physWorld->update(ts);
-
-
 
 
 	// get updated position of the body
@@ -645,7 +659,6 @@ void GAME_OBJ::Update_Game(float delta_time)
 	//std::cout << "Position of Rigid Bod: " << posit.x << "," << posit.y << "," << posit.z << std::endl;
 	//std::cout << "Position of Rigid Bod 2 : " << posit2.x << "," << posit2.y << "," << posit2.z << std::endl;
 
-
 }
 
 // CURRENTLY TESTING FUNCTION
@@ -661,15 +674,16 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 
 
 			//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
+			bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 3, 0.5, camera_obj->obj_cam_front_view.z * 3));
 			
-			bod_rigid4->applyWorldForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
 		}
 
 		if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D])
 		{
 
 			//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-			bod_rigid4->applyWorldForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
+			bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 3, 0.5, camera_obj->obj_cam_front_view.z * 3));
 		}
 	}
+
 }
