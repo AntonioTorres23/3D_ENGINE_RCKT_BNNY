@@ -45,6 +45,7 @@ float specular_color_values[3]
 	1.0f, 1.0f, 1.0f
 };
 
+// CREATE RIDGID BODIES FOR EACH OBJECT WITHIN OUR PHYSICS WORLD
 reactphysics3d::Vector3 POS(cube_position_1.x, cube_position_1.y, cube_position_1.z);
 reactphysics3d::Quaternion quart = reactphysics3d::Quaternion::identity();
 reactphysics3d::Transform trans(POS, quart);
@@ -71,7 +72,7 @@ reactphysics3d::Vector3 HalfSpace(1.5, 1.5, 1.5);
 reactphysics3d::Vector3 FloorHalfSpace(50.0, 0.0, 50.0);
 
 reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
-reactphysics3d::BoxShape* FloorBoxCollision = physCom.createBoxShape(FloorHalfSpace);
+//reactphysics3d::BoxShape* FloorBoxCollision = physCom.createBoxShape(FloorHalfSpace);
 reactphysics3d::CapsuleShape* PlayerCollision = physCom.createCapsuleShape(0.5, 0.8);
 
 reactphysics3d::Collider* collider1 = bod_rigid->addCollider(BoxCollision, trans);
@@ -174,20 +175,6 @@ void GAME_OBJ::Initalize_Game()
 	//physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.07, 0.0));
 	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.8, 0.0));
 
-	//SHADOW_MAP_OBJ shadow_map(1024, 1024);
-
-
-	//glm::mat4 orthographic_light_perspective_matrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane_shadow, far_plane_shadow);
-	//glm::mat4 light_view_matrix = glm::lookAt(directional_lighting_facing_direction, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-	//glm::mat4 light_matrix_for_shadow_mapping = orthographic_light_perspective_matrix * light_view_matrix;
-
-
-	//glm::mat4 view_matrix = glm::lookAt(glm::vec3(0.0f, 0.0f, -8.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	//glm::mat4 perspective_matrix = glm::perspective(glm::radians(90.0f), static_cast<float>(this->Width_Of_Screen) / static_cast<float>(this->Height_Of_Screen), 0.1f, 100.0f);
-
-	// transforming this 4x4 matrix to a 3x3 with no values in the 4th column to prevent w coordinate from making translations
-	//glm::mat4 skybox_view_matrix = glm::mat4(glm::mat3(view_matrix));
 
 	//RESOURCE_MANAGER::Shader_Load("shaders/3D_TEST.vert", "shaders/3D_TEST.frag", nullptr, "test");
 	//RESOURCE_MANAGER::Shader_Load("shaders/BLINN_PHONG_LIGHTING.vert", "shaders/BLINN_PHONG_LIGHTING.frag", nullptr, "test");
@@ -211,61 +198,18 @@ void GAME_OBJ::Initalize_Game()
 	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Empty_Space", false, "skybox_2");
 
 
-	//shadow_map = new SHADOW_MAP_OBJ(1024, 1024);
-
-
-	//RESOURCE_MANAGER::Shader_Get("depth_map_shader").Activate().uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
-
-
-	//RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
-	//RESOURCE_MANAGER::Shader_Get("test").Activate().uniform_integer("texture_image", 0);
-	//RESOURCE_MANAGER::Shader_Get("test").uniform_integer("shadowDepthMapTexture", shadow_map->texture_ID);
-	//RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("view_matrix", view_matrix);
-	//RESOURCE_MANAGER::Shader_Get("test").uniform_matrix_4("perspective_matrix", perspective_matrix);
-
-	//RESOURCE_MANAGER::Shader_Get("skybox_test").Activate().uniform_integer("skybox_texture", 0);
-	//RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("view_matrix", skybox_view_matrix);
-	//RESOURCE_MANAGER::Shader_Get("skybox_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
-	
-
-	/*
-	glActiveTexture(GL_TEXTURE12);
-	glBindTexture(GL_TEXTURE_2D, shadow_map->texture_ID);
-	RESOURCE_MANAGER::Shader_Get("model_test").uniform_integer("shadowDepthMapTexture", 12);
-	*/
-
-
-	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("light_matrix_for_shadow_mapping", light_matrix_for_shadow_mapping);
-	//RESOURCE_MANAGER::Shader_Get("model_test").Activate().uniform_integer("shadowDepthMapTexture", shadow_map->texture_ID);
-	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("view_matrix", view_matrix);
-	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_matrix_4("perspective_matrix", perspective_matrix);
-
-
 	render_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), CUBE);
 	render_obj_plane = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), PLANE);
 	skybox_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("skybox_test"), SKYBOX);
 
 	//model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/Counter-Terrorists_GIGN/COUNTER-TERRORIST_GIGN.obj", "quad_damage", false);
 	model_obj = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/Dust2/Dust2.obj", "quad_damage", false);
-	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/survival-guitar-backpack/source/Survival_BackPack_2/Survival_BackPack_2.fbx", "quad_damage", true);
 
-	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/1965_MB_560_SEC_obj/d4411c08-dfa1-4727-a541-ef9bd7bde35a.obj", "quad_damage", true);
-
-	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/PentagramofProtection/invulner.obj", "survival_backpack", true);
-	//model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/B.D. Joe/B.D. Joe.obj", "quad_damage", false);
 	model_obj_2 = new RENDER_OBJECT_OBJ(RESOURCE_MANAGER::Shader_Get("model_test"), MODEL, "assets/Models/B.D. Joe/B.D. Joe.obj", "quad_damage", false);
 	
 	shadow_map = new SHADOW_MAP_OBJ(1024, 1024);
 
 	camera_obj = new CAM_OBJ(glm::vec3(1.0f, 5.0f, 0.0f));
-
-	//POS4.x = camera_obj->obj_cam_pos.x;
-	//POS4.y = camera_obj->obj_cam_pos.y;
-	//POS4.z = camera_obj->obj_cam_pos.z;
-
-	//glActiveTexture(GL_TEXTURE18);
-	//glBindTexture(GL_TEXTURE_2D, shadow_map->texture_ID);
-	//RESOURCE_MANAGER::Shader_Get("model_test").uniform_integer("shadowDepthMapTexture", 18);
 	
 }
 
@@ -329,7 +273,6 @@ void GAME_OBJ::Render_Game()
 
 	ImGui::SliderFloat("CUBE 2  Z Direction", &cube_position_2.z, -50.0f, 50.0f);
 	ImGui::SetNextItemWidth(200.0f);
-	//glm::mat4 view_matrix = glm::lookAt(glm::vec3(world_position_of_camera.x, world_position_of_camera.y, world_position_of_camera.z), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	glm::mat4 view_matrix = camera_obj->Obtain_View_Matrix();
 
 
@@ -575,18 +518,20 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 void GAME_OBJ::Update_Game(float delta_time)
 {
-	
+	// IF SLIDER IS MOVED; UPDATE CUBE PHYSICS
+
+
 	if (ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f))
 	{
 		const reactphysics3d::Transform& transf = bod_rigid->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 		
 		reactphysics3d::Vector3 temp_vec(cube_position_1.x, posit.y, posit.z);
-		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 		
-		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid->setTransform(asdfasdf);
+		bod_rigid->setTransform(temp_trans);
 	}
 
 	if (ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f))
@@ -595,11 +540,11 @@ void GAME_OBJ::Update_Game(float delta_time)
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(posit.x, cube_position_1.y, posit.z);
-		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
-		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid->setTransform(asdfasdf);
+		bod_rigid->setTransform(temp_trans);
 	}
 
 	if (ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f))
@@ -608,11 +553,11 @@ void GAME_OBJ::Update_Game(float delta_time)
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(posit.x, posit.y, cube_position_1.z);
-		reactphysics3d::Quaternion quartasdf = reactphysics3d::Quaternion::identity();
+		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
-		reactphysics3d::Transform asdfasdf(temp_vec, quartasdf);
+		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid->setTransform(asdfasdf);
+		bod_rigid->setTransform(temp_trans);
 	}
 
 	GAME_OBJ::Process_User_Input(delta_time);
@@ -634,6 +579,7 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
 
+	// update physics world
 	physWorld->update(ts);
 
 
@@ -641,14 +587,12 @@ void GAME_OBJ::Update_Game(float delta_time)
 	const reactphysics3d::Transform& transf = bod_rigid->getTransform();
 	const reactphysics3d::Vector3 posit = transf.getPosition();
 	cube_position_1 = glm::vec3(posit.x, posit.y, posit.z);
+	
 	const reactphysics3d::Transform& transf2 = bod_rigid2->getTransform();
 	const reactphysics3d::Vector3 posit2 = transf2.getPosition();
 	cube_position_2 = glm::vec3(posit2.x, posit2.y, posit2.z);
 	const reactphysics3d::Transform& transf3 = bod_rigid3->getTransform();
 	const reactphysics3d::Vector3 posit3 = transf3.getPosition();
-
-
-	
 
 	const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
 	const reactphysics3d::Vector3 posit4 = transf4.getPosition();
@@ -657,15 +601,11 @@ void GAME_OBJ::Update_Game(float delta_time)
 	camera_obj->obj_cam_pos.z = posit4.z;
 
 
-	//std::cout << "Position of Rigid Bod: " << posit.x << "," << posit.y << "," << posit.z << std::endl;
-	//std::cout << "Position of Rigid Bod 2 : " << posit2.x << "," << posit2.y << "," << posit2.z << std::endl;
-
 }
 
 // CURRENTLY TESTING FUNCTION
 void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 {
-	//std::cout << mouse_moved_argument << std::endl;
 	
 	if (mouse_moved_argument)
 	{ 
@@ -676,7 +616,7 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 			if (key_pressed_counter < time_key_can_be_held)
 			{
 				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 3, 0.5, camera_obj->obj_cam_front_view.z * 3));
+				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 4, 0.5, camera_obj->obj_cam_front_view.z * 4));
 			}
 		}
 
@@ -685,7 +625,7 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 			if (key_pressed_counter < time_key_can_be_held)
 			{
 				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 3, 0.5, camera_obj->obj_cam_front_view.z * 3));
+				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 4, 0.5, camera_obj->obj_cam_front_view.z * 4));
 			}
 		}
 	}
@@ -705,7 +645,4 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 		key_pressed_counter = 0;
 
 	}
-
-
-
 }
