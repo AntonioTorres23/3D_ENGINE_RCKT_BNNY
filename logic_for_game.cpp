@@ -10,7 +10,8 @@ reactphysics3d::PhysicsCommon physCom;
 
 reactphysics3d::PhysicsWorld* physWorld = physCom.createPhysicsWorld();
 
-float amount_of_fov = 60.0f; 
+//float amount_of_fov = 60.0f; 
+float amount_of_fov = 80.0f;
 
 glm::vec3 model_position(-1.0f, 5.0f, 0.0f);
 
@@ -91,13 +92,13 @@ const int num_of_plane_triangles = 2;
 
 float plane_vertices[3 * num_of_plane_vertices] =
 {
-	   25.0f, -0.5f,  25.0f,
-	  -25.0f, -0.5f,  25.0f,
-	  -25.0f, -0.5f, -25.0f,
+	   50.0f, -0.5f,  50.0f,
+	  -50.0f, -0.5f,  50.0f,
+	  -50.0f, -0.5f, -50.0f,
 
-	   25.0f, -0.5f,  25.0f,
-	  -25.0f, -0.5f, -25.0f,
-	   25.0f, -0.5f, -25.0f
+	   50.0f, -0.5f,  50.0f,
+	  -50.0f, -0.5f, -50.0f,
+	   50.0f, -0.5f, -50.0f
 };
 
 unsigned int plane_indices[6] = { 0, 1, 2, 3, 4, 5, };
@@ -488,7 +489,8 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 	}
 
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(bod_rigid3, bod_rigid4))
+	// CHECKS IF PLAYER HAS LANDED AND THE KEY IS UN-PRESSED: TEST OVERLAP TESTS IF TWO RIDGID BODIES HAS COLLIDED
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(bod_rigid3, bod_rigid4) || physWorld->testOverlap(bod_rigid3, bod_rigid) || physWorld->testOverlap(bod_rigid3, bod_rigid2))
 	{
 		key_pressed_counter = 0;
 
@@ -616,7 +618,7 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 			if (key_pressed_counter < time_key_can_be_held)
 			{
 				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 4, 0.5, camera_obj->obj_cam_front_view.z * 4));
+				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 7, 0.0, camera_obj->obj_cam_front_view.z * 7));
 			}
 		}
 
@@ -625,7 +627,7 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 			if (key_pressed_counter < time_key_can_be_held)
 			{
 				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 4, 0.5, camera_obj->obj_cam_front_view.z * 4));
+				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 7, 0.0, camera_obj->obj_cam_front_view.z * 7));
 			}
 		}
 	}
@@ -633,14 +635,14 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 
 
 
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D])
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D] && physWorld->testOverlap(bod_rigid3, bod_rigid4))
 	{
 		key_pressed_counter = 0;
 
 	}
 
 
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A])
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A] && physWorld->testOverlap(bod_rigid3, bod_rigid4))
 	{
 		key_pressed_counter = 0;
 
