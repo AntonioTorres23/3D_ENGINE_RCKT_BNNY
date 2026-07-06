@@ -164,6 +164,7 @@
     <ClCompile Include="load_model.cpp" />
     <ClCompile Include="logic_for_game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="physics_object.cpp" />
     <ClCompile Include="plane_data.cpp" />
     <ClCompile Include="prep_mesh.cpp" />
     <ClCompile Include="process_cubemap_texture.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="load_mesh.h" />
     <ClInclude Include="logic_for_game.h" />
     <ClInclude Include="load_model.h" />
+    <ClInclude Include="physics_object.h" />
     <ClInclude Include="plane_data.h" />
     <ClInclude Include="prep_mesh.h" />
     <ClInclude Include="process_cubemap_texture.h" />

@@ -13,6 +13,8 @@
 
 #include "cam.h"
 
+#include "physics_object.h"
+
 #include <reactphysics3d/reactphysics3d.h>
 
 #include <iostream>

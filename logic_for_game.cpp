@@ -119,6 +119,8 @@ reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(new_floor, trans3)
 
 reactphysics3d::Material& mat2 = collider3->getMaterial();
 
+PHYSICS_OBJ phys_obj_test(physCom, physWorld, "BOX", reactphysics3d::Vector3(1.0, 0.0, 1.0), reactphysics3d::Vector3(0.0, 0.0, 0.0));
+
 
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
@@ -156,10 +158,11 @@ void GAME_OBJ::Initalize_Game()
 	bod_rigid2->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid4->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid3->setType(reactphysics3d::BodyType::STATIC);
+	phys_obj_test.rigid_body->setType(reactphysics3d::BodyType::STATIC);
 	
 	mat.setBounciness(0.0);
 	mat2.setBounciness(0.0);
-
+	phys_obj_test.material.setBounciness(0.0);
 
 	std::cout << "Player Bounciness: " << mat.getBounciness() << std::endl; 
 
