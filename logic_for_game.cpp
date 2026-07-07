@@ -223,6 +223,14 @@ void GAME_OBJ::Render_Game()
 
 	ImGui::SliderFloat("CUBE 2  Z Direction", &cube_position_2.z, -50.0f, 50.0f);
 	ImGui::SetNextItemWidth(200.0f);
+
+
+	// draw cross hair using im gui library
+	auto cross = ImGui::GetBackgroundDrawList();
+
+	cross->AddCircle(ImVec2((this->Width_Of_Screen / 2 ) - 5, (this->Height_Of_Screen / 2)), 25, IM_COL32(0, 255, 0, 255), 100.0f, 1.0f);
+
+
 	glm::mat4 view_matrix = camera_obj->Obtain_View_Matrix();
 
 
