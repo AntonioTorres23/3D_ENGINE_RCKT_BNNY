@@ -1,4 +1,4 @@
-#ifndef PHYISCS_OBJECT_HEADER
+#ifndef PHYSICS_OBJECT_HEADER
 #define PHYSICS_OBJECT_HEADER
 
 #include <reactphysics3d/reactphysics3d.h>
@@ -11,11 +11,11 @@ public:
 
 	PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, reactphysics3d::Vector3 halfway_argument, reactphysics3d::Vector3 initial_position_argument);
 
-	PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, float height_argument, reactphysics3d::Vector3 initial_position_argument);
+	PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, float height_argument, reactphysics3d::Vector3 initial_position_argument);
 
-	PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, reactphysics3d::Vector3 initial_position_argument);
+	PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, reactphysics3d::Vector3 initial_position_argument);
 
-	PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, reactphysics3d::TriangleVertexArray vertex_array, reactphysics3d::Vector3 initial_position_argument);
+	PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, reactphysics3d::TriangleVertexArray& vertex_array, reactphysics3d::Vector3 initial_position_argument);
 
 
 	reactphysics3d::Collider* collider;

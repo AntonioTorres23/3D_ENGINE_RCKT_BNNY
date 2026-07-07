@@ -46,6 +46,7 @@ float specular_color_values[3]
 	1.0f, 1.0f, 1.0f
 };
 
+/*
 // CREATE RIDGID BODIES FOR EACH OBJECT WITHIN OUR PHYSICS WORLD
 reactphysics3d::Vector3 POS(cube_position_1.x, cube_position_1.y, cube_position_1.z);
 reactphysics3d::Quaternion quart = reactphysics3d::Quaternion::identity();
@@ -67,24 +68,30 @@ reactphysics3d::Vector3 POS4;
 reactphysics3d::Quaternion quart4 = reactphysics3d::Quaternion::identity();
 reactphysics3d::Transform trans4(POS4, quart4);
 reactphysics3d::RigidBody* bod_rigid4 = physWorld->createRigidBody(trans4);
-
+*/
 
 reactphysics3d::Vector3 HalfSpace(1.5, 1.5, 1.5);
 reactphysics3d::Vector3 FloorHalfSpace(50.0, 0.0, 50.0);
 
-reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
+
+PHYSICS_OBJ cube1(physCom, physWorld, "BOX", HalfSpace, reactphysics3d::Vector3(cube_position_1.x, cube_position_1.y, cube_position_1.z));
+PHYSICS_OBJ cube2(physCom, physWorld, "BOX", HalfSpace, reactphysics3d::Vector3(cube_position_2.x, cube_position_2.y, cube_position_2.z));
+PHYSICS_OBJ player(physCom, physWorld, "CAPSULE", 0.6, 0.8, reactphysics3d::Vector3(0.0, 0.0, 0.0));
+
+//reactphysics3d::BoxShape* BoxCollision = physCom.createBoxShape(HalfSpace);
 //reactphysics3d::BoxShape* FloorBoxCollision = physCom.createBoxShape(FloorHalfSpace);
-reactphysics3d::CapsuleShape* PlayerCollision = physCom.createCapsuleShape(0.5, 0.8);
+//reactphysics3d::CapsuleShape* PlayerCollision = physCom.createCapsuleShape(0.5, 0.8);
 
-reactphysics3d::Collider* collider1 = bod_rigid->addCollider(BoxCollision, trans);
 
-reactphysics3d::Collider* collider2 = bod_rigid2->addCollider(BoxCollision, trans2);
+//reactphysics3d::Collider* collider1 = bod_rigid->addCollider(BoxCollision, trans);
+
+//reactphysics3d::Collider* collider2 = bod_rigid2->addCollider(BoxCollision, trans2);
 
 //reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(FloorBoxCollision, trans3);
 
-reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(PlayerCollision, trans4);
+//reactphysics3d::Collider* collider4 = bod_rigid4->addCollider(PlayerCollision, trans4);
 
-reactphysics3d::Material& mat = collider4->getMaterial();
+//reactphysics3d::Material& mat = collider4->getMaterial();
 
 const int num_of_plane_vertices = 6;
 
@@ -107,8 +114,9 @@ reactphysics3d::TriangleVertexArray plane_vertex_array = reactphysics3d::Triangl
 	3 * sizeof(float), 2, plane_indices, 3 * sizeof( unsigned int), reactphysics3d::TriangleVertexArray::VertexDataType::VERTEX_FLOAT_TYPE, 
 	reactphysics3d::TriangleVertexArray::IndexDataType::INDEX_INTEGER_TYPE);
 
+PHYSICS_OBJ test(physCom, physWorld, "CONCAVE_MESH", plane_vertex_array, reactphysics3d::Vector3(floor_position.x, floor_position.y, floor_position.z));
 
-
+/*
 std::vector<reactphysics3d::Message> plane_messages;
 reactphysics3d::TriangleMesh* plane_mesh = physCom.createTriangleMesh(plane_vertex_array, plane_messages);
 
@@ -120,7 +128,7 @@ reactphysics3d::Collider* collider3 = bod_rigid3->addCollider(new_floor, trans3)
 reactphysics3d::Material& mat2 = collider3->getMaterial();
 
 PHYSICS_OBJ phys_obj_test(physCom, physWorld, "BOX", reactphysics3d::Vector3(1.0, 0.0, 1.0), reactphysics3d::Vector3(0.0, 0.0, 0.0));
-
+*/
 
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
@@ -153,7 +161,7 @@ GAME_OBJ::~GAME_OBJ()
 }
 void GAME_OBJ::Initalize_Game()
 {
-
+	/*
 	bod_rigid->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid2->setType(reactphysics3d::BodyType::DYNAMIC);
 	bod_rigid4->setType(reactphysics3d::BodyType::DYNAMIC);
@@ -173,6 +181,15 @@ void GAME_OBJ::Initalize_Game()
 	//mat.setFrictionCoefficient(0.5);
 
 	//bod_rigid4->setMass(0.5);
+	*/
+
+	cube1.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
+	cube2.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
+	player.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
+	test.rigid_body->setType(reactphysics3d::BodyType::STATIC);
+
+	player.rigid_body->setLinearDamping(0.5);
+	player.rigid_body->setAngularDamping(0.5);
 
 
 	// THIS AFFECTS A LOT OF THE PHYSICS IN THE WORLD
@@ -386,7 +403,8 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 		{
 
 			camera_obj->obj_cam_pos += camera_obj->obj_cam_front_view * (camera_obj->obj_cam_speed + 1);
-			const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			//const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			const reactphysics3d::Transform& transf = player.rigid_body->getTransform();
 			const reactphysics3d::Vector3 posit = transf.getPosition();
 
 			reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
@@ -394,13 +412,14 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 			reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-			bod_rigid4->setTransform(temp_trans);
-
+			//bod_rigid4->setTransform(temp_trans);
+			player.rigid_body->setTransform(temp_trans);
 		}
 
 
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_front_view * camera_obj->obj_cam_speed;
-		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		//const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Transform& transf = player.rigid_body->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
@@ -408,15 +427,16 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(temp_trans);
-
+		//bod_rigid4->setTransform(temp_trans);
+		player.rigid_body->setTransform(temp_trans);
 
 
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_A])
 	{
 		camera_obj->obj_cam_pos -= camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
-		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		//const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Transform& transf = player.rigid_body->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
@@ -424,12 +444,14 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(temp_trans);
+		//bod_rigid4->setTransform(temp_trans);
+		player.rigid_body->setTransform(temp_trans);
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_S])
 	{
 		camera_obj->obj_cam_pos -= camera_obj->obj_cam_front_view * camera_obj->obj_cam_speed;
-		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		//const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Transform& transf = player.rigid_body->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
@@ -437,30 +459,34 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(temp_trans);
-	
+
+		//bod_rigid4->setTransform(temp_trans);
+		player.rigid_body->setTransform(temp_trans);
+
 
 		if (camera_obj->obj_pitch == -89.0f)
 		{
 
 			camera_obj->obj_cam_pos -= camera_obj->obj_cam_front_view * (camera_obj->obj_cam_speed + 1);
-			const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			//const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			
 			const reactphysics3d::Vector3 posit = transf.getPosition();
-
+			const reactphysics3d::Transform& transf = player.rigid_body->getTransform();
 			reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
 			reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
 			reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-			bod_rigid4->setTransform(temp_trans);
-
+			//bod_rigid4->setTransform(temp_trans);
+			player.rigid_body->setTransform(temp_trans);
 		}
 
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_D])
 	{
 		camera_obj->obj_cam_pos += camera_obj->obj_cam_right * camera_obj->obj_cam_speed;
-		const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		//const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+		const reactphysics3d::Transform& transf = player.rigid_body->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(camera_obj->obj_cam_pos.x, posit.y, camera_obj->obj_cam_pos.z);
@@ -468,7 +494,8 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid4->setTransform(temp_trans);
+		//bod_rigid4->setTransform(temp_trans);
+		player.rigid_body->setTransform(temp_trans);
 	}
 	if (this->Key_Pressed_Buffer[GLFW_KEY_SPACE])
 	{
@@ -476,7 +503,8 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 		{
 
-			const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			//const reactphysics3d::Transform& transf = bod_rigid4->getTransform();
+			const reactphysics3d::Transform& transf = player.rigid_body->getTransform();
 			const reactphysics3d::Vector3 posit = transf.getPosition();
 
 			reactphysics3d::Vector3 temp_vec(posit.x, posit.y + 0.07, posit.z);
@@ -484,22 +512,31 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 			reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-			bod_rigid4->setTransform(temp_trans);
-
+			//bod_rigid4->setTransform(temp_trans);
+			player.rigid_body->setTransform(temp_trans);
 			key_pressed_counter++;
 
 		}
 
 	}
 
+
 	// CHECKS IF PLAYER HAS LANDED AND THE KEY IS UN-PRESSED: TEST OVERLAP TESTS IF TWO RIDGID BODIES HAS COLLIDED
+	
+	/*
 	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(bod_rigid3, bod_rigid4) || physWorld->testOverlap(bod_rigid3, bod_rigid) || physWorld->testOverlap(bod_rigid3, bod_rigid2))
 	{
 		key_pressed_counter = 0;
 
 
 	}
+	*/
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(test.rigid_body, player.rigid_body) || physWorld->testOverlap(player.rigid_body, cube1.rigid_body) || physWorld->testOverlap(player.rigid_body, cube2.rigid_body))
+	{
+		key_pressed_counter = 0;
 
+
+	}
 	
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
 	float mouse_yaw_offset = last_mouse_yaw_position - flt_raw_mouse_yaw;
@@ -528,7 +565,9 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	if (ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f))
 	{
-		const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		//const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
+		
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 		
 		reactphysics3d::Vector3 temp_vec(cube_position_1.x, posit.y, posit.z);
@@ -536,25 +575,30 @@ void GAME_OBJ::Update_Game(float delta_time)
 		
 		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid->setTransform(temp_trans);
+		//bod_rigid->setTransform(temp_trans);
+		player.rigid_body->setTransform(temp_trans);
+	
 	}
 
 	if (ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f))
 	{
-		const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		//const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
-
 		reactphysics3d::Vector3 temp_vec(posit.x, cube_position_1.y, posit.z);
 		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
 
 		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid->setTransform(temp_trans);
+		//bod_rigid->setTransform(temp_trans);
+		player.rigid_body->setTransform(temp_trans);
+		
 	}
 
 	if (ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f))
 	{
-		const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		//const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+		const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
 		const reactphysics3d::Vector3 posit = transf.getPosition();
 
 		reactphysics3d::Vector3 temp_vec(posit.x, posit.y, cube_position_1.z);
@@ -562,13 +606,16 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
 
-		bod_rigid->setTransform(temp_trans);
+		//bod_rigid->setTransform(temp_trans);
+		player.rigid_body->setTransform(temp_trans);
 	}
 
 	GAME_OBJ::Process_User_Input(delta_time);
 
 
 	// USE THIS TO PREVENT THE PHYSICS ENGINE FROM GIVING TOO MUCH "BOUNCINESS" WITHIN ITS PHYSICS SIM
+	
+	/*
 	if (physWorld->testOverlap(bod_rigid3, bod_rigid4))
 	{
 		std::cout << "player on floor" << std::endl;
@@ -579,7 +626,22 @@ void GAME_OBJ::Update_Game(float delta_time)
 	{
 		std::cout << "player not on floor" << std::endl;
 	}
+	*/
 
+	if (physWorld->testOverlap(test.rigid_body, player.rigid_body))
+	{
+		std::cout << "player on floor" << std::endl;
+		//bod_rigid4->setLinearVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+		//bod_rigid4->setAngularVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+		player.rigid_body->setLinearVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+		player.rigid_body->setAngularVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+
+	
+	}
+	if (!physWorld->testOverlap(test.rigid_body, player.rigid_body))
+	{
+		std::cout << "player not on floor" << std::endl;
+	}
 	
 
 	Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
@@ -589,17 +651,22 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 
 	// get updated position of the body
-	const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+	//const reactphysics3d::Transform& transf = bod_rigid->getTransform();
+	const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit = transf.getPosition();
 	cube_position_1 = glm::vec3(posit.x, posit.y, posit.z);
 	
-	const reactphysics3d::Transform& transf2 = bod_rigid2->getTransform();
+	//const reactphysics3d::Transform& transf2 = bod_rigid2->getTransform();
+	const reactphysics3d::Transform& transf2 = cube2.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit2 = transf2.getPosition();
 	cube_position_2 = glm::vec3(posit2.x, posit2.y, posit2.z);
-	const reactphysics3d::Transform& transf3 = bod_rigid3->getTransform();
-	const reactphysics3d::Vector3 posit3 = transf3.getPosition();
+	
+	//const reactphysics3d::Transform& transf3 = bod_rigid3->getTransform();
+	//const reactphysics3d::Transform& transf3 = test.rigid_body->getTransform();
+	//const reactphysics3d::Vector3 posit3 = transf3.getPosition();
 
-	const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
+	//const reactphysics3d::Transform& transf4 = bod_rigid4->getTransform();
+	const reactphysics3d::Transform& transf4 = player.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit4 = transf4.getPosition();
 	camera_obj->obj_cam_pos.x = posit4.x;
 	camera_obj->obj_cam_pos.y = posit4.y;
@@ -621,7 +688,9 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 			if (key_pressed_counter < time_key_can_be_held)
 			{
 				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 7, 0.0, camera_obj->obj_cam_front_view.z * 7));
+				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 7, 0.0, camera_obj->obj_cam_front_view.z * 7));
+				player.rigid_body->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 7, 0.0, camera_obj->obj_cam_front_view.z * 7));
+			
 			}
 		}
 
@@ -630,14 +699,14 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 			if (key_pressed_counter < time_key_can_be_held)
 			{
 				//bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x, 0.0, camera_obj->obj_cam_front_view.z));
-				bod_rigid4->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 7, 0.0, camera_obj->obj_cam_front_view.z * 7));
+				player.rigid_body->applyLocalForceAtCenterOfMass(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 7, 0.0, camera_obj->obj_cam_front_view.z * 7));
 			}
 		}
 	}
 
 
 
-
+	/*
 	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D] && physWorld->testOverlap(bod_rigid3, bod_rigid4))
 	{
 		key_pressed_counter = 0;
@@ -650,4 +719,20 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 		key_pressed_counter = 0;
 
 	}
+	*/
+
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D] && physWorld->testOverlap(test.rigid_body, player.rigid_body))
+	{
+		key_pressed_counter = 0;
+
+	}
+
+
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A] && physWorld->testOverlap(test.rigid_body, player.rigid_body))
+	{
+		key_pressed_counter = 0;
+
+	}
+
+
 }

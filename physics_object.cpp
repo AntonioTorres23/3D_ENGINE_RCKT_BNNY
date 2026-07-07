@@ -24,7 +24,7 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactph
 }
 
 
-PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, float height_argument, reactphysics3d::Vector3 initial_position_argument) : material(material)
+PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, float height_argument, reactphysics3d::Vector3 initial_position_argument) : material(material)
 
 {
 	this->quarternion = reactphysics3d::Quaternion::identity();
@@ -47,7 +47,7 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphy
 }
 
 
-PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, reactphysics3d::Vector3 initial_position_argument) : material(material)
+PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, reactphysics3d::Vector3 initial_position_argument) : material(material)
 
 {
 	this->quarternion = reactphysics3d::Quaternion::identity();
@@ -67,7 +67,7 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphy
 	}
 }
 
-PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, reactphysics3d::TriangleVertexArray vertex_array, reactphysics3d::Vector3 initial_position_argument) : material(material)
+PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, reactphysics3d::TriangleVertexArray& vertex_array, reactphysics3d::Vector3 initial_position_argument) : material(material)
 {
 	this->quarternion = reactphysics3d::Quaternion::identity();
 	this->transform.setPosition(initial_position_argument);
