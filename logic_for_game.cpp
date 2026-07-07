@@ -78,7 +78,7 @@ reactphysics3d::TriangleVertexArray plane_vertex_array = reactphysics3d::Triangl
 	3 * sizeof(float), 2, plane_indices, 3 * sizeof( unsigned int), reactphysics3d::TriangleVertexArray::VertexDataType::VERTEX_FLOAT_TYPE, 
 	reactphysics3d::TriangleVertexArray::IndexDataType::INDEX_INTEGER_TYPE);
 
-PHYSICS_OBJ test(physCom, physWorld, "CONCAVE_MESH", plane_vertex_array, reactphysics3d::Vector3(floor_position.x, floor_position.y, floor_position.z));
+PHYSICS_OBJ floor_test(physCom, physWorld, "CONCAVE_MESH", plane_vertex_array, reactphysics3d::Vector3(floor_position.x, floor_position.y, floor_position.z));
 
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
@@ -115,7 +115,7 @@ void GAME_OBJ::Initalize_Game()
 	cube1.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
 	cube2.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
 	player.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
-	test.rigid_body->setType(reactphysics3d::BodyType::STATIC);
+	floor_test.rigid_body->setType(reactphysics3d::BodyType::STATIC);
 
 	player.rigid_body->setLinearDamping(0.5);
 	player.rigid_body->setAngularDamping(0.5);
@@ -434,7 +434,7 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 
 	// CHECKS IF PLAYER HAS LANDED AND THE KEY IS UN-PRESSED: TEST OVERLAP TESTS IF TWO RIDGID BODIES HAS COLLIDED
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(test.rigid_body, player.rigid_body) || physWorld->testOverlap(player.rigid_body, cube1.rigid_body) || physWorld->testOverlap(player.rigid_body, cube2.rigid_body))
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(floor_test.rigid_body, player.rigid_body) || physWorld->testOverlap(player.rigid_body, cube1.rigid_body) || physWorld->testOverlap(player.rigid_body, cube2.rigid_body))
 	{
 		key_pressed_counter = 0;
 
@@ -518,7 +518,7 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	// USE THIS TO PREVENT THE PHYSICS ENGINE FROM GIVING TOO MUCH "BOUNCINESS" WITHIN ITS PHYSICS SIM
 
-	if (physWorld->testOverlap(test.rigid_body, player.rigid_body))
+	if (physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
 	{
 		std::cout << "player on floor" << std::endl;
 		//bod_rigid4->setLinearVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
@@ -528,7 +528,7 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	
 	}
-	if (!physWorld->testOverlap(test.rigid_body, player.rigid_body))
+	if (!physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
 	{
 		std::cout << "player not on floor" << std::endl;
 	}
@@ -585,14 +585,14 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 		}
 	}
 
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D] && physWorld->testOverlap(test.rigid_body, player.rigid_body))
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D] && physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
 	{
 		key_pressed_counter = 0;
 
 	}
 
 
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A] && physWorld->testOverlap(test.rigid_body, player.rigid_body))
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A] && physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
 	{
 		key_pressed_counter = 0;
 
