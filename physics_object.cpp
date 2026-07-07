@@ -66,3 +66,25 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphy
 		this->material = temp_material;
 	}
 }
+
+PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, reactphysics3d::TriangleVertexArray vertex_array, reactphysics3d::Vector3 initial_position_argument) : material(material)
+{
+	this->quarternion = reactphysics3d::Quaternion::identity();
+	this->transform.setPosition(initial_position_argument);
+	this->transform.setOrientation(this->quarternion);
+	this->rigid_body = physWorldArgument->createRigidBody(this->transform);
+
+	if (colliderType == "CONCAVE_MESH")
+	{
+		reactphysics3d::TriangleMesh* mesh = physComArgument.createTriangleMesh(vertex_array, this->messages);
+
+		reactphysics3d::ConcaveMeshShape* ConcaveCollision = physComArgument.createConcaveMeshShape(mesh);
+
+		this->collider = this->rigid_body->addCollider(ConcaveCollision, transform);
+
+		reactphysics3d::Material& temp_material = this->collider->getMaterial();
+
+		this->material = temp_material;
+	}
+}
+

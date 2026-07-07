@@ -15,6 +15,8 @@ public:
 
 	PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, float radius_argument, reactphysics3d::Vector3 initial_position_argument);
 
+	PHYSICS_OBJ(reactphysics3d::PhysicsCommon physComArgument, reactphysics3d::PhysicsWorld* physWorldArgument, std::string colliderType, reactphysics3d::TriangleVertexArray vertex_array, reactphysics3d::Vector3 initial_position_argument);
+
 
 	reactphysics3d::Collider* collider;
 
@@ -27,6 +29,8 @@ public:
 	reactphysics3d::Quaternion quarternion; 
 
 	reactphysics3d::Transform transform;
+
+	std::vector<reactphysics3d::Message> messages;
 
 };
 
