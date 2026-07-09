@@ -1,5 +1,54 @@
 #include "logic_for_game.h"
 
+class CustomOverlapCallback : public reactphysics3d::OverlapCallback
+{
+public:
+
+	bool overlap_occured;
+	// body that represents the one we want to look for
+	reactphysics3d::Body* rigid_body_we_want_to_test;
+
+	CustomOverlapCallback(PHYSICS_OBJ player_arg) : rigid_body_we_want_to_test(player_arg.rigid_body), overlap_occured(false)
+	{
+
+	}
+
+
+
+	// Override the original function that was stored in the OverlapCallback Class
+	virtual void onOverlap(CallbackData& callbackData) override
+	{
+		// set overlap occurred to false to prevent it from carrying over a false true 
+		overlap_occured = false;
+		// for loop that iterates through all overlapping pairs within callback data/physics world
+		for (unsigned int overlapping_pairs_iterator = 0; overlapping_pairs_iterator < callbackData.getNbOverlappingPairs(); overlapping_pairs_iterator++)
+		{
+			// grab each individual overlapping body with callback data and overlapping pair index
+			reactphysics3d::OverlapCallback::OverlapPair overlapping_pair = callbackData.getOverlappingPair(overlapping_pairs_iterator);
+
+			// grab the first body within the overlapping pair
+			reactphysics3d::Body* first_body = overlapping_pair.getBody1();
+			// grab the second body within the overlapping pair
+			reactphysics3d::Body* second_body = overlapping_pair.getBody2();
+			// if first body is the desired body, then the non-desired body is the second body, if not, then the first body is the non-desired body
+			reactphysics3d::Body* non_desired_body = (first_body == rigid_body_we_want_to_test) ? second_body : first_body;
+			// if the non-desired body is not euqal to the body we want to test, then a overlap has occured, meaning both bodies are not the desired body
+			if (non_desired_body != rigid_body_we_want_to_test)
+			{
+				// overlap has occured
+				overlap_occured = true;
+				// exit out of the loop early
+				return;
+			}
+
+
+		}
+
+	}
+};
+
+
+
 
 int key_pressed_counter = 0;
 int time_key_can_be_held = 100;
@@ -87,7 +136,6 @@ RENDER_OBJECT_OBJ *model_obj;
 RENDER_OBJECT_OBJ *model_obj_2;
 SHADOW_MAP_OBJ *shadow_map;
 CAM_OBJ *camera_obj;
-
 
 
 GAME_OBJ::GAME_OBJ(unsigned int width_of_window, unsigned int height_of_window)
@@ -440,13 +488,32 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 	}
 
-
+	/*
 	// CHECKS IF PLAYER HAS LANDED AND THE KEY IS UN-PRESSED: TEST OVERLAP TESTS IF TWO RIDGID BODIES HAS COLLIDED
 	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(floor_test.rigid_body, player.rigid_body) || physWorld->testOverlap(player.rigid_body, cube1.rigid_body) || physWorld->testOverlap(player.rigid_body, cube2.rigid_body))
 	{
 		key_pressed_counter = 0;
+	}
+	*/
+
+	CustomOverlapCallback overlap_callback(player);
+
+	physWorld->testOverlap(player.rigid_body, overlap_callback);
+
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && overlap_callback.overlap_occured)
+	{
+		//std::cout << "player has hit ground" << std::endl;
+
+		key_pressed_counter = 0;
+	}
 
 
+
+
+	// PROCESS MOUSE BUTTON INPUT
+	if (this->Mouse_Button_Pressed_Buffer[GLFW_MOUSE_BUTTON_LEFT])
+	{
+		std::cout << "BANG!" << std::endl;
 	}
 	
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
@@ -528,9 +595,7 @@ void GAME_OBJ::Update_Game(float delta_time)
 
 	if (physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
 	{
-		std::cout << "player on floor" << std::endl;
-		//bod_rigid4->setLinearVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
-		//bod_rigid4->setAngularVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+		//std::cout << "player on floor" << std::endl;
 		player.rigid_body->setLinearVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
 		player.rigid_body->setAngularVelocity(reactphysics3d::Vector3(0.0, 0.0, 0.0));
 
@@ -538,7 +603,7 @@ void GAME_OBJ::Update_Game(float delta_time)
 	}
 	if (!physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
 	{
-		std::cout << "player not on floor" << std::endl;
+		//std::cout << "player not on floor" << std::endl;
 	}
 	
 
@@ -547,7 +612,7 @@ void GAME_OBJ::Update_Game(float delta_time)
 	// update physics world
 	physWorld->update(ts);
 
-
+	
 	// get updated position of the body
 	const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit = transf.getPosition();

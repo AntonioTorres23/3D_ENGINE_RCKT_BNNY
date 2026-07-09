@@ -55,6 +55,17 @@ void glfw_callback_keyboard_input(GLFWwindow* glfw_window_argument, int input, i
 void mouse_functionality(GLFWwindow* win, double raw_mouse_yaw, double raw_mouse_pitch);
 
 
+/*
+	this function contains a glfw window pointer parameter, an input paramter, an action parameter, and a "mod" parameter
+
+	input: the button on the mouse that was pressed or released by the user
+
+	input_action: detects the action of the button that was just pressed; states like GLFW_PRESS, GLFW_RELEASE, and GLFW_REPEAT are some of the states that a key can be in. 
+
+	mods: not sure it's in the GLFW documentation within the example
+*/
+void mouse_input(GLFWwindow* glfw_window_argument, int input, int input_action, int mods);
+
 // create a constant global variable that stores the desired width of the screen
 const unsigned int WIDTH_OF_SCREEN = 1920;
 // create a constant global variable that stores the desired height of the screen
@@ -98,6 +109,10 @@ int main(int integer_arg, char* character_c_string_arg[]) // main function of C+
 	glfw recognizes this and then calls the function that is assigned to that callback.
 	*/
 	glfwSetKeyCallback(glfw_window, glfw_callback_keyboard_input);
+	
+	// this is a GLFW function that ties to the function we defined to process the given mouse button input
+	glfwSetMouseButtonCallback(glfw_window, mouse_input);
+	
 	// this is a GLFW function that ties the function we defined whenver the window gets resized
 	glfwSetFramebufferSizeCallback(glfw_window, glfw_callback_window_resize);
 	
@@ -285,6 +300,27 @@ void glfw_callback_keyboard_input(GLFWwindow* glfw_window_argument, int input, i
 	}
 
 }
+
+void mouse_input(GLFWwindow* glfw_window_argument, int input, int input_action, int mods)
+{
+	// if our input is greater than or equal to 0 (which I guess means 1 if we are thinking about how arrays work) and less than 1024, process input
+	if (input >= 0 && input < 1024)
+	{
+		// if our input_action detects the button to be pressed, set our Mouse_Button_Pressed_Buffer boolean array data member within the GAME_OBJ to true; and store the button within the Mouse_Button_Pressed_Buffer array data member of the GAME_OBJ using input as the index
+		if (input_action == GLFW_PRESS)
+		{
+			game.Mouse_Button_Pressed_Buffer[input] = true;
+		}
+		// else if our action detects the button was released, set our Mouse_Button_Pressed_Buffer boolean array data member within the GAME_OBJ to false; and store the button within the Mouse_Button_Pressed_Buffer array data member of the GAME_OBJ using input as the index
+		// in addition, set our Processed_Mouse_Button boolean array data member within GAME_OBJ to false and store the key within the Processed_Mouse_Button array data member of the GAME_OBJ using input as the index
+		else if (input_action == GLFW_RELEASE)
+		{
+			game.Mouse_Button_Pressed_Buffer[input] = false; 
+			game.Processed_Mouse_Button[input] = false;
+		}
+	}
+}
+
 
 void mouse_functionality(GLFWwindow* win, double raw_mouse_yaw, double raw_mouse_pitch)
 {

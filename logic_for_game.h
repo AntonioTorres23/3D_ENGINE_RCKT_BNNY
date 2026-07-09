@@ -16,6 +16,8 @@
 #include "physics_object.h"
 
 #include <reactphysics3d/reactphysics3d.h>
+#include <reactphysics3d/collision/OverlapCallback.h>
+
 
 #include <iostream>
 
@@ -30,8 +32,11 @@ public:
 
 	bool		 Key_Pressed_Buffer[1024]; // buffer that stores key's that are pressed by player
 	bool		 Processed_Keys[1024];    //  buffer that stores key's that have been processed
+	bool		 Mouse_Button_Pressed_Buffer[1024]; // buffer that stores button's that are pressed by player
+	bool		 Processed_Mouse_Button[1024]; // buffer that stores buttons that have been processed
 
-	bool		 Mouse_Moved;
+
+	bool		 Mouse_Moved; // boolean value that tells if mouse has moved or not
 
 
 	unsigned int Width_Of_Screen, Height_Of_Screen; // stores the width and height of the actual game window
