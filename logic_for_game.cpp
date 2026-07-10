@@ -658,6 +658,7 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 		}
 	}
 
+	/*
 	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D] && physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
 	{
 		key_pressed_counter = 0;
@@ -670,5 +671,25 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 		key_pressed_counter = 0;
 
 	}
+	*/
+
+	CustomOverlapCallback overlap_callback(player);
+
+	physWorld->testOverlap(player.rigid_body, overlap_callback);
+
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D] && overlap_callback.overlap_occured)
+	{
+		key_pressed_counter = 0;
+
+	}
+
+	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A] && overlap_callback.overlap_occured)
+	{
+		key_pressed_counter = 0;
+
+	}
+
+
+
 
 }
