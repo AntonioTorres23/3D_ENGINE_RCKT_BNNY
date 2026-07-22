@@ -32,7 +32,7 @@ public:
 			reactphysics3d::Body* second_body = overlapping_pair.getBody2();
 			// if first body is the desired body, then the non-desired body is the second body, if not, then the first body is the non-desired body
 			reactphysics3d::Body* non_desired_body = (first_body == rigid_body_we_want_to_test) ? second_body : first_body;
-			// if the non-desired body is not euqal to the body we want to test, then a overlap has occured, meaning both bodies are not the desired body
+			// if the non-desired body is not equal to the body we want to test, then a overlap has occured, meaning both bodies are not the desired body
 			if (non_desired_body != rigid_body_we_want_to_test)
 			{
 				// overlap has occured
@@ -488,13 +488,32 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 	}
 
-	/*
-	// CHECKS IF PLAYER HAS LANDED AND THE KEY IS UN-PRESSED: TEST OVERLAP TESTS IF TWO RIDGID BODIES HAS COLLIDED
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && physWorld->testOverlap(floor_test.rigid_body, player.rigid_body) || physWorld->testOverlap(player.rigid_body, cube1.rigid_body) || physWorld->testOverlap(player.rigid_body, cube2.rigid_body))
+
+	// PROCESS MOUSE BUTTON INPUT
+	if (this->Mouse_Button_Pressed_Buffer[GLFW_MOUSE_BUTTON_LEFT])
 	{
-		key_pressed_counter = 0;
+
+		//std::cout << camera_obj->obj_cam_pos.x << "," << camera_obj->obj_cam_pos.y << "," << camera_obj->obj_cam_pos.z << std::endl;
+		std::cout << camera_obj->obj_cam_pos.x + camera_obj->obj_cam_front_view.x << "," << camera_obj->obj_cam_pos.y + camera_obj->obj_cam_front_view.y << "," << camera_obj->obj_cam_pos.z + camera_obj->obj_cam_front_view.z << std::endl;
+		// ADD THE CAM POS AND FRONT VIEW POS SO THE ROCKET COMES OUT CORRECTLY
+		PHYSICS_OBJ rocket(physCom, physWorld, "BOX", reactphysics3d::Vector3(1.5, 1.5, 1.5), reactphysics3d::Vector3(camera_obj->obj_cam_pos.x + camera_obj->obj_cam_front_view.x, camera_obj->obj_cam_pos.y + camera_obj->obj_cam_front_view.y, camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z)));
+		rocket.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
+		
+		CustomOverlapCallback rocket_callback(rocket);
+		rocket.rigid_body->setMass(0.0);
+		//rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 80, camera_obj->obj_cam_front_view.y * 80, camera_obj->obj_cam_front_view.z * 80));
+		rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 30, camera_obj->obj_cam_front_view.y * 30, camera_obj->obj_cam_front_view.z * 30));
+
+		physWorld->testOverlap(rocket.rigid_body, rocket_callback);
+
+		/*
+		if (rocket_callback.overlap_occured)
+		{
+			rocket.~PHYSICS_OBJ();
+		}
+		*/
 	}
-	*/
+
 
 	CustomOverlapCallback overlap_callback(player);
 
@@ -510,12 +529,6 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 
 
-	// PROCESS MOUSE BUTTON INPUT
-	if (this->Mouse_Button_Pressed_Buffer[GLFW_MOUSE_BUTTON_LEFT])
-	{
-		std::cout << "BANG!" << std::endl;
-	}
-	
 	// subtracts the difference of the yaw position last stored and the current yaw position that was called. 
 	float mouse_yaw_offset = last_mouse_yaw_position - flt_raw_mouse_yaw;
 	// subtracts the difference of the pitch position last stored and the current pitch position that was called.
@@ -527,10 +540,11 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 	// this gets us set up for the next time this function is called 
 	last_mouse_pitch_position = flt_raw_mouse_pitch;
 
+
+
 	camera_obj->MOUSE(mouse_yaw_offset, mouse_pitch_offset);
 
 	Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
-	
 
 	
 

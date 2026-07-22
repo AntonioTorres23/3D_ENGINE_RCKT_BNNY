@@ -88,3 +88,6 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactph
 	}
 }
 
+PHYSICS_OBJ::~PHYSICS_OBJ()
+{
+}
