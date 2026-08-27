@@ -5,13 +5,31 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactph
 {
 	this->quarternion = reactphysics3d::Quaternion::identity();
 	this->transform.setPosition(initial_position_argument);
+	this->position_of_physics_object = initial_position_argument;
 	this->transform.setOrientation(this->quarternion);
 	this->rigid_body = physWorldArgument->createRigidBody(this->transform);
 	
+
+
 	if (colliderType == "BOX")
 	{
 		reactphysics3d::BoxShape* BoxCollision = physComArgument.createBoxShape(halfway_argument);
-		this->collider = this->rigid_body->addCollider(BoxCollision, transform);
+
+
+		// create local transformation matrix for the rigid body collider position
+		reactphysics3d::Transform transform_local;
+
+
+		// set the position relative to inside the object itself i.e. local origin
+		transform_local.setPosition(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+
+		// set a orientation local to the collider transformation matrix
+		transform_local.setOrientation(reactphysics3d::Quaternion::identity());
+
+
+		// REMEMBER THIS TRANSFORMATION MATRIX IS FOR THE COLLIDER NOT FOR THE POSITION OF THE RIGID BODY ITSELF
+		// THE RIGID BODY SHOULD BE OF LOCAL ORIGIN 
+		this->collider = this->rigid_body->addCollider(BoxCollision, transform_local);
 
 
 		reactphysics3d::Material &temp_material = this->collider->getMaterial();

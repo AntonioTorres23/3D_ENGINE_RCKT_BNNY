@@ -1,5 +1,7 @@
 #include "logic_for_game.h"
 
+std::vector<PHYSICS_OBJ> rockets;
+
 class CustomOverlapCallback : public reactphysics3d::OverlapCallback
 {
 public:
@@ -13,6 +15,10 @@ public:
 
 	}
 
+	CustomOverlapCallback(reactphysics3d::RigidBody* player_arg) : rigid_body_we_want_to_test(player_arg), overlap_occured(false)
+	{
+
+	}
 
 
 	// Override the original function that was stored in the OverlapCallback Class
@@ -76,6 +82,7 @@ glm::vec3 world_position_of_camera(0.0f, 0.0f, 15.0f);
 glm::vec3 directional_lighting_facing_direction(-2.0f, 4.0f, -1.0f);
 glm::vec3 shadow_map_facing_position(20.0f, 40.0f, 20.0f);
 
+
 float model_scale_size = 0.5f;
 
 float near_plane_shadow = 0.1f, far_plane_shadow = 150.0f;
@@ -104,7 +111,8 @@ reactphysics3d::Vector3 FloorHalfSpace(50.0, 0.0, 50.0);
 
 PHYSICS_OBJ cube1(physCom, physWorld, "BOX", HalfSpace, reactphysics3d::Vector3(cube_position_1.x, cube_position_1.y, cube_position_1.z));
 PHYSICS_OBJ cube2(physCom, physWorld, "BOX", HalfSpace, reactphysics3d::Vector3(cube_position_2.x, cube_position_2.y, cube_position_2.z));
-PHYSICS_OBJ player(physCom, physWorld, "CAPSULE", 0.6, 0.8, reactphysics3d::Vector3(0.0, 0.0, 0.0));
+//PHYSICS_OBJ player(physCom, physWorld, "CAPSULE", 0.6, 0.8, reactphysics3d::Vector3(0.0, 0.0, 0.0));
+PHYSICS_OBJ player(physCom, physWorld, "CAPSULE", 0.2, 0.8, reactphysics3d::Vector3(0.0, 0.0, 0.0));
 
 const int num_of_plane_vertices = 6;
 
@@ -371,6 +379,22 @@ void GAME_OBJ::Render_Game()
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
+	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(rocket_vector += camera_obj->obj_cam_front_view), glm::vec3(0.5f));
+
+
+	// Draw all active rockets in a loop
+	for (PHYSICS_OBJ& temp_rocket : rockets)
+	{
+		reactphysics3d::Transform trans = temp_rocket.rigid_body->getTransform();
+		reactphysics3d::Vector3 pos = trans.getPosition();
+
+		render_obj->Render_and_Draw_Object(
+			RESOURCE_MANAGER::Texture_Get("texture"),
+			glm::vec3(pos.x, pos.y, pos.z),
+			glm::vec3(0.5f)
+		);
+	}
+	
 	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
 	//model_obj->Render_and_Draw_Object(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), -90.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	//model_obj->Render_and_Draw_Object(glm::vec3(-1.0f, 0.0f, -0.5f), glm::vec3(1.0f), (100 * glfwGetTime()));
@@ -488,30 +512,63 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 	}
 
-
+	// ORIGINAL POSITION OF LEFT CLICK
+	
 	// PROCESS MOUSE BUTTON INPUT
 	if (this->Mouse_Button_Pressed_Buffer[GLFW_MOUSE_BUTTON_LEFT])
 	{
 
-		//std::cout << camera_obj->obj_cam_pos.x << "," << camera_obj->obj_cam_pos.y << "," << camera_obj->obj_cam_pos.z << std::endl;
-		std::cout << camera_obj->obj_cam_pos.x + camera_obj->obj_cam_front_view.x << "," << camera_obj->obj_cam_pos.y + camera_obj->obj_cam_front_view.y << "," << camera_obj->obj_cam_pos.z + camera_obj->obj_cam_front_view.z << std::endl;
-		// ADD THE CAM POS AND FRONT VIEW POS SO THE ROCKET COMES OUT CORRECTLY
-		PHYSICS_OBJ rocket(physCom, physWorld, "BOX", reactphysics3d::Vector3(1.5, 1.5, 1.5), reactphysics3d::Vector3(camera_obj->obj_cam_pos.x + camera_obj->obj_cam_front_view.x, camera_obj->obj_cam_pos.y + camera_obj->obj_cam_front_view.y, camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z)));
-		rocket.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
-		
-		CustomOverlapCallback rocket_callback(rocket);
-		rocket.rigid_body->setMass(0.0);
-		//rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 80, camera_obj->obj_cam_front_view.y * 80, camera_obj->obj_cam_front_view.z * 80));
-		rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 30, camera_obj->obj_cam_front_view.y * 30, camera_obj->obj_cam_front_view.z * 30));
 
-		physWorld->testOverlap(rocket.rigid_body, rocket_callback);
 
 		/*
-		if (rocket_callback.overlap_occured)
-		{
-			rocket.~PHYSICS_OBJ();
-		}
+		// ADD THE CAM POS AND FRONT VIEW POS SO THE ROCKET COMES OUT CORRECTLY
+		PHYSICS_OBJ rocket(physCom, physWorld, "BOX", reactphysics3d::Vector3(0.2, 0.2, 0.2), reactphysics3d::Vector3(camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 4), camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 4), camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 4)));
+		//PHYSICS_OBJ rocket(physCom, physWorld, "SHPERE", 2.0, reactphysics3d::Vector3(camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 10), camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 10), camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 10)));
+		rocket.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
+		rocket.rigid_body->enableGravity(false); // Set to false if you want straight rocket paths
+
+
+		rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 10, camera_obj->obj_cam_front_view.y * 10, camera_obj->obj_cam_front_view.z * 10));
+
+
+
+
+		//reactphysics3d::Transform trans = rocket.rigid_body->getTransform();
+
+		//rocket_vector = glm::vec3(camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 4), camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 4), camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 4));
+
+
+		//trans.setPosition(reactphysics3d::Vector3(rocket_vector.x += camera_obj->obj_cam_front_view.x, rocket_vector.y += camera_obj->obj_cam_front_view.y, rocket_vector.z += camera_obj->obj_cam_front_view.z));
+
+
+		rockets.push_back(rocket);
 		*/
+
+
+
+		PHYSICS_OBJ rocket(physCom, physWorld, "BOX",
+			reactphysics3d::Vector3(0.2, 0.2, 0.2),
+			reactphysics3d::Vector3(
+				camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 2.0f),
+				camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 2.0f),
+				camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 2.0f)
+			)
+		);
+
+		// MUST be DYNAMIC for velocity to work!
+		rocket.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
+		rocket.rigid_body->enableGravity(false); // Set to false if you want straight rocket paths
+
+		rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(
+			camera_obj->obj_cam_front_view.x * 30.0f,
+			camera_obj->obj_cam_front_view.y * 30.0f,
+			camera_obj->obj_cam_front_view.z * 30.0f
+		));
+
+		rockets.push_back(rocket);
+
+
+
 	}
 
 
@@ -552,6 +609,9 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 void GAME_OBJ::Update_Game(float delta_time)
 {
+
+
+	/**
 	// IF SLIDER IS MOVED; UPDATE CUBE PHYSICS
 
 
@@ -601,8 +661,15 @@ void GAME_OBJ::Update_Game(float delta_time)
 		//bod_rigid->setTransform(temp_trans);
 		player.rigid_body->setTransform(temp_trans);
 	}
+	*/
 
+
+
+
+	// ORIGINAL POSITION OF PROCESS USER INPUT
+	// ISSUE WITH ROCKETS IS DUE TO PHYSICS WORLD NOT UPDATING PROPERLY
 	GAME_OBJ::Process_User_Input(delta_time);
+
 
 
 	// USE THIS TO PREVENT THE PHYSICS ENGINE FROM GIVING TOO MUCH "BOUNCINESS" WITHIN ITS PHYSICS SIM
@@ -620,29 +687,41 @@ void GAME_OBJ::Update_Game(float delta_time)
 		//std::cout << "player not on floor" << std::endl;
 	}
 	
+	
+		
 
+	// Original Position Of Mouse Velocity Physics 
 	Mouse_Velocity_Physics(GAME_OBJ::Mouse_Moved);
 
+
+	// ORIGINAL POSITION OF UPDATING PHYSICS WORLD
 	// update physics world
 	physWorld->update(ts);
-
+	
+	
+	// Original Position Of Cubes
 	
 	// get updated position of the body
 	const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit = transf.getPosition();
 	cube_position_1 = glm::vec3(posit.x, posit.y, posit.z);
-	
+
+	std::cout << cube_position_1.x << "," << cube_position_1.y << "," << cube_position_1.z << std::endl;
+	std::cout << "\n" << std::endl;
+
 	const reactphysics3d::Transform& transf2 = cube2.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit2 = transf2.getPosition();
 	cube_position_2 = glm::vec3(posit2.x, posit2.y, posit2.z);
 	
+	std::cout << cube_position_2.x << "," << cube_position_2.y << "," << cube_position_2.z << std::endl;
+	std::cout << "\n" << std::endl;
 	const reactphysics3d::Transform& transf4 = player.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit4 = transf4.getPosition();
 	camera_obj->obj_cam_pos.x = posit4.x;
 	camera_obj->obj_cam_pos.y = posit4.y;
 	camera_obj->obj_cam_pos.z = posit4.z;
 
-
+	
 }
 
 // CURRENTLY TESTING FUNCTION
