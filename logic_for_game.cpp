@@ -105,7 +105,7 @@ float specular_color_values[3]
 
 // CREATE RIDGID BODIES FOR EACH OBJECT WITHIN OUR PHYSICS WORLD
 
-reactphysics3d::Vector3 HalfSpace(1.5, 1.5, 1.5);
+reactphysics3d::Vector3 HalfSpace(0.5, 0.5, 0.5);
 reactphysics3d::Vector3 FloorHalfSpace(50.0, 0.0, 50.0);
 
 
@@ -706,15 +706,11 @@ void GAME_OBJ::Update_Game(float delta_time)
 	const reactphysics3d::Vector3 posit = transf.getPosition();
 	cube_position_1 = glm::vec3(posit.x, posit.y, posit.z);
 
-	std::cout << cube_position_1.x << "," << cube_position_1.y << "," << cube_position_1.z << std::endl;
-	std::cout << "\n" << std::endl;
 
 	const reactphysics3d::Transform& transf2 = cube2.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit2 = transf2.getPosition();
 	cube_position_2 = glm::vec3(posit2.x, posit2.y, posit2.z);
 	
-	std::cout << cube_position_2.x << "," << cube_position_2.y << "," << cube_position_2.z << std::endl;
-	std::cout << "\n" << std::endl;
 	const reactphysics3d::Transform& transf4 = player.rigid_body->getTransform();
 	const reactphysics3d::Vector3 posit4 = transf4.getPosition();
 	camera_obj->obj_cam_pos.x = posit4.x;

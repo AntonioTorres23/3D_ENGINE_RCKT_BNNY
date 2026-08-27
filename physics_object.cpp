@@ -17,19 +17,19 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactph
 
 
 		// create local transformation matrix for the rigid body collider position
-		reactphysics3d::Transform transform_local;
-
+		//reactphysics3d::Transform collider_local;
+		reactphysics3d::Transform collider_transform = reactphysics3d::Transform::identity();
 
 		// set the position relative to inside the object itself i.e. local origin
-		transform_local.setPosition(reactphysics3d::Vector3(0.0, 0.0, 0.0));
+		//transform_local.setPosition(reactphysics3d::Vector3(0.0, 0.0, 0.0));
 
 		// set a orientation local to the collider transformation matrix
-		transform_local.setOrientation(reactphysics3d::Quaternion::identity());
+		collider_transform.setOrientation(reactphysics3d::Quaternion::identity());
 
 
 		// REMEMBER THIS TRANSFORMATION MATRIX IS FOR THE COLLIDER NOT FOR THE POSITION OF THE RIGID BODY ITSELF
 		// THE RIGID BODY SHOULD BE OF LOCAL ORIGIN 
-		this->collider = this->rigid_body->addCollider(BoxCollision, transform_local);
+		this->collider = this->rigid_body->addCollider(BoxCollision, collider_transform);
 
 
 		reactphysics3d::Material &temp_material = this->collider->getMaterial();
@@ -52,8 +52,12 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactph
 
 	if (colliderType == "CAPSULE")
 	{
+		reactphysics3d::Transform collider_transform = reactphysics3d::Transform::identity();
+		collider_transform.setOrientation(reactphysics3d::Quaternion::identity());
+
+
 		reactphysics3d::CapsuleShape* CapsuleCollision = physComArgument.createCapsuleShape(radius_argument, height_argument);
-		this->collider = this->rigid_body->addCollider(CapsuleCollision, transform);
+		this->collider = this->rigid_body->addCollider(CapsuleCollision, collider_transform);
 
 
 		reactphysics3d::Material& temp_material = this->collider->getMaterial();
@@ -75,8 +79,12 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactph
 
 	if (colliderType == "SPHERE")
 	{
+
+		reactphysics3d::Transform collider_transform = reactphysics3d::Transform::identity();
+		collider_transform.setOrientation(reactphysics3d::Quaternion::identity());
+
 		reactphysics3d::SphereShape* SphereCollision = physComArgument.createSphereShape(radius_argument);
-		this->collider = this->rigid_body->addCollider(SphereCollision, transform);
+		this->collider = this->rigid_body->addCollider(SphereCollision, collider_transform);
 
 
 		reactphysics3d::Material& temp_material = this->collider->getMaterial();
@@ -94,11 +102,15 @@ PHYSICS_OBJ::PHYSICS_OBJ(reactphysics3d::PhysicsCommon& physComArgument, reactph
 
 	if (colliderType == "CONCAVE_MESH")
 	{
+
+		reactphysics3d::Transform collider_transform = reactphysics3d::Transform::identity();
+		collider_transform.setOrientation(reactphysics3d::Quaternion::identity());
+
 		reactphysics3d::TriangleMesh* mesh = physComArgument.createTriangleMesh(vertex_array, this->messages);
 
 		reactphysics3d::ConcaveMeshShape* ConcaveCollision = physComArgument.createConcaveMeshShape(mesh);
 
-		this->collider = this->rigid_body->addCollider(ConcaveCollision, transform);
+		this->collider = this->rigid_body->addCollider(ConcaveCollision, collider_transform);
 
 		reactphysics3d::Material& temp_material = this->collider->getMaterial();
 
