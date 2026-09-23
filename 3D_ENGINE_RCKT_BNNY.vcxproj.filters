@@ -108,6 +108,12 @@
     <ClCompile Include="level_file.h">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="level_file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="level_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource_manager.h">
