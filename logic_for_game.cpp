@@ -111,7 +111,6 @@ reactphysics3d::Vector3 FloorHalfSpace(50.0, 0.0, 50.0);
 
 PHYSICS_OBJ cube1(physCom, physWorld, "BOX", HalfSpace, reactphysics3d::Vector3(cube_position_1.x, cube_position_1.y, cube_position_1.z));
 PHYSICS_OBJ cube2(physCom, physWorld, "BOX", HalfSpace, reactphysics3d::Vector3(cube_position_2.x, cube_position_2.y, cube_position_2.z));
-//PHYSICS_OBJ player(physCom, physWorld, "CAPSULE", 0.6, 0.8, reactphysics3d::Vector3(0.0, 0.0, 0.0));
 PHYSICS_OBJ player(physCom, physWorld, "CAPSULE", 0.2, 0.8, reactphysics3d::Vector3(0.0, 0.0, 0.0));
 
 const int num_of_plane_vertices = 6;
@@ -178,7 +177,6 @@ void GAME_OBJ::Initalize_Game()
 
 
 	// THIS AFFECTS A LOT OF THE PHYSICS IN THE WORLD
-	//physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.07, 0.0));
 	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.8, 0.0));
 
 
@@ -364,7 +362,8 @@ void GAME_OBJ::Render_Game()
 	// enable depth function so that it passes vertices that are equal to depth buffer's content
 	glDepthFunc(GL_LEQUAL);
 
-	skybox_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Skybox_Textures_Get("skybox_2"));
+	// change name to whatever skybox texture you desire
+	skybox_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Skybox_Textures_Get("skybox"));
 
 
 
@@ -517,53 +516,13 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 	// PROCESS MOUSE BUTTON INPUT
 	if (this->Mouse_Button_Pressed_Buffer[GLFW_MOUSE_BUTTON_LEFT])
 	{
-
-
-
-		/*
-		// ADD THE CAM POS AND FRONT VIEW POS SO THE ROCKET COMES OUT CORRECTLY
-		PHYSICS_OBJ rocket(physCom, physWorld, "BOX", reactphysics3d::Vector3(0.2, 0.2, 0.2), reactphysics3d::Vector3(camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 4), camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 4), camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 4)));
-		//PHYSICS_OBJ rocket(physCom, physWorld, "SHPERE", 2.0, reactphysics3d::Vector3(camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 10), camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 10), camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 10)));
-		rocket.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
-		rocket.rigid_body->enableGravity(false); // Set to false if you want straight rocket paths
-
-
-		rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 10, camera_obj->obj_cam_front_view.y * 10, camera_obj->obj_cam_front_view.z * 10));
-
-
-
-
-		//reactphysics3d::Transform trans = rocket.rigid_body->getTransform();
-
-		//rocket_vector = glm::vec3(camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 4), camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 4), camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 4));
-
-
-		//trans.setPosition(reactphysics3d::Vector3(rocket_vector.x += camera_obj->obj_cam_front_view.x, rocket_vector.y += camera_obj->obj_cam_front_view.y, rocket_vector.z += camera_obj->obj_cam_front_view.z));
-
-
-		rockets.push_back(rocket);
-		*/
-
-
-
-		PHYSICS_OBJ rocket(physCom, physWorld, "BOX",
-			reactphysics3d::Vector3(0.2, 0.2, 0.2),
-			reactphysics3d::Vector3(
-				camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 2.0f),
-				camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 2.0f),
-				camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 2.0f)
-			)
-		);
+		PHYSICS_OBJ rocket(physCom, physWorld, "BOX", reactphysics3d::Vector3(0.2, 0.2, 0.2), reactphysics3d::Vector3(camera_obj->obj_cam_pos.x + (camera_obj->obj_cam_front_view.x * 2.0f), camera_obj->obj_cam_pos.y + (camera_obj->obj_cam_front_view.y * 2.0f), camera_obj->obj_cam_pos.z + (camera_obj->obj_cam_front_view.z * 2.0f)));
 
 		// MUST be DYNAMIC for velocity to work!
 		rocket.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
 		rocket.rigid_body->enableGravity(false); // Set to false if you want straight rocket paths
 
-		rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(
-			camera_obj->obj_cam_front_view.x * 30.0f,
-			camera_obj->obj_cam_front_view.y * 30.0f,
-			camera_obj->obj_cam_front_view.z * 30.0f
-		));
+		rocket.rigid_body->setLinearVelocity(reactphysics3d::Vector3(camera_obj->obj_cam_front_view.x * 30.0f, camera_obj->obj_cam_front_view.y * 30.0f, camera_obj->obj_cam_front_view.z * 30.0f));
 
 		rockets.push_back(rocket);
 
@@ -609,63 +568,6 @@ void GAME_OBJ::Process_User_Input(float delta_time)
 
 void GAME_OBJ::Update_Game(float delta_time)
 {
-
-
-	/**
-	// IF SLIDER IS MOVED; UPDATE CUBE PHYSICS
-
-
-	if (ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f))
-	{
-		//const reactphysics3d::Transform& transf = bod_rigid->getTransform();
-		const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
-		
-		const reactphysics3d::Vector3 posit = transf.getPosition();
-		
-		reactphysics3d::Vector3 temp_vec(cube_position_1.x, posit.y, posit.z);
-		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
-		
-		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
-
-		//bod_rigid->setTransform(temp_trans);
-		player.rigid_body->setTransform(temp_trans);
-	
-	}
-
-	if (ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f))
-	{
-		//const reactphysics3d::Transform& transf = bod_rigid->getTransform();
-		const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
-		const reactphysics3d::Vector3 posit = transf.getPosition();
-		reactphysics3d::Vector3 temp_vec(posit.x, cube_position_1.y, posit.z);
-		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
-
-		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
-
-		//bod_rigid->setTransform(temp_trans);
-		player.rigid_body->setTransform(temp_trans);
-		
-	}
-
-	if (ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f))
-	{
-		//const reactphysics3d::Transform& transf = bod_rigid->getTransform();
-		const reactphysics3d::Transform& transf = cube1.rigid_body->getTransform();
-		const reactphysics3d::Vector3 posit = transf.getPosition();
-
-		reactphysics3d::Vector3 temp_vec(posit.x, posit.y, cube_position_1.z);
-		reactphysics3d::Quaternion temp_quart = reactphysics3d::Quaternion::identity();
-
-		reactphysics3d::Transform temp_trans(temp_vec, temp_quart);
-
-		//bod_rigid->setTransform(temp_trans);
-		player.rigid_body->setTransform(temp_trans);
-	}
-	*/
-
-
-
-
 	// ORIGINAL POSITION OF PROCESS USER INPUT
 	// ISSUE WITH ROCKETS IS DUE TO PHYSICS WORLD NOT UPDATING PROPERLY
 	GAME_OBJ::Process_User_Input(delta_time);
@@ -746,21 +648,6 @@ void GAME_OBJ::Mouse_Velocity_Physics(bool mouse_moved_argument)
 			}
 		}
 	}
-
-	/*
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_D] && physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
-	{
-		key_pressed_counter = 0;
-
-	}
-
-
-	if (!this->Key_Pressed_Buffer[GLFW_KEY_SPACE] && this->Key_Pressed_Buffer[GLFW_KEY_W] && this->Key_Pressed_Buffer[GLFW_KEY_A] && physWorld->testOverlap(floor_test.rigid_body, player.rigid_body))
-	{
-		key_pressed_counter = 0;
-
-	}
-	*/
 
 	CustomOverlapCallback overlap_callback(player);
 

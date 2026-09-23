@@ -159,6 +159,7 @@
     <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="level_file.h" />
     <ClCompile Include="LIGHTING_UNIFORMS.cpp" />
     <ClCompile Include="load_mesh.cpp" />
     <ClCompile Include="load_model.cpp" />
