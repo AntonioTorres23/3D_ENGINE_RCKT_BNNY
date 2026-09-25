@@ -15,6 +15,8 @@
 
 #include "physics_object.h"
 
+#include "load_level.h"
+
 #include <reactphysics3d/reactphysics3d.h>
 #include <reactphysics3d/collision/OverlapCallback.h>
 

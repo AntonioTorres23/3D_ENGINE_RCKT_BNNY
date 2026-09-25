@@ -105,13 +105,7 @@
     <ClCompile Include="physics_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="level_file.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="level_file.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="level_test.cpp">
+    <ClCompile Include="load_level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -195,6 +189,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="physics_object.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="load_level.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

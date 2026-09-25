@@ -1,5 +1,8 @@
 #include "logic_for_game.h"
 
+
+
+
 std::vector<PHYSICS_OBJ> rockets;
 
 class CustomOverlapCallback : public reactphysics3d::OverlapCallback
@@ -65,7 +68,6 @@ reactphysics3d::PhysicsCommon physCom;
 
 reactphysics3d::PhysicsWorld* physWorld = physCom.createPhysicsWorld();
 
-//float amount_of_fov = 60.0f; 
 float amount_of_fov = 80.0f;
 
 glm::vec3 model_position(-1.0f, 5.0f, 0.0f);
@@ -166,6 +168,7 @@ GAME_OBJ::~GAME_OBJ()
 }
 void GAME_OBJ::Initalize_Game()
 {
+	LOAD_LEVEL::level_load("levels/level_test_output.txt");
 
 	cube1.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
 	cube2.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
