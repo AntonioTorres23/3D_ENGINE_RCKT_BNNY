@@ -21,10 +21,52 @@ void LOAD_LEVEL::level_load(const char* path_to_level_file)
 		levelSTRINGSTREAM << levelIFSTREAM.rdbuf();
 		// now we close the IFSTREAM shader variables
 		levelIFSTREAM.close();
-		// convert string stream into a regular string and store this within the string variable we created eariler in this function
-		levelString = levelSTRINGSTREAM.str();
+		// take string stream and in a while loop grab each line by using the built in function std::getline to grab the file info line by line and store it in levelString
+		while (std::getline(levelSTRINGSTREAM, levelString))
+		{
+			size_t location = levelString.find(":");
+			std::string location_string = levelString.substr(location + 1);
+			if (location_string.find("(") != std::string::npos)
+			{
+				std::vector<int> coordinates;
+				glm::vec3 vector;
+				for (char character : location_string)
+				{
+					if (character >= '0' && character <= '9')
+					{
+						// convert digital character to an integer
+						int vector_coordinate = character - '0';
+						coordinates.push_back(vector_coordinate);
+					}
+				}
+				
+				vector.x = coordinates[0];
+				vector.y = coordinates[1];
+				vector.z = coordinates[2];
 
-		std::cout << "\n" << "\n" << levelString << "\n" << "\n" << std::endl;
+				reactphysics3d::Vector3 world_position(vector.x, vector.y, vector.z);
+
+
+				for (int x = 0; x < 3; x++)
+				{
+					std::cout << coordinates[x] << std::endl;
+				}
+			}
+
+			if (location_string.find("cube") != std::string::npos)
+			{
+				std::cout << location_string << std::endl; 
+			}
+
+
+			if (location_string.find("assets/Models/") != std::string::npos)
+			{
+				std::cout << location_string << std::endl;
+			}
+
+		}
+
+		
 		
 	}
 	// if there is an error, catch it here and thrown a custom exception statment that we send to default output with c out
