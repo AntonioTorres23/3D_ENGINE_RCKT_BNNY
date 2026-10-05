@@ -58,8 +58,22 @@ void LOAD_LEVEL::level_load(const char* path_to_level_file)
 				std::cout << location_string << std::endl; 
 			}
 
+			if (location_string.find("sphere") != std::string::npos)
+			{
+				std::cout << location_string << std::endl;
+			}
+
+			if (location_string.find("capsule") != std::string::npos)
+			{
+				std::cout << location_string << std::endl;
+			}
 
 			if (location_string.find("assets/Models/") != std::string::npos)
+			{
+				std::cout << location_string << std::endl;
+			}
+
+			if (location_string.find("shaders/") != std::string::npos)
 			{
 				std::cout << location_string << std::endl;
 			}

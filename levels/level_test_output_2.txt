@@ -1,0 +1,4 @@
+location:(1,3,0)
+type:capsule
+file:assets/Models/2
+shader:shaders/cool_shader

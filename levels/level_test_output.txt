@@ -1,4 +1,4 @@
 location:(0,1,0)
 type:cube
 file:assets/Models/Dust2/Dust2.obj
-shader: shader test_shader
+shader:shaders/test_shader

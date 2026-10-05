@@ -1,8 +1,5 @@
 #include "logic_for_game.h"
 
-
-
-
 std::vector<PHYSICS_OBJ> rockets;
 
 class CustomOverlapCallback : public reactphysics3d::OverlapCallback
@@ -138,6 +135,13 @@ reactphysics3d::TriangleVertexArray plane_vertex_array = reactphysics3d::Triangl
 
 PHYSICS_OBJ floor_test(physCom, physWorld, "CONCAVE_MESH", plane_vertex_array, reactphysics3d::Vector3(floor_position.x, floor_position.y, floor_position.z));
 
+
+// TEST
+glm::vec3 wall_world_vector(1.0, 10.0, 50.0);
+PHYSICS_OBJ wall_test(physCom, physWorld, "CONCAVE_MESH", plane_vertex_array, reactphysics3d::Vector3(wall_world_vector.x, wall_world_vector.y, wall_world_vector.z));
+
+
+
 RENDER_OBJECT_OBJ *render_obj; 
 RENDER_OBJECT_OBJ *render_obj_plane;
 RENDER_OBJECT_OBJ *skybox_obj;
@@ -168,29 +172,35 @@ GAME_OBJ::~GAME_OBJ()
 }
 void GAME_OBJ::Initalize_Game()
 {
-	LOAD_LEVEL::level_load("levels/level_test_output.txt");
+	LOAD_LEVEL::level_load("levels/level_test_output_2.txt");
+
 
 	cube1.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
 	cube2.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
 	player.rigid_body->setType(reactphysics3d::BodyType::DYNAMIC);
 	floor_test.rigid_body->setType(reactphysics3d::BodyType::STATIC);
+	wall_test.rigid_body->setType(reactphysics3d::BodyType::STATIC);
+	
+	reactphysics3d::Vector3 wall_test_world_vector(wall_world_vector.x, wall_world_vector.y, wall_world_vector.z);
+	reactphysics3d::Quaternion wall_test_rotation = reactphysics3d::Quaternion::fromEulerAngles(reactphysics3d::Vector3(1.5, 0.0, 0.0));
+	reactphysics3d::Transform wall_test_trans(wall_test_world_vector, wall_test_rotation);
+
+	wall_test.rigid_body->setTransform(wall_test_trans);
+
 
 	player.rigid_body->setLinearDamping(0.5);
 	player.rigid_body->setAngularDamping(0.5);
 
 
+	
 	// THIS AFFECTS A LOT OF THE PHYSICS IN THE WORLD
 	physWorld->setGravity(reactphysics3d::Vector3(0.0, -0.8, 0.0));
 
 
-	//RESOURCE_MANAGER::Shader_Load("shaders/3D_TEST.vert", "shaders/3D_TEST.frag", nullptr, "test");
-	//RESOURCE_MANAGER::Shader_Load("shaders/BLINN_PHONG_LIGHTING.vert", "shaders/BLINN_PHONG_LIGHTING.frag", nullptr, "test");
 	RESOURCE_MANAGER::Shader_Load("shaders/BLINN_PHONG_LIGHTING_W_SHADOW_MAPPING.vert", "shaders/BLINN_PHONG_LIGHTING_W_SHADOW_MAPPING.frag", nullptr, "test");
 
 	RESOURCE_MANAGER::Shader_Load("shaders/skybox.vert", "shaders/skybox.frag", nullptr, "skybox_test");
 
-
-	//RESOURCE_MANAGER::Shader_Load("shaders/model_test.vert", "shaders/model_test.frag", nullptr, "model_test");
 	RESOURCE_MANAGER::Shader_Load("shaders/BLINN_PHONG_LIGHTING_W_SHADOW_MAPPING.vert", "shaders/BLINN_PHONG_LIGHTING_W_SHADOW_MAPPING.frag", nullptr, "model_test");
 
 	RESOURCE_MANAGER::Shader_Load("shaders/DEPTH_SHADER.vert", "shaders/DEPTH_SHADER.frag", nullptr, "depth_map_shader");
@@ -199,7 +209,7 @@ void GAME_OBJ::Initalize_Game()
 
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Pattern_03-128x128.png", false, "texture");
 	RESOURCE_MANAGER::Texture_Load("assets/PTP-Tile_05-128x128.png", false, "texture_2");
-	//RESOURCE_MANAGER::Texture_Load("assets/arcade_carpet_2_512.png", false, "texture_2");
+	RESOURCE_MANAGER::Texture_Load("assets/arcade_carpet_2_512.png", false, "texture_3");
 	
 	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Classic", false, "skybox");
 	RESOURCE_MANAGER::Skybox_Textures_Load("assets/Empty_Space", false, "skybox_2");
@@ -242,9 +252,8 @@ void GAME_OBJ::Render_Game()
 	ImGui::SliderFloat("Light X Direction", &directional_lighting_facing_direction.x, -50.0f, 0.0f);
 	ImGui::SliderFloat("Light Y Direction", &directional_lighting_facing_direction.y, -50.0f, 50.0f);
 	ImGui::SliderFloat("Light Z Direction", &directional_lighting_facing_direction.z, -50.0f, 0.0f);
+	
 	// To store color picker values, you need a 3-value float array
-
-	//ImGui::SliderFloat3("test", a, 0.0f, 1.0f);
 	ImGui::SetNextItemWidth(200.0f);
 	ImGui::ColorPicker3("Ambient Color", ambient_color_values);
 	ImGui::SetNextItemWidth(200.0f);
@@ -258,20 +267,7 @@ void GAME_OBJ::Render_Game()
 	ImGui::SliderFloat("NEAR_SHADOW_PLANE", &near_plane_shadow, -100.0f, 100.0f);
 	ImGui::SliderFloat("FAR_SHADOW_PLANE", &far_plane_shadow, -100.0f, 100.0f);
 	ImGui::SetNextItemWidth(200.0f);
-	//ImGui::SliderFloat("Model X Direction", &model_position.x, -50.0f, 50.0f);
 
-	//ImGui::SliderFloat("Model Y Direction", &model_position.y, -50.0f, 50.0f);
-
-
-	//ImGui::SliderFloat("Model Z Direction", &model_position.z, -50.0f, 50.0f);
-	//ImGui::SetNextItemWidth(200.0f);
-	//ImGui::SliderFloat("Model Scale Size", &model_scale_size, -100.0f, 100.0f);
-	//ImGui::SetNextItemWidth(200.0f);
-	//ImGui::SliderFloat("CUBE 1  X Direction", &cube_position_1.x, -50.0f, 50.0f);
-
-	//ImGui::SliderFloat("CUBE 1  Y Direction", &cube_position_1.y, -50.0f, 50.0f);
-
-	//ImGui::SliderFloat("CUBE 1  Z Direction", &cube_position_1.z, -50.0f, 50.0f);
 	ImGui::SetNextItemWidth(200.0f);
 	ImGui::SliderFloat("CUBE 2  X Direction", &cube_position_2.x, -50.0f, 50.0f);
 
@@ -291,7 +287,7 @@ void GAME_OBJ::Render_Game()
 	glm::mat4 view_matrix = camera_obj->Obtain_View_Matrix();
 
 
-	//glm::mat4 orthographic_light_perspective_matrix = glm::ortho(-(static_cast<float>(orthographic_matrix)), (static_cast<float>(orthographic_matrix)), -(static_cast<float>(orthographic_matrix)), (static_cast<float>(orthographic_matrix)), near_plane_shadow, far_plane_shadow);
+	
 	glm::mat4 orthographic_light_perspective_matrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, 0.1f, 150.0f);
 	glm::mat4 light_view_matrix = glm::lookAt(directional_lighting_facing_direction * -1.0f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -320,6 +316,9 @@ void GAME_OBJ::Render_Game()
 	glClear(GL_DEPTH_BUFFER_BIT);
 	
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(wall_world_vector.x, wall_world_vector.y, wall_world_vector.z), glm::vec3(1.0f), 90, glm::vec3(1.0, 0.0, 0.0));
+
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
@@ -379,6 +378,11 @@ void GAME_OBJ::Render_Game()
 
 	//model_obj_2->Render_and_Draw_Object(glm::vec3(model_position), glm::vec3(model_scale_size), (100 * glfwGetTime()));
 	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+
+
+	render_obj_plane->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture_2"), glm::vec3(wall_world_vector.x, wall_world_vector.y, wall_world_vector.z), glm::vec3(1.0f), 90, glm::vec3(1.0, 0.0, 0.0));
+	
+	
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_1), glm::vec3(0.5f), (100 * glfwGetTime()));
 	render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(cube_position_2), glm::vec3(0.5f), (100 * glfwGetTime()));
 	//render_obj->Render_and_Draw_Object(RESOURCE_MANAGER::Texture_Get("texture"), glm::vec3(rocket_vector += camera_obj->obj_cam_front_view), glm::vec3(0.5f));
